@@ -6,11 +6,11 @@ import { CarFront, Car, Truck } from 'lucide-react';
 const SIZES = [
   { id: 'coupe', label: 'Coupe / Hatch', icon: CarFront, multiplier: 1.0 },
   { id: 'saloon', label: 'Saloon / Estate', icon: Car, multiplier: 1.15 },
-  { id: 'suv', label: 'SUV / 4x4', icon: Truck, multiplier: 1.35 },
+  { id: 'suv', label: 'SUV / 4x4', icon: Truck, multiplier: 1.3225 },
 ];
 
 const TIERS = [
-  { id: 'enhance', label: 'Gloss Enhancement', price: 150, desc: 'Single-stage machine polish to remove light swirling and restore gloss. Includes 6-month sealant protection.' },
+  { id: 'enhance', label: 'Gloss Enhancement', price: 250, desc: 'Single-stage machine polish to remove light swirling and restore gloss. Includes 6-month sealant protection.' },
   { id: 'correct', label: 'Paint Correction', price: 300, desc: 'Two-stage compound and polish removing 85%+ of swirls, scratches, and holograms. Finished with 1-year ceramic sealant.' },
   { id: 'ceramic', label: 'Correction + Ceramic', price: 500, desc: 'Full multi-stage paint correction locked in with professional 9H ceramic coating. 3–5 year protection with hydrophobic finish.' },
   { id: 'interior', label: 'Interior Reset', price: 95, desc: 'Full interior extraction with thermal steam sterilisation. Leather conditioning, Alcantara restoration, and plastics revived to delivery-day spec.' },
