@@ -1,163 +1,234 @@
 "use client";
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Shield, Droplets, Sparkles, Layers, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Droplets, Zap, Sparkles } from 'lucide-react';
 
 const LAYERS = [
-  { label: "Metal Substrate", color: "from-neutral-700 to-neutral-900", border: "border-neutral-600/40", z: 0, glow: false },
-  { label: "Primer", color: "from-neutral-600 to-neutral-800", border: "border-neutral-500/30", z: 1, glow: false },
-  { label: "Base Colour", color: "from-cyan-950 to-neutral-900", border: "border-cyan-800/40", z: 2, glow: false },
-  { label: "Clear Coat", color: "from-white/10 to-white/5", border: "border-white/15", z: 3, glow: false },
-  { label: "SiO2 Ceramic", color: "from-cyan-500/20 to-cyan-400/10", border: "border-cyan-400/60", z: 4, glow: true },
+  {
+    label: "Metal Substrate",
+    thickness: "0.8mm",
+    detail: "The raw steel or aluminium body panel. All protection ultimately bonds to this surface.",
+    color: "#3f3f46",
+    textColor: "#a1a1aa",
+    height: "h-[52px]",
+  },
+  {
+    label: "E-Coat Primer",
+    thickness: "20μm",
+    detail: "Electrodeposited corrosion primer applied at the factory. Critical foundation layer.",
+    color: "#52525b",
+    textColor: "#a1a1aa",
+    height: "h-[44px]",
+  },
+  {
+    label: "Base Colour",
+    thickness: "15μm",
+    detail: "Your vehicle's pigment layer. Where swirl marks and scratches become visible.",
+    color: "#1e3a5f",
+    textColor: "#7dd3fc",
+    height: "h-[48px]",
+  },
+  {
+    label: "Clear Coat",
+    thickness: "40μm",
+    detail: "Factory UV protection. This is the layer we machine-correct during paint correction.",
+    color: "rgba(255,255,255,0.06)",
+    textColor: "#d4d4d8",
+    height: "h-[44px]",
+    isTranslucent: true,
+  },
+  {
+    label: "9H Ceramic",
+    thickness: "1μm",
+    detail: "Our SiO2 ceramic substrate. Chemically bonds to the clear coat creating a permanent glass shield.",
+    color: "#06b6d4",
+    textColor: "#06b6d4",
+    height: "h-[40px]",
+    isCeramic: true,
+  },
 ];
 
-function LayerSlab({ layer, index, total }: { layer: typeof LAYERS[0], index: number, total: number }) {
-  const offset = index * 14;
+const FEATURES = [
+  {
+    icon: Shield,
+    title: "Substrate Fusion",
+    desc: "SiO2 ceramic penetrates clear coat pores, permanently bonding at a chemical level. Locks out UV oxidation, acid rain, and micro-contaminant embedding.",
+    color: "#06b6d4",
+  },
+  {
+    icon: Droplets,
+    title: "Hydrophobic Shell",
+    desc: "Water contact angle exceeds 110°. Liquid instantly beads and sheets off, carrying dirt and contaminants with it. Self-cleaning in rain.",
+    color: "#3b82f6",
+  },
+  {
+    icon: Zap,
+    title: "Anti-Static Repulsion",
+    desc: "Reduces static charge build-up by up to 80%, dramatically cutting dust adhesion between washes. Your car stays cleaner, longer.",
+    color: "#8b5cf6",
+  },
+];
 
+function LayerBlock({ layer, index, isActive, onClick }: {
+  layer: typeof LAYERS[0];
+  index: number;
+  isActive: boolean;
+  onClick: () => void;
+}) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, x: -20 }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
+    <motion.button
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
-      className="relative group"
-      style={{ marginTop: index > 0 ? '-8px' : '0' }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.23, 1, 0.32, 1] }}
+      onClick={onClick}
+      className={`relative w-full ${layer.height} rounded-lg flex items-center justify-between px-5 transition-all duration-400 cursor-pointer group border ${
+        isActive
+          ? 'scale-[1.03] z-10'
+          : 'hover:scale-[1.01] z-0'
+      }`}
+      style={{
+        background: layer.isCeramic
+          ? `linear-gradient(135deg, rgba(6,182,212,0.15) 0%, rgba(6,182,212,0.05) 100%)`
+          : layer.isTranslucent
+            ? 'rgba(255,255,255,0.03)'
+            : `linear-gradient(135deg, ${layer.color} 0%, ${layer.color}dd 100%)`,
+        borderColor: isActive
+          ? layer.isCeramic ? 'rgba(6,182,212,0.5)' : 'rgba(255,255,255,0.15)'
+          : layer.isCeramic ? 'rgba(6,182,212,0.3)' : 'rgba(255,255,255,0.05)',
+        boxShadow: isActive && layer.isCeramic
+          ? '0 0 30px rgba(6,182,212,0.15), inset 0 0 20px rgba(6,182,212,0.05)'
+          : isActive
+            ? '0 4px 20px rgba(0,0,0,0.3)'
+            : 'none',
+      }}
     >
-      <div
-        className={`
-          relative w-full h-12 sm:h-14 rounded-xl bg-gradient-to-r ${layer.color} border ${layer.border}
-          flex items-center justify-between px-4 sm:px-6
-          transition-all duration-500 group-hover:translate-x-2 group-hover:scale-[1.02]
-          ${layer.glow ? 'shadow-[0_0_25px_rgba(6,182,212,0.25),inset_0_0_15px_rgba(6,182,212,0.1)]' : 'shadow-lg'}
-        `}
+      <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] relative z-10 transition-colors duration-300"
+        style={{ color: isActive ? (layer.isCeramic ? '#06b6d4' : '#e4e4e7') : layer.textColor }}
       >
-        {/* Scanning line for top ceramic layer */}
-        {layer.glow && (
-          <motion.div
-            animate={{ x: ['-100%', '200%'] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-            className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent pointer-events-none rounded-xl"
-          />
-        )}
+        {layer.label}
+      </span>
 
-        <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest relative z-10 ${
-          layer.glow ? 'text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]' : index >= 3 ? 'text-neutral-300' : 'text-neutral-500'
-        }`}>
-          {layer.label}
-        </span>
-
-        <span className={`text-[10px] font-bold uppercase tracking-wider relative z-10 ${
-          layer.glow ? 'text-cyan-500' : 'text-neutral-600'
-        }`}>
-          Layer {index + 1}/{total}
-        </span>
-      </div>
-    </motion.div>
+      <span className="text-[10px] font-mono font-bold uppercase tracking-wider relative z-10 transition-colors duration-300"
+        style={{ color: isActive ? (layer.isCeramic ? '#22d3ee' : '#a1a1aa') : '#52525b' }}
+      >
+        {layer.thickness}
+      </span>
+    </motion.button>
   );
 }
 
 export function InfographicSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
-  const stackY = useTransform(scrollYProgress, [0, 0.5], [40, 0]);
-  const stackOpacity = useTransform(scrollYProgress, [0, 0.3], [0.5, 1]);
+  const [activeIndex, setActiveIndex] = useState(4); // Start with ceramic selected
 
   return (
-    <div ref={sectionRef} className="w-full max-w-7xl mx-auto py-20 lg:py-28 px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-      
-      {/* Left: Layer stack visualization */}
+    <div className="w-full max-w-7xl mx-auto py-20 lg:py-28 px-6">
+
+      {/* Section header */}
       <motion.div
-        style={{ y: stackY, opacity: stackOpacity }}
-        className="w-full lg:w-[45%] relative"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.7 }}
+        className="text-center mb-14 lg:mb-20"
       >
-        {/* Section sub-header for the visual side */}
-        <div className="mb-8">
-          <p className="text-cyan-500/60 text-[10px] font-bold uppercase tracking-[0.3em] mb-2">Cross-Section Analysis</p>
-          <div className="h-px w-16 bg-gradient-to-r from-cyan-500/50 to-transparent" />
-        </div>
-
-        {/* The layer stack */}
-        <div className="space-y-0 max-w-md">
-          {LAYERS.map((layer, i) => (
-            <LayerSlab key={layer.label} layer={layer} index={i} total={LAYERS.length} />
-          ))}
-        </div>
-
-        {/* Bottom annotation */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.8 }}
-          className="mt-6 flex items-center gap-3 text-[10px] text-neutral-500 font-medium"
-        >
-          <div className="w-8 h-px bg-cyan-500/40" />
-          <span className="uppercase tracking-widest">Hover layers to inspect</span>
-        </motion.div>
-      </motion.div>
-
-      {/* Right: Technical data */}
-      <motion.div 
-        initial={{ opacity: 0, x: 40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        className="w-full lg:w-[55%] flex flex-col justify-center"
-      >
-        <p className="text-cyan-500 font-bold uppercase tracking-[0.25em] text-xs mb-4 flex items-center gap-2">
-          <Sparkles size={14} /> Structural Architecture
+        <p className="text-cyan-500 font-bold uppercase tracking-[0.25em] text-[11px] mb-4 flex items-center justify-center gap-2">
+          <Sparkles size={13} /> Structural Architecture
         </p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter uppercase mb-6 text-white leading-[1.1]">
-          The Physics of <br/><span className="text-neutral-500">Perfect Paint</span>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter uppercase text-white leading-[1.1]">
+          The Physics of <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Perfect Paint</span>
         </h2>
-        <p className="text-neutral-400 text-sm sm:text-base leading-relaxed mb-10 max-w-lg">
-          True protection isn&apos;t a spray-on product — it&apos;s molecular engineering. We permanently fuse a silica-based substrate into your clear coat, creating a self-leveling glass matrix rated to 9H hardness.
-        </p>
-
-        <div className="space-y-5">
-          {[
-            {
-              icon: Shield,
-              title: "Substrate Fusion",
-              desc: "SiO2 ceramic penetrates clear coat pores, permanently bonding at a chemical level. Locks out UV oxidation, acid rain, and micro-contaminant embedding.",
-              accent: "text-cyan-400",
-              bg: "border-cyan-500/20",
-            },
-            {
-              icon: Droplets,
-              title: "Hydrophobic Shell",
-              desc: "Water contact angle exceeds 110°. Liquid instantly beads and sheets off the surface, carrying dirt and contaminants with it. Self-cleaning in rain.",
-              accent: "text-blue-400",
-              bg: "border-blue-500/20",
-            },
-            {
-              icon: Zap,
-              title: "Anti-Static Repulsion",
-              desc: "Reduces static charge accumulation by up to 80%, dramatically cutting dust adhesion between washes. Your car stays cleaner, longer.",
-              accent: "text-violet-400",
-              bg: "border-violet-500/20",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 * i, duration: 0.5 }}
-              className="flex gap-4 items-start group"
-            >
-              <div className={`w-10 h-10 shrink-0 rounded-xl bg-white/[0.03] border ${item.bg} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                <item.icon className={item.accent} size={18} />
-              </div>
-              <div>
-                <h4 className="text-white font-black uppercase text-sm mb-1.5 tracking-wide">{item.title}</h4>
-                <p className="text-neutral-500 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </motion.div>
 
+      <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+
+        {/* Left: Interactive layer stack */}
+        <div className="w-full lg:w-[42%]">
+          <div className="flex flex-col gap-[3px] max-w-md mx-auto lg:mx-0">
+            {LAYERS.map((layer, i) => (
+              <LayerBlock
+                key={layer.label}
+                layer={layer}
+                index={i}
+                isActive={activeIndex === i}
+                onClick={() => setActiveIndex(i)}
+              />
+            ))}
+          </div>
+
+          {/* Layer detail panel */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.3 }}
+              className="mt-5 max-w-md mx-auto lg:mx-0 px-4 py-3.5 rounded-lg bg-white/[0.02] border border-white/[0.06]"
+            >
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-2 h-2 rounded-full" style={{ background: LAYERS[activeIndex].isCeramic ? '#06b6d4' : LAYERS[activeIndex].color }} />
+                <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: LAYERS[activeIndex].textColor }}>
+                  {LAYERS[activeIndex].label}
+                </span>
+                <span className="text-[10px] font-mono text-neutral-600 ml-auto">{LAYERS[activeIndex].thickness}</span>
+              </div>
+              <p className="text-[12px] text-neutral-500 leading-relaxed">{LAYERS[activeIndex].detail}</p>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Instruction */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.7 }}
+            className="mt-4 text-[10px] text-neutral-600 uppercase tracking-widest max-w-md mx-auto lg:mx-0"
+          >
+            ↑ Tap a layer to inspect
+          </motion.p>
+        </div>
+
+        {/* Right: Description + features */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="w-full lg:w-[58%]"
+        >
+          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed mb-10 max-w-lg">
+            True protection isn&apos;t a spray-on product — it&apos;s molecular engineering. We permanently fuse a silica-based substrate into your clear coat, creating a self-leveling glass matrix rated to 9H hardness.
+          </p>
+
+          <div className="space-y-4">
+            {FEATURES.map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * i, duration: 0.5 }}
+                className="flex gap-4 items-start group"
+              >
+                <div
+                  className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center border group-hover:scale-110 transition-transform duration-300"
+                  style={{
+                    background: `${item.color}10`,
+                    borderColor: `${item.color}25`,
+                  }}
+                >
+                  <item.icon size={18} style={{ color: item.color }} />
+                </div>
+                <div>
+                  <h4 className="text-white font-black uppercase text-[13px] sm:text-sm mb-1 tracking-wide">{item.title}</h4>
+                  <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
