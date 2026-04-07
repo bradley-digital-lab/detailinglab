@@ -111,13 +111,19 @@ export function AnimatedShieldReveal() {
                 sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 380px"
               />
 
-              {/* Light sweep */}
+              {/* Light sweep — slow, subtle metallic glint */}
               <motion.div
-                animate={{ x: ['-180%', '280%'] }}
-                transition={{ repeat: Infinity, duration: 3.5, ease: [0.45, 0, 0.55, 1], repeatDelay: 5 }}
+                initial={{ x: '-120%' }}
+                animate={{ x: ['-120%', '220%'] }}
+                transition={{ repeat: Infinity, duration: 2.2, ease: [0.25, 0.1, 0.25, 1], repeatDelay: 8 }}
                 className="absolute inset-0 z-20 pointer-events-none overflow-hidden"
               >
-                <div className="w-[25%] h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent skew-x-[-15deg]" />
+                <div className="relative w-[12%] h-full skew-x-[-20deg]">
+                  {/* Soft outer halo */}
+                  <div className="absolute inset-0 w-[200%] -left-[50%] bg-gradient-to-r from-transparent via-white/[0.03] to-transparent blur-sm" />
+                  {/* Sharp core highlight */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+                </div>
               </motion.div>
             </div>
 
