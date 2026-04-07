@@ -21,7 +21,7 @@ const INTERIOR = { id: 'interior', label: 'Interior Reset', price: 95, desc: 'Fu
 
 const BUNDLE_DISCOUNT = 0.10; // 10% off interior when bundled
 
-export function PricingEstimator() {
+export function PricingEstimator({ onBook }: { onBook?: () => void }) {
   const [size, setSize] = useState(SIZES[0]);
   const [paintTier, setPaintTier] = useState(PAINT_TIERS[1]);
   const [includeInterior, setIncludeInterior] = useState(false);
@@ -168,7 +168,10 @@ export function PricingEstimator() {
              Starting from · {size.label} · Inc. VAT
            </p>
            
-           <button className="mt-6 px-10 py-5 bg-cyan-500 text-black font-black uppercase tracking-widest text-sm rounded-xl hover:bg-cyan-400 transition-colors w-full relative z-10 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+           <button 
+             onClick={onBook}
+             className="mt-6 px-10 py-5 bg-cyan-500 text-black font-black uppercase tracking-widest text-sm rounded-xl hover:bg-cyan-400 transition-colors w-full relative z-10 shadow-[0_0_30px_rgba(6,182,212,0.2)]"
+           >
              Get Booked In!
            </button>
         </div>

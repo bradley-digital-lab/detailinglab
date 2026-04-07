@@ -573,7 +573,7 @@ export default function DetailingLabLandingPage() {
           >
             <MagneticButton onClick={() => setIsBookingModalOpen(true)} className="relative group px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl flex items-center gap-2.5 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.35)] cursor-none text-sm">
               <span className="relative z-10 flex items-center gap-2">
-                Get a Free Quote
+                Get Booked In!
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </MagneticButton>
@@ -633,7 +633,7 @@ export default function DetailingLabLandingPage() {
       <section className="relative z-10 py-12 px-6 max-w-6xl mx-auto border-t border-white/5">
          <ScrollReveal>
              <h2 className="text-4xl md:text-5xl font-black uppercase mb-12 text-center tracking-tighter">Structure Your <span className="text-cyan-500">Protection</span></h2>
-             <PricingEstimator />
+             <PricingEstimator onBook={() => setIsBookingModalOpen(true)} />
          </ScrollReveal>
       </section>
 
