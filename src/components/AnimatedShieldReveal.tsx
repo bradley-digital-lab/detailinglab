@@ -101,7 +101,7 @@ export function AnimatedShieldReveal() {
             />
 
             {/* Shield image */}
-            <div className="relative aspect-[0.82]">
+            <div className="relative aspect-[0.82] overflow-hidden">
               <Image
                 src="/shield_emblem.png"
                 alt="Detailing Lab Yorkshire Shield"
@@ -111,20 +111,16 @@ export function AnimatedShieldReveal() {
                 sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 380px"
               />
 
-              {/* Light sweep — slow, subtle metallic glint */}
-              <motion.div
-                initial={{ x: '-120%' }}
-                animate={{ x: ['-120%', '220%'] }}
-                transition={{ repeat: Infinity, duration: 2.2, ease: [0.25, 0.1, 0.25, 1], repeatDelay: 8 }}
-                className="absolute inset-0 z-20 pointer-events-none overflow-hidden"
-              >
-                <div className="relative w-[12%] h-full skew-x-[-20deg]">
-                  {/* Soft outer halo */}
-                  <div className="absolute inset-0 w-[200%] -left-[50%] bg-gradient-to-r from-transparent via-white/[0.03] to-transparent blur-sm" />
-                  {/* Sharp core highlight */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-                </div>
-              </motion.div>
+              {/* Light sweep — clipped to shield container */}
+              <div className="absolute inset-[10%] z-20 pointer-events-none overflow-hidden rounded-[20%]">
+                <motion.div
+                  animate={{ x: ['-100%', '400%'] }}
+                  transition={{ repeat: Infinity, duration: 1.8, ease: [0.4, 0, 0.2, 1], repeatDelay: 7 }}
+                  className="absolute inset-y-0 left-0 w-[15%] skew-x-[-15deg]"
+                >
+                  <div className="w-full h-full bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+                </motion.div>
+              </div>
             </div>
 
             {/* Floating badges */}
