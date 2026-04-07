@@ -4,51 +4,51 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, Crosshair, Droplets, CheckCircle2, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
-const SERVICES = [
+const STANDARDS = [
   {
-    id: "armor",
-    title: "Ceramic Armor",
-    subtitle: "9H Hardness · 5+ Year Shield",
+    id: "precision",
+    title: "Surgical Precision",
+    subtitle: "Measured · Verified · Flawless",
+    icon: Crosshair,
+    color: "#8b5cf6",
+    desc: "Every vehicle is assessed with paint depth gauges and LED inspection lights. We measure before we correct — no guesswork, no shortcuts.",
+    bullets: [
+      "Paint depth readings before every cut",
+      "LED panel inspection for hidden defects",
+      "Micron-level compound calibration"
+    ],
+    stat: "0%",
+    statLabel: "Guesswork"
+  },
+  {
+    id: "protection",
+    title: "Engineered Protection",
+    subtitle: "9H Ceramic · SiO2 Substrate",
     icon: ShieldCheck,
     color: "#06b6d4",
-    desc: "Industrial-grade SiO2 ceramic chemically bonds to your clear coat, creating an impenetrable hydrophobic fortress with UV resistance and mirror-like gloss depth.",
+    desc: "We use only professional-grade SiO2 coatings that chemically bond to your clear coat — creating a permanent, self-cleaning shield rated to 9H hardness.",
     bullets: [
-      "Covalent molecular bonding to clear coat",
-      "Self-cleaning hydrophobic surface",
-      "Paint thickness verified with micron gauge"
+      "Covalent molecular bonding technology",
+      "Hydrophobic self-cleaning surface",
+      "3–5 year certified protection"
     ],
     stat: "9H",
     statLabel: "Hardness"
   },
   {
-    id: "correction",
-    title: "Paint Correction",
-    subtitle: "Stage 1–3 · Machine Compound",
-    icon: Crosshair,
-    color: "#8b5cf6",
-    desc: "Multi-stage machine compounding permanently removes swirl marks, buffer trails, holograms, and oxidation to micron-level precision.",
-    bullets: [
-      "Paint depth analysis before every cut",
-      "Permanent swirl & hologram elimination",
-      "Factory-spec mirror finish restoration"
-    ],
-    stat: "0%",
-    statLabel: "Swirl Marks"
-  },
-  {
-    id: "interior",
-    title: "Interior Reset",
-    subtitle: "Deep Clean · Leather · Steam",
+    id: "results",
+    title: "Guaranteed Results",
+    subtitle: "Insured · Documented · Proven",
     icon: Droplets,
     color: "#34d399",
-    desc: "Full interior extraction with thermal steam sterilisation. Leather conditioning and plastics revived to delivery-day specification.",
+    desc: "Every job is fully insured and documented with before/after photography. Our results speak for themselves — factory-spec finishes, every time.",
     bullets: [
-      "Hot steam extraction & sanitisation",
-      "pH-neutral leather hydration protocol",
-      "Alcantara & suede micro-fibre restoration"
+      "Full before & after documentation",
+      "Fully insured detailing operation",
+      "West Yorkshire mobile & workshop"
     ],
     stat: "100%",
-    statLabel: "Factory Spec"
+    statLabel: "Satisfaction"
   }
 ];
 
@@ -74,9 +74,9 @@ export function AnimatedShieldReveal() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16 lg:mb-20"
         >
-          <p className="text-cyan-500 text-[11px] font-bold uppercase tracking-[0.3em] mb-4">What We Engineer</p>
+          <p className="text-cyan-500 text-[11px] font-bold uppercase tracking-[0.3em] mb-4">The Detailing Lab</p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none">
-            Protection <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Architecture</span>
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Standard</span>
           </h2>
         </motion.div>
 
@@ -159,7 +159,7 @@ export function AnimatedShieldReveal() {
 
           {/* ── SERVICE CARDS ── */}
           <div className="flex-1 flex flex-col gap-4 w-full min-w-0">
-            {SERVICES.map((service, i) => {
+            {STANDARDS.map((service, i) => {
               const Icon = service.icon;
 
               return (
