@@ -220,7 +220,7 @@ export function AnimatedShieldReveal() {
                         className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:gap-2"
                         style={{ color: service.color }}
                       >
-                        Get a Quote <ChevronRight size={12} />
+                        See Our Work <ChevronRight size={12} />
                       </button>
                     </div>
                   </div>

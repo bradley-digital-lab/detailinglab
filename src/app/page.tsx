@@ -489,7 +489,7 @@ export default function DetailingLabLandingPage() {
             <a href="#reviews" className="hover:text-white transition-colors cursor-none">Results</a>
           </div>
           <MagneticButton onClick={() => setIsBookingModalOpen(true)} className="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-black tracking-tight rounded-lg transition-colors shadow-[0_0_20px_rgba(6,182,212,0.3)] cursor-none">
-            Get a Quote
+            Get Booked In
           </MagneticButton>
         </div>
       </nav>
