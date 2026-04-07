@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { ShieldCheck, Droplets, Sparkles, CheckCircle2, ArrowRight, Star, Shield, X, ChevronRight, Check, Search, FlaskConical } from "lucide-react";
 import { MouseEvent, useEffect, useState, useRef } from "react";
 import Image from "next/image";
@@ -461,9 +461,6 @@ export default function DetailingLabLandingPage() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
 
-  const { scrollYProgress } = useScroll();
-  const yTestimonial = useTransform(scrollYProgress, [0.5, 1], [100, -50]);
-
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans selection:bg-cyan-500/30 overflow-clip">
       <CustomCursor />
@@ -645,19 +642,111 @@ export default function DetailingLabLandingPage() {
           <InfographicSection />
       </section>
 
-      {/* CORE FEATURE: INTERACTIVE PAINT CANVAS */}
-      <section className="relative z-10 py-12 px-6 max-w-6xl mx-auto">
+      {/* CORE FEATURE: VISUAL EVIDENCE GALLERY */}
+      <section className="relative z-10 py-16 lg:py-24 px-6 max-w-7xl mx-auto">
          <ScrollReveal>
-             <h2 className="text-4xl md:text-5xl font-black uppercase mb-12 text-center tracking-tighter">Visual <span className="text-cyan-500">Evidence</span></h2>
-             <BeforeAfterSlider beforeUrl="/subtle_before.png" afterUrl="/perfect_after.png" />
+             <div className="text-center mb-14">
+               <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">Real Results</p>
+               <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Visual <span className="text-cyan-500">Evidence</span></h2>
+             </div>
+             
+             {/* Primary large slider */}
+             <div className="mb-12">
+               <BeforeAfterSlider beforeUrl="/subtle_before.png" afterUrl="/perfect_after.png" />
+             </div>
+             
+             {/* Car gallery grid */}
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               {[
+                 { before: "/bmw_before.png", after: "/bmw_after.png", car: "BMW 3 Series", service: "Stage 2 Correction + Ceramic" },
+                 { before: "/audi_before.png", after: "/audi_after.png", car: "Audi A5", service: "Paint Correction + Sealant" },
+                 { before: "/rangerover_before.png", after: "/rangerover_after.png", car: "Range Rover Sport", service: "Full Correction + 9H Ceramic" },
+               ].map((item, i) => (
+                 <ScrollReveal key={i} delay={i * 0.1}>
+                   <div className="group relative rounded-2xl overflow-hidden border border-white/5 bg-[#0a0a0a] hover:border-cyan-500/30 transition-all duration-500">
+                     <div className="relative h-48 sm:h-56 overflow-hidden">
+                       {/* After image (visible by default) */}
+                       <Image src={item.after} alt={`${item.car} after detailing`} fill className="object-cover transition-opacity duration-700 group-hover:opacity-0" sizes="(max-width: 768px) 100vw, 33vw" />
+                       {/* Before image (visible on hover) */}
+                       <Image src={item.before} alt={`${item.car} before detailing`} fill className="object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 33vw" />
+                       
+                       {/* Labels */}
+                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-cyan-500/90 text-[10px] font-bold text-black uppercase tracking-wider opacity-100 group-hover:opacity-0 transition-opacity duration-300">After</div>
+                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-red-500/90 text-[10px] font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">Before</div>
+                       <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-sm text-[10px] font-bold text-neutral-300 uppercase tracking-wider">Hover to Compare</div>
+                     </div>
+                     <div className="p-4">
+                       <p className="text-white font-bold text-sm">{item.car}</p>
+                       <p className="text-neutral-500 text-xs mt-0.5">{item.service}</p>
+                     </div>
+                   </div>
+                 </ScrollReveal>
+               ))}
+             </div>
          </ScrollReveal>
       </section>
 
-      {/* Trust & Review Section */}
-      <section id="reviews" className="relative z-10 py-32 bg-gradient-to-b from-[#050505] to-[#0a0a0a] border-y border-white/5 flex justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none" />
-        
-        <TestimonialCarousel yTestimonial={yTestimonial} />
+      {/* Trust & Review Section — 3 Column Grid */}
+      <section id="reviews" className="relative z-10 py-16 lg:py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a] border-y border-white/5 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">What Our Clients Say</p>
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Trusted by <span className="text-cyan-500">Yorkshire</span></h2>
+            </div>
+          </ScrollReveal>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+            {[
+              {
+                name: "James T.",
+                car: "BMW M4 Competition",
+                service: "Stage 2 Correction + Ceramic",
+                review: "Took out every single swirl mark. The depth of gloss in the paint is unreal — looks better than when I collected it from the dealer. Can't recommend enough.",
+                initials: "JT"
+              },
+              {
+                name: "Dr. Alistair M.",
+                car: "Range Rover Autobiography",
+                service: "Full Exterior + Interior Reset",
+                review: "After 40k miles of motorway abuse, the paint was heavily swirled. They reversed the damage completely. Leather restoration is factory-spec. Worth every penny.",
+                initials: "AM"
+              },
+              {
+                name: "Sarah J.",
+                car: "Audi RS6 Avant",
+                service: "Paint Correction + 9H Ceramic",
+                review: "The hydrophobic coating is incredible — dirt just sheets off in rain. After three months, the car still looks like it was polished yesterday. Proper craftsmanship.",
+                initials: "SJ"
+              }
+            ].map((testimonial, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="h-full p-5 lg:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col group">
+                  {/* Stars */}
+                  <div className="flex items-center gap-0.5 text-cyan-400 mb-4">
+                    {[...Array(5)].map((_, s) => (
+                      <Star key={s} fill="currentColor" size={14} />
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <p className="text-neutral-300 text-sm leading-relaxed mb-5 flex-1">&ldquo;{testimonial.review}&rdquo;</p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                    <div className="w-9 h-9 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs font-bold">
+                      {testimonial.initials}
+                    </div>
+                    <div>
+                      <p className="text-white text-xs font-bold">{testimonial.name}</p>
+                      <p className="text-neutral-500 text-[10px] uppercase tracking-wider">{testimonial.car}</p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Direct-Response CTA Footer */}
@@ -694,103 +783,3 @@ export default function DetailingLabLandingPage() {
   );
 }
 
-// ==========================================
-// TESTIMONIAL CAROUSEL
-// ==========================================
-const TESTIMONIALS = [
-  {
-    name: "James T.",
-    car: "Porsche 911 GT3 RS",
-    service: "Stage 2 Paint Correction & Ceramic Substrate",
-    review: "They didn't just detail it; they completely rewrote the paintwork. The SiO2 coating looks like liquid glass even in heavy rain. The depth of the gloss is measurable. Absolute masters of their craft.",
-    initials: "JT"
-  },
-  {
-    name: "Dr. Alistair M.",
-    car: "Range Rover Autobiography",
-    service: "Full Exterior Armor & Interior Reset",
-    review: "After 40k miles of motorway abuse, the paint was heavily swirled. Detailing Lab theoretically reversed time. The UV damage is gone, and the leather restoration is factory-spec. The waitlist is absolutely justified.",
-    initials: "AM"
-  },
-  {
-    name: "Sarah Jenkins",
-    car: "McLaren 720S",
-    service: "Track-Prep Protection Protocol",
-    review: "Precision engineering applied to detailing. The hydrophobic properties of their clear-coat fusion mean track rubber and carbon dust just jet-wash off. Unrivaled technical knowledge.",
-    initials: "SJ"
-  }
-];
-
-function TestimonialCarousel({ yTestimonial }: { yTestimonial: any }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const active = TESTIMONIALS[index];
-
-  return (
-    <motion.div 
-      style={{ y: yTestimonial }}
-      className="max-w-4xl mx-auto px-6 text-center relative z-10 p-8 md:p-12 rounded-[2rem] bg-white/[0.02] backdrop-blur-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col justify-between min-h-[400px] lg:min-h-[450px] group transition-colors duration-500 overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-      
-      <div className="flex items-center justify-center gap-1 text-cyan-400 mb-8 z-10 pointer-events-none">
-        {[...Array(5)].map((_, i) => (
-          <motion.div key={i} whileHover={{ y: -5, scale: 1.2 }}>
-            <Star fill="currentColor" size={24} />
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="relative flex-1 flex items-center justify-center mb-8 z-10 pointer-events-none">
-        <AnimatePresence mode="wait">
-          <motion.h2 
-            key={index}
-            initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(5px)" }}
-            transition={{ duration: 0.5 }}
-            className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight leading-loose text-white"
-          >
-            "{active.review}"
-          </motion.h2>
-        </AnimatePresence>
-      </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div 
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-col items-center gap-2 z-10 pointer-events-none"
-        >
-          <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-cyan-900/40 border border-cyan-500 flex items-center justify-center text-cyan-400 font-bold mb-2 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-            {active.initials}
-          </div>
-          <p className="text-white font-bold uppercase tracking-widest text-[10px] md:text-sm">{active.name}</p>
-          <p className="text-neutral-400 text-[10px] md:text-xs font-bold tracking-wider uppercase mb-2">{active.car}</p>
-          <p className="text-cyan-500 text-[8px] md:text-[10px] font-black tracking-[0.2em] uppercase border border-cyan-500/30 px-3 py-1 rounded-full bg-cyan-500/5">{active.service}</p>
-        </motion.div>
-      </AnimatePresence>
-      
-      {/* Paginator dots */}
-      <div className="flex gap-2 justify-center mt-8 z-10">
-        {TESTIMONIALS.map((_, i) => (
-          <button 
-            key={i} 
-            onClick={() => setIndex(i)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${i === index ? 'w-6 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'bg-white/20 hover:bg-white/40'}`}
-          />
-        ))}
-      </div>
-    </motion.div>
-  );
-}

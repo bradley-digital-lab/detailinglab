@@ -5,14 +5,14 @@ import { CarFront, Car, Truck } from 'lucide-react';
 
 const SIZES = [
   { id: 'coupe', label: 'Coupe / Hatch', icon: CarFront, multiplier: 1.0 },
-  { id: 'saloon', label: 'Saloon / Estate', icon: Car, multiplier: 1.2 },
-  { id: 'suv', label: 'SUV / 4x4', icon: Truck, multiplier: 1.4 },
+  { id: 'saloon', label: 'Saloon / Estate', icon: Car, multiplier: 1.15 },
+  { id: 'suv', label: 'SUV / 4x4', icon: Truck, multiplier: 1.35 },
 ];
 
 const TIERS = [
-  { id: 'enhance', label: 'Gloss Enhancement', price: 450, desc: 'Single stage machine polish to remove light swirling and enhance gloss. Includes 1-year ceramic.' },
-  { id: 'correct', label: 'Surgical Correction', price: 800, desc: 'Two stage heavy correction to remove 85%+ of defects. Locked in with 5-year 9H ceramic armor.' },
-  { id: 'concours', label: 'Concours Level', price: 1500, desc: 'Absolute factory reset. Multi-stage wet sanding and polishing. Wheels-off detailing. Dual-layer 9H.' },
+  { id: 'enhance', label: 'Gloss Enhancement', price: 150, desc: 'Single-stage machine polish to remove light swirling and restore gloss. Includes 6-month sealant protection.' },
+  { id: 'correct', label: 'Paint Correction', price: 300, desc: 'Two-stage compound and polish removing 85%+ of swirls, scratches, and holograms. Finished with 1-year ceramic sealant.' },
+  { id: 'ceramic', label: 'Correction + Ceramic', price: 500, desc: 'Full multi-stage paint correction locked in with professional 9H ceramic coating. 3–5 year protection with hydrophobic finish.' },
 ];
 
 export function PricingEstimator() {
@@ -65,7 +65,7 @@ export function PricingEstimator() {
            {/* Ambient Glow */}
            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.15)_0%,transparent_60%)] pointer-events-none" />
            
-           <span className="text-cyan-500 font-bold tracking-widest uppercase text-xs mb-6 relative z-10">Estimated Investment</span>
+           <span className="text-cyan-500 font-bold tracking-widest uppercase text-xs mb-6 relative z-10">Estimated Price</span>
            
            <div className="relative z-10 h-32 flex items-center justify-center">
              <motion.div 
@@ -79,11 +79,11 @@ export function PricingEstimator() {
            </div>
            
            <p className="text-neutral-500 text-[10px] uppercase tracking-widest mt-8 text-center relative z-10">
-             Final quotes require in-person inspection. <br/>Prices exclude VAT.
+             Starting from. Final quote after inspection. <br/>Prices include VAT.
            </p>
            
            <button className="mt-8 px-10 py-5 bg-cyan-500 text-black font-black uppercase tracking-widest text-sm rounded-xl hover:bg-cyan-400 transition-colors w-full relative z-10 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
-             Secure Your Date
+             Get Your Quote
            </button>
         </div>
         
