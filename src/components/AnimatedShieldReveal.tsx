@@ -101,7 +101,7 @@ export function AnimatedShieldReveal() {
             />
 
             {/* Shield image */}
-            <div className="relative aspect-[0.82] overflow-hidden">
+            <div className="relative aspect-[0.82]">
               <Image
                 src="/shield_emblem.png"
                 alt="Detailing Lab Yorkshire Shield"
@@ -111,14 +111,26 @@ export function AnimatedShieldReveal() {
                 sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 380px"
               />
 
-              {/* Light sweep — clipped to shield container */}
-              <div className="absolute inset-[10%] z-20 pointer-events-none overflow-hidden rounded-[20%]">
+              {/* Light sweep — masked to shield shape only */}
+              <div
+                className="absolute inset-0 z-20 pointer-events-none overflow-hidden"
+                style={{
+                  WebkitMaskImage: 'url(/shield_emblem.png)',
+                  maskImage: 'url(/shield_emblem.png)',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskPosition: 'center',
+                }}
+              >
                 <motion.div
                   animate={{ x: ['-100%', '400%'] }}
                   transition={{ repeat: Infinity, duration: 1.8, ease: [0.4, 0, 0.2, 1], repeatDelay: 7 }}
-                  className="absolute inset-y-0 left-0 w-[15%] skew-x-[-15deg]"
+                  className="absolute inset-y-0 left-0 w-[18%] skew-x-[-15deg]"
                 >
-                  <div className="w-full h-full bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+                  <div className="w-full h-full bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
                 </motion.div>
               </div>
             </div>
@@ -215,18 +227,27 @@ export function AnimatedShieldReveal() {
                         ))}
                       </div>
 
-                      {/* CTA */}
-                      <button
-                        className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:gap-2"
-                        style={{ color: service.color }}
-                      >
-                        See Our Work <ChevronRight size={12} />
-                      </button>
                     </div>
                   </div>
                 </motion.div>
               );
             })}
+
+            {/* See Our Work — single CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="mt-2"
+            >
+              <a
+                href="#evidence"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/20 bg-cyan-500/[0.06] text-cyan-400 text-[11px] font-bold uppercase tracking-wider hover:bg-cyan-500/[0.12] hover:border-cyan-500/40 transition-all duration-300"
+              >
+                See Our Work <ChevronRight size={14} />
+              </a>
+            </motion.div>
 
             {/* Trust strip */}
             <motion.div
@@ -234,7 +255,7 @@ export function AnimatedShieldReveal() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap items-center gap-3 sm:gap-4 text-[9px] sm:text-[10px] text-neutral-600 font-medium uppercase tracking-widest mt-1 pl-1"
+              className="flex flex-wrap items-center gap-3 sm:gap-4 text-[9px] sm:text-[10px] text-neutral-600 font-medium uppercase tracking-widest mt-3 pl-1"
             >
               <div className="flex items-center gap-1.5">
                 <div className="w-1 h-1 rounded-full bg-cyan-500/50" />

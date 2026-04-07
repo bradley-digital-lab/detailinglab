@@ -643,7 +643,7 @@ export default function DetailingLabLandingPage() {
       </section>
 
       {/* CORE FEATURE: VISUAL EVIDENCE GALLERY */}
-      <section className="relative z-10 py-16 lg:py-24 px-6 max-w-7xl mx-auto">
+      <section id="evidence" className="relative z-10 py-16 lg:py-24 px-6 max-w-7xl mx-auto">
          <ScrollReveal>
              <div className="text-center mb-14">
                <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">Real Results</p>
