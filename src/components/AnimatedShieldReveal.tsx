@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Crosshair, Droplets, CheckCircle2, ArrowRight, Zap, Layers } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { ShieldCheck, Crosshair, Droplets, CheckCircle2, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 const SERVICES = [
   {
@@ -9,13 +10,11 @@ const SERVICES = [
     title: "Ceramic Armor",
     subtitle: "9H Hardness · 5+ Year Shield",
     icon: ShieldCheck,
-    accent: "from-cyan-400 to-blue-500",
-    accentBg: "rgba(6,182,212,0.12)",
-    accentBorder: "rgba(6,182,212,0.3)",
-    desc: "Industrial-grade SiO2 ceramic substrate chemically bonds to your clear coat, creating an impenetrable hydrophobic fortress. UV resistance, chemical immunity, and a mirror-like depth of gloss that self-cleans in rain.",
+    accent: "cyan",
+    desc: "Industrial-grade SiO2 ceramic substrate chemically bonds to your clear coat, creating an impenetrable hydrophobic fortress. UV resistance, chemical immunity, and mirror-like gloss depth.",
     bullets: [
       "Covalent molecular bonding to clear coat",
-      "Self-cleaning hydrophobic surface technology",
+      "Self-cleaning hydrophobic surface",
       "Paint thickness verified with micron gauge"
     ],
     stat: "9H",
@@ -26,10 +25,8 @@ const SERVICES = [
     title: "Paint Correction",
     subtitle: "Stage 1–3 · Machine Compound",
     icon: Crosshair,
-    accent: "from-violet-400 to-purple-500",
-    accentBg: "rgba(139,92,246,0.12)",
-    accentBorder: "rgba(139,92,246,0.3)",
-    desc: "We don't hide scratches — we permanently remove them. Multi-stage machine compounding obliterates swirl marks, buffer trails, holograms, and oxidation down to micron-level precision.",
+    accent: "violet",
+    desc: "We don't hide scratches — we permanently remove them. Multi-stage machine compounding obliterates swirl marks, buffer trails, holograms, and oxidation to micron-level precision.",
     bullets: [
       "Paint depth analysis before every cut",
       "Permanent swirl & hologram elimination",
@@ -43,12 +40,10 @@ const SERVICES = [
     title: "Interior Reset",
     subtitle: "Deep Clean · Leather · Steam",
     icon: Droplets,
-    accent: "from-emerald-400 to-teal-500",
-    accentBg: "rgba(52,211,153,0.12)",
-    accentBorder: "rgba(52,211,153,0.3)",
-    desc: "Full interior extraction with thermal steam sterilization. Leather conditioning, Alcantara restoration, and plastics revived to delivery-day spec. Your cabin, rebuilt from the inside out.",
+    accent: "emerald",
+    desc: "Full interior extraction with thermal steam sterilisation. Leather conditioning, Alcantara restoration, and plastics revived to delivery-day spec. Your cabin, rebuilt from the inside out.",
     bullets: [
-      "Hot steam extraction & sanitization",
+      "Hot steam extraction & sanitisation",
       "pH-neutral leather hydration protocol",
       "Alcantara & suede micro-fibre restoration"
     ],
@@ -57,188 +52,70 @@ const SERVICES = [
   }
 ];
 
-function ServiceCard({ service, isActive, onClick }: { service: typeof SERVICES[0], isActive: boolean, onClick: () => void }) {
-  const Icon = service.icon;
-
-  return (
-    <motion.button
-      onClick={onClick}
-      layout
-      className={`relative group text-left w-full rounded-2xl border transition-all duration-500 overflow-hidden ${
-        isActive 
-          ? 'bg-white/[0.04] border-white/15 shadow-2xl' 
-          : 'bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]'
-      }`}
-      whileHover={{ y: -2 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-    >
-      {/* Active indicator glow */}
-      {isActive && (
-        <motion.div
-          layoutId="activeGlow"
-          className="absolute inset-0 rounded-2xl pointer-events-none"
-          style={{ 
-            background: `radial-gradient(ellipse at 30% 50%, ${service.accentBg}, transparent 70%)`,
-            border: `1px solid ${service.accentBorder}`
-          }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        />
-      )}
-
-      <div className="relative z-10 p-5 lg:p-6">
-        {/* Header row */}
-        <div className="flex items-start justify-between mb-3">
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br ${service.accent} shadow-lg`}>
-            <Icon size={18} className="text-white" strokeWidth={2.5} />
-          </div>
-          <div className={`text-right transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-            <div className={`text-2xl font-black bg-gradient-to-r ${service.accent} bg-clip-text text-transparent`}>{service.stat}</div>
-            <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">{service.statLabel}</div>
-          </div>
-        </div>
-
-        {/* Title */}
-        <h3 className="text-lg font-black uppercase tracking-tight text-white mb-0.5">{service.title}</h3>
-        <p className="text-[11px] text-neutral-500 font-medium tracking-wide mb-3">{service.subtitle}</p>
-
-        {/* Expanded content */}
-        <AnimatePresence>
-          {isActive && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="overflow-hidden"
-            >
-              <p className="text-neutral-400 text-sm leading-relaxed mb-4">{service.desc}</p>
-              <div className="space-y-2.5">
-                {service.bullets.map((b, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.15 + i * 0.08 }}
-                    className="flex items-center gap-2.5"
-                  >
-                    <CheckCircle2 size={14} className={`shrink-0 bg-gradient-to-r ${service.accent} bg-clip-text`} style={{ color: service.accentBorder }} />
-                    <span className="text-xs text-neutral-300 font-medium">{b}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className={`mt-5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-gradient-to-r ${service.accent} bg-clip-text text-transparent`}
-              >
-                Get a Quote <ArrowRight size={14} style={{ color: service.accentBorder }} />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.button>
-  );
-}
-
-function CentralShieldEmblem() {
-  return (
-    <div className="relative w-full aspect-square max-w-[320px] lg:max-w-[400px] mx-auto flex items-center justify-center">
-      {/* Outermost pulse ring */}
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0, 0.15] }}
-        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        className="absolute inset-0 rounded-full border border-cyan-500/20"
-      />
-      
-      {/* Outer orbit ring */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-        className="absolute inset-[5%] rounded-full border border-white/[0.06]"
-      >
-        {/* Orbiting dot */}
-        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
-      </motion.div>
-      
-      {/* Mid ring with dash pattern */}
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
-        className="absolute inset-[15%] rounded-full border border-dashed border-cyan-500/10"
-      />
-
-      {/* Inner ring */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-        className="absolute inset-[25%] rounded-full border border-white/[0.04]"
-      >
-        <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_10px_rgba(139,92,246,0.8)]" />
-      </motion.div>
-
-      {/* Central glowing orb */}
-      <div className="relative z-10 w-[45%] aspect-square">
-        {/* Deep background glow */}
-        <div className="absolute inset-[-50%] rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
-        
-        {/* Metallic sphere */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#1a2030] via-[#0a0f18] to-[#0d1520] border border-cyan-500/20 shadow-[0_0_60px_rgba(6,182,212,0.2),inset_0_2px_20px_rgba(255,255,255,0.08)]" />
-        
-        {/* Glossy highlight */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-transparent to-white/[0.06]" />
-        
-        {/* Rotating conic sweep */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
-          className="absolute inset-[15%] rounded-full opacity-40"
-          style={{ background: 'conic-gradient(from 0deg, transparent, rgba(6,182,212,0.6), transparent)', mixBlendMode: 'screen' }}
-        />
-        
-        {/* Central icon */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <ShieldCheck size={36} className="text-cyan-400 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]" strokeWidth={1.5} />
-        </div>
-      </div>
-
-      {/* Floating label badges */}
-      <motion.div
-        animate={{ y: [0, -6, 0] }}
-        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-        className="absolute top-[8%] right-[5%] px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-cyan-500/20 text-[10px] font-bold text-cyan-400 uppercase tracking-wider shadow-lg"
-      >
-        <Zap size={10} className="inline mr-1" />9H Hardness
-      </motion.div>
-      
-      <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-[8%] left-[5%] px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-emerald-500/20 text-[10px] font-bold text-emerald-400 uppercase tracking-wider shadow-lg"
-      >
-        <Layers size={10} className="inline mr-1" />5yr Armor
-      </motion.div>
-    </div>
-  );
-}
+const ACCENT_MAP: Record<string, { text: string, border: string, bg: string, glow: string }> = {
+  cyan:    { text: 'text-cyan-400',    border: 'border-cyan-500/30',    bg: 'bg-cyan-500/10',    glow: 'shadow-[0_0_20px_rgba(6,182,212,0.15)]' },
+  violet:  { text: 'text-violet-400',  border: 'border-violet-500/30',  bg: 'bg-violet-500/10',  glow: 'shadow-[0_0_20px_rgba(139,92,246,0.15)]' },
+  emerald: { text: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', glow: 'shadow-[0_0_20px_rgba(52,211,153,0.15)]' },
+};
 
 export function AnimatedShieldReveal() {
-  const [activeTab, setActiveTab] = useState(SERVICES[0].id);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Main scroll tracking for the entire section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Smooth spring for the shield entrance
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 30 });
+
+  // Shield transforms — enters with scale + slight rotation, settles into position
+  const shieldScale = useTransform(smoothProgress, [0, 0.2, 0.35], [0.3, 1.05, 1]);
+  const shieldOpacity = useTransform(smoothProgress, [0, 0.15, 0.25], [0, 0.6, 1]);
+  const shieldRotateY = useTransform(smoothProgress, [0, 0.2, 0.35], [-25, 5, 0]);
+  const shieldRotateZ = useTransform(smoothProgress, [0, 0.2, 0.35], [-8, 2, 0]);
+  const shieldY = useTransform(smoothProgress, [0, 0.25, 0.4], [80, -10, 0]);
+  
+  // Glow pulse behind shield
+  const glowScale = useTransform(smoothProgress, [0.15, 0.35], [0.5, 1.2]);
+  const glowOpacity = useTransform(smoothProgress, [0.1, 0.25, 0.5], [0, 0.6, 0.3]);
+
+  // Service cards stagger — each card reveals at a different scroll point
+  const card1X = useTransform(smoothProgress, [0.2, 0.38], [120, 0]);
+  const card1Opacity = useTransform(smoothProgress, [0.2, 0.35], [0, 1]);
+  
+  const card2X = useTransform(smoothProgress, [0.28, 0.46], [120, 0]);
+  const card2Opacity = useTransform(smoothProgress, [0.28, 0.43], [0, 1]);
+  
+  const card3X = useTransform(smoothProgress, [0.36, 0.54], [120, 0]);
+  const card3Opacity = useTransform(smoothProgress, [0.36, 0.51], [0, 1]);
+
+  const cardTransforms = [
+    { x: card1X, opacity: card1Opacity },
+    { x: card2X, opacity: card2Opacity },
+    { x: card3X, opacity: card3Opacity },
+  ];
+
+  // Section heading
+  const headingY = useTransform(smoothProgress, [0, 0.2], [40, 0]);
+  const headingOpacity = useTransform(smoothProgress, [0.02, 0.15], [0, 1]);
 
   return (
-    <section id="services" className="relative w-full bg-[#050505] border-t border-white/5 overflow-hidden">
-      {/* Subtle background radial */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(6,182,212,0.04)_0%,transparent_60%)] pointer-events-none" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        {/* Section heading */}
+    <section
+      ref={sectionRef}
+      id="services"
+      className="relative w-full bg-[#050505] border-t border-white/5 overflow-hidden"
+    >
+      {/* Subtle ambient background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(6,182,212,0.03)_0%,transparent_60%)] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        
+        {/* Section heading — scroll reveal */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-14 lg:mb-20"
+          style={{ y: headingY, opacity: headingOpacity }}
+          className="text-center mb-16 lg:mb-24"
         >
           <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">What We Engineer</p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter">
@@ -246,36 +123,114 @@ export function AnimatedShieldReveal() {
           </h2>
         </motion.div>
 
-        {/* Main layout: Services left, Shield center-right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Service cards column */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="flex flex-col gap-3"
-          >
-            {SERVICES.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                isActive={activeTab === service.id}
-                onClick={() => setActiveTab(service.id)}
-              />
-            ))}
-          </motion.div>
+        {/* Main layout: Shield on left, service cards emerge from right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+          
+          {/* Shield Column — occupies 5 of 12 columns */}
+          <div className="lg:col-span-5 flex items-center justify-center relative">
+            {/* Background glow behind shield */}
+            <motion.div
+              style={{ scale: glowScale, opacity: glowOpacity }}
+              className="absolute w-[90%] aspect-square rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none"
+            />
+            
+            {/* Secondary warm glow */}
+            <motion.div
+              style={{ opacity: glowOpacity }}
+              className="absolute w-[60%] aspect-square rounded-full bg-white/[0.03] blur-[60px] pointer-events-none"
+            />
 
-          {/* Central Shield visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="hidden lg:flex items-center justify-center"
-          >
-            <CentralShieldEmblem />
-          </motion.div>
+            {/* The shield */}
+            <motion.div
+              style={{
+                scale: shieldScale,
+                opacity: shieldOpacity,
+                rotateY: shieldRotateY,
+                rotateZ: shieldRotateZ,
+                y: shieldY,
+              }}
+              className="relative w-[280px] sm:w-[320px] lg:w-[380px] xl:w-[420px] aspect-[0.82] z-10"
+            >
+              {/* Metallic rim glow */}
+              <div className="absolute inset-[-4%] rounded-[20%] bg-gradient-to-b from-white/[0.08] via-transparent to-white/[0.04] blur-sm pointer-events-none" />
+              
+              <Image
+                src="/shield_emblem.png"
+                alt="Detailing Lab Yorkshire Shield Emblem"
+                fill
+                className="object-contain drop-shadow-[0_0_40px_rgba(200,200,220,0.15)] z-10"
+                priority
+                sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 420px"
+              />
+
+              {/* Reflection sweep — cinematic light pass across shield surface */}
+              <motion.div
+                animate={{ x: ['-150%', '250%'] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", repeatDelay: 3 }}
+                className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[20%]"
+              >
+                <div className="w-[30%] h-full bg-gradient-to-r from-transparent via-white/[0.07] to-transparent skew-x-[-20deg]" />
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Service Cards Column — occupies 7 of 12, cards slide in from right */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            {SERVICES.map((service, i) => {
+              const accent = ACCENT_MAP[service.accent];
+              const Icon = service.icon;
+
+              return (
+                <motion.div
+                  key={service.id}
+                  style={{ 
+                    x: cardTransforms[i].x, 
+                    opacity: cardTransforms[i].opacity 
+                  }}
+                  className={`group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-colors duration-500 overflow-hidden`}
+                >
+                  {/* Hover glow */}
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-r from-transparent ${accent.bg} to-transparent`} />
+
+                  <div className="relative z-10 p-5 lg:p-6 flex flex-col sm:flex-row gap-4 sm:gap-5">
+                    {/* Icon + stat block */}
+                    <div className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2 shrink-0">
+                      <div className={`w-11 h-11 rounded-xl ${accent.bg} border ${accent.border} flex items-center justify-center ${accent.glow} group-hover:scale-110 transition-transform duration-300`}>
+                        <Icon size={20} className={accent.text} strokeWidth={2} />
+                      </div>
+                      <div className="sm:mt-1">
+                        <div className={`text-xl font-black ${accent.text} leading-none`}>{service.stat}</div>
+                        <div className="text-[9px] text-neutral-600 font-bold uppercase tracking-wider">{service.statLabel}</div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-3 mb-1">
+                        <h3 className="text-base sm:text-lg font-black uppercase tracking-tight text-white">{service.title}</h3>
+                        <span className="text-[10px] text-neutral-600 font-medium tracking-wide hidden sm:inline">{service.subtitle}</span>
+                      </div>
+                      
+                      <p className="text-neutral-400 text-sm leading-relaxed mb-3">{service.desc}</p>
+                      
+                      <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-3">
+                        {service.bullets.map((b, j) => (
+                          <div key={j} className="flex items-center gap-1.5 group/bullet">
+                            <CheckCircle2 size={12} className={`${accent.text} opacity-60 shrink-0`} />
+                            <span className="text-[11px] text-neutral-500 font-medium group-hover/bullet:text-neutral-300 transition-colors">{b}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider ${accent.text} opacity-70 group-hover:opacity-100 transition-opacity cursor-pointer`}>
+                        Get a Quote <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
