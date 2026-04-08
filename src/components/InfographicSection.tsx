@@ -128,16 +128,29 @@ export function InfographicSection() {
                          transformStyle: "preserve-3d"
                     }}
                     animate={{ 
-                       // Ensure Ceramic (id:4) is on top when compressed by using layer.id for z-spacing
-                       translateZ: isExploded ? layer.z : (layer.id * 5)
+                       translateZ: isExploded ? layer.z : (layer.id * 5),
+                       // Depress physically downward on impact
+                       scale: (isDebrisFiring && layer.id === 4) ? [1, 0.96, 1] : 1
                     }}
-                    transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
+                    transition={{ 
+                       duration: (isDebrisFiring && layer.id === 4) ? 0.3 : 0.8, 
+                       delay: (isDebrisFiring && layer.id === 4) ? 0.32 : 0, // Triggers at exact impact millisecond
+                       type: 'spring', bounce: 0.3 
+                    }}
                   >
                      {/* Debris Impact Animation against Ceramic Top Layer (id: 4) */}
                      {layer.id === 4 && (
                          <AnimatePresence>
                              {isDebrisFiring && (
                                  <>
+                                     {/* Intense Physical Surface Flash */}
+                                     <motion.div
+                                         className="absolute inset-0 rounded-2xl bg-white mix-blend-overlay pointer-events-none"
+                                         initial={{ opacity: 0 }}
+                                         animate={{ opacity: [0, 0.9, 0] }}
+                                         transition={{ duration: 0.4, delay: 0.3 }}
+                                     />
+                                     
                                      {/* Particles hitting surface and being repelled */}
                                      {debrisParticles.map((particle, i) => (
                                          <motion.div
@@ -168,17 +181,17 @@ export function InfographicSection() {
                                          />
                                      ))}
                                      
-                                     {/* Impact Shield Ripple Effect */}
+                                     {/* Impact Shield Kinetic Ripple Effect */}
                                      <motion.div
-                                         className="absolute inset-0 border-2 border-cyan-400/0 rounded-2xl bg-cyan-400/0"
+                                         className="absolute inset-0 border-[3px] border-cyan-400/0 rounded-2xl bg-cyan-400/0 overflow-hidden"
                                          initial={{ opacity: 0, scale: 1 }}
                                          animate={{ 
-                                             opacity: [0, 0.8, 0], 
-                                             scale: [1, 1.02, 1.05],
-                                             backgroundColor: ["rgba(6,182,212,0)", "rgba(6,182,212,0.15)", "rgba(6,182,212,0)"],
-                                             borderColor: ["rgba(6,182,212,0)", "rgba(6,182,212,0.8)", "rgba(6,182,212,0)"]
+                                             opacity: [0, 1, 0], 
+                                             scale: [0.95, 1.05, 1.1],
+                                             backgroundColor: ["rgba(6,182,212,0)", "rgba(6,182,212,0.3)", "rgba(6,182,212,0)"],
+                                             borderColor: ["rgba(6,182,212,0)", "rgba(6,182,212,1)", "rgba(6,182,212,0)"]
                                          }}
-                                         transition={{ duration: 0.5, delay: 0.2 }}
+                                         transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
                                      />
                                  </>
                              )}
