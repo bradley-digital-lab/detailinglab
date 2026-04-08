@@ -64,6 +64,30 @@ const LAYERS = [
 export function InfographicSection() {
   const [activeLayer, setActiveLayer] = useState(LAYERS[0]); // Default to Ceramic
   const [isExploded, setIsExploded] = useState(false); // Default to compressed
+  const [isDebrisFiring, setIsDebrisFiring] = useState(false);
+
+  const handleToggle = () => {
+      if (isExploded) {
+          setIsExploded(false);
+      } else {
+          // Fire debris before exploding
+          setIsDebrisFiring(true);
+          setTimeout(() => {
+              setIsDebrisFiring(false);
+              setIsExploded(true);
+          }, 800);
+      }
+  };
+
+  // Generate deterministic but scattered positions for debris to avoid hydration mismatch
+  const debrisParticles = [
+      { left: '20%', top: '30%', size: 4, delay: 0.1 },
+      { left: '70%', top: '20%', size: 3, delay: 0.2 },
+      { left: '40%', top: '60%', size: 5, delay: 0.05 },
+      { left: '80%', top: '70%', size: 2, delay: 0.15 },
+      { left: '30%', top: '80%', size: 3, delay: 0.25 },
+      { left: '60%', top: '40%', size: 4, delay: 0 }
+  ];
 
   return (
     <section className="relative py-32 overflow-hidden bg-black flex flex-col items-center">
@@ -109,6 +133,41 @@ export function InfographicSection() {
                     }}
                     transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
                   >
+                     {/* Debris Impact Animation against Ceramic Top Layer (id: 4) */}
+                     {layer.id === 4 && (
+                         <AnimatePresence>
+                             {isDebrisFiring && (
+                                 <>
+                                     {/* Particles hitting surface */}
+                                     {debrisParticles.map((particle, i) => (
+                                         <motion.div
+                                             key={`debris-${i}`}
+                                             className="absolute rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,1)]"
+                                             style={{ 
+                                                 width: particle.size, 
+                                                 height: particle.size,
+                                                 left: particle.left,
+                                                 top: particle.top,
+                                             }}
+                                             initial={{ translateZ: 100, opacity: 0, scale: 0 }}
+                                             animate={{ translateZ: 0, opacity: [0, 1, 0], scale: [0, 1, 3] }}
+                                             exit={{ opacity: 0 }}
+                                             transition={{ duration: 0.5, delay: particle.delay, ease: "easeIn" }}
+                                         />
+                                     ))}
+                                     
+                                     {/* Impact Shockwave */}
+                                     <motion.div
+                                         className="absolute inset-0 bg-cyan-400/40 rounded-2xl"
+                                         initial={{ opacity: 0, scale: 1 }}
+                                         animate={{ opacity: [0, 0.5, 0], scale: [1, 1.05, 1] }}
+                                         transition={{ duration: 0.4, delay: 0.3 }}
+                                     />
+                                 </>
+                             )}
+                         </AnimatePresence>
+                     )}
+
                      {/* Depth lines dropping down from top layers during exploded view */}
                      {isExploded && layer.id > 0 && (
                         <motion.div 
@@ -144,10 +203,11 @@ export function InfographicSection() {
            {/* Toggle Exploed View */}
            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-4">
               <button 
-                  onClick={() => setIsExploded(!isExploded)}
-                  className="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-50 pointer-events-auto"
+                  onClick={handleToggle}
+                  disabled={isDebrisFiring}
+                  className={`px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-50 pointer-events-auto ${isDebrisFiring ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/5'}`}
               >
-                  {isExploded ? 'Compress Stack' : 'Explode View'} 
+                  {isExploded ? 'Compress Stack' : isDebrisFiring ? 'Analyzing...' : 'Explode View'} 
                   <ArrowDown size={14} className={`transform transition-transform ${isExploded ? 'rotate-180' : ''}`} />
               </button>
            </div>
