@@ -63,7 +63,7 @@ const LAYERS = [
 
 export function InfographicSection() {
   const [activeLayer, setActiveLayer] = useState(LAYERS[0]); // Default to Ceramic
-  const [isExploded, setIsExploded] = useState(true);
+  const [isExploded, setIsExploded] = useState(false); // Default to compressed
 
   return (
     <section className="relative py-32 overflow-hidden bg-black flex flex-col items-center">
@@ -88,17 +88,24 @@ export function InfographicSection() {
                 return (
                   <motion.div
                     key={layer.id}
-                    onHoverStart={() => setActiveLayer(layer)}
-                    onClick={() => setActiveLayer(layer)}
-                    className={`absolute inset-0 rounded-2xl cursor-pointer transition-colors duration-500 backdrop-blur-md border`}
+                    onHoverStart={() => {
+                        if (!isExploded) return;
+                        setActiveLayer(layer);
+                    }}
+                    onClick={() => {
+                        if (!isExploded) return;
+                        setActiveLayer(layer);
+                    }}
+                    className={`absolute inset-0 rounded-2xl transition-colors duration-500 backdrop-blur-md border ${isExploded ? 'cursor-pointer' : 'pointer-events-none'}`}
                     style={{ 
                          backgroundColor: layer.color,
-                         borderColor: isActive ? "rgba(255,255,255,0.8)" : layer.borderColor,
-                         boxShadow: layer.glow !== 'none' ? layer.glow : 'none',
+                         borderColor: (isActive && isExploded) ? "rgba(255,255,255,0.8)" : layer.borderColor,
+                         boxShadow: (layer.glow !== 'none' || !isExploded) ? layer.glow : 'none',
                          transformStyle: "preserve-3d"
                     }}
                     animate={{ 
-                       translateZ: isExploded ? layer.z : (idx * 5)
+                       // Ensure Ceramic (id:4) is on top when compressed by using layer.id for z-spacing
+                       translateZ: isExploded ? layer.z : (layer.id * 5)
                     }}
                     transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
                   >
@@ -112,7 +119,7 @@ export function InfographicSection() {
 
                      {/* Label visible on hover or active */}
                      <AnimatePresence>
-                         {(isActive || isExploded) && (
+                         {(isActive || isExploded) && isExploded && (
                              <motion.div 
                                initial={{ opacity: 0, x: -20 }}
                                animate={{ opacity: isActive ? 1 : 0.4, x: 0 }}
@@ -138,7 +145,7 @@ export function InfographicSection() {
            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-4">
               <button 
                   onClick={() => setIsExploded(!isExploded)}
-                  className="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+                  className="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-50 pointer-events-auto"
               >
                   {isExploded ? 'Compress Stack' : 'Explode View'} 
                   <ArrowDown size={14} className={`transform transition-transform ${isExploded ? 'rotate-180' : ''}`} />
