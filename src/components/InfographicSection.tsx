@@ -207,15 +207,39 @@ export function InfographicSection() {
                            style={{ height: `${layer.z - LAYERS[idx+1].z}px`, transform: 'rotateX(-90deg)' }}
                         />
                      )}
+                  </motion.div>
+                )
+             })}
+           </motion.div>
 
-                     {/* Label visible on hover or active */}
+           {/* The Text Label Matrix (Isolated rendering context to guarantee they render over all 3D geometry without intersection) */}
+           <motion.div 
+             className="absolute w-[300px] h-[300px] pointer-events-none z-[100]"
+             initial={{ rotateX: 60, rotateZ: -45, scale: 0.8 }}
+             animate={{ rotateX: 60, rotateZ: isExploded ? -45 : 0, scale: isExploded ? 0.9 : 1.1 }}
+             transition={{ duration: 1.5, type: 'spring', bounce: 0.2 }}
+             style={{ transformStyle: "preserve-3d" }}
+           >
+             {LAYERS.map((layer) => {
+                const isActive = activeLayer.id === layer.id;
+                
+                return (
+                  <motion.div
+                    key={`label-container-${layer.id}`}
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ transformStyle: "preserve-3d" }}
+                    animate={{ 
+                       translateZ: isExploded ? layer.z : (layer.id * 5)
+                    }}
+                    transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
+                  >
                      <AnimatePresence>
                          {(isActive || isExploded) && isExploded && (
                              <motion.div 
                                initial={{ opacity: 0, x: -20 }}
                                animate={{ opacity: isActive ? 1 : 0.4, x: 0 }}
                                className="absolute -left-32 sm:-left-40 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4 pointer-events-none"
-                               style={{ transform: 'translateZ(0px) rotateX(-60deg) rotateZ(45deg)' }}
+                               style={{ transform: 'rotateX(-60deg) rotateZ(45deg)' }}
                              >
                                 <div className="text-right">
                                     <h4 className={`font-black uppercase tracking-widest text-xs sm:text-sm whitespace-nowrap ${isActive ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'text-white'}`}>
