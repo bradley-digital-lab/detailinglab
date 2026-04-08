@@ -81,12 +81,12 @@ export function InfographicSection() {
 
   // Generate deterministic but scattered positions for debris to avoid hydration mismatch
   const debrisParticles = [
-      { left: '20%', top: '30%', size: 4, delay: 0.1 },
-      { left: '70%', top: '20%', size: 3, delay: 0.2 },
-      { left: '40%', top: '60%', size: 5, delay: 0.05 },
-      { left: '80%', top: '70%', size: 2, delay: 0.15 },
-      { left: '30%', top: '80%', size: 3, delay: 0.25 },
-      { left: '60%', top: '40%', size: 4, delay: 0 }
+      { left: '20%', top: '30%', size: 4, delay: 0.1, repelX: -40, repelY: -30, color: 'bg-neutral-400' },
+      { left: '70%', top: '20%', size: 3, delay: 0.2, repelX: 50, repelY: -20, color: 'bg-neutral-500' },
+      { left: '40%', top: '60%', size: 5, delay: 0.05, repelX: -20, repelY: 60, color: 'bg-cyan-100' },
+      { left: '80%', top: '70%', size: 2, delay: 0.15, repelX: 60, repelY: 40, color: 'bg-neutral-400' },
+      { left: '30%', top: '80%', size: 6, delay: 0.25, repelX: -50, repelY: 50, color: 'bg-neutral-300' },
+      { left: '60%', top: '40%', size: 4, delay: 0, repelX: 30, repelY: 40, color: 'bg-cyan-200' }
   ];
 
   return (
@@ -138,30 +138,47 @@ export function InfographicSection() {
                          <AnimatePresence>
                              {isDebrisFiring && (
                                  <>
-                                     {/* Particles hitting surface */}
+                                     {/* Particles hitting surface and being repelled */}
                                      {debrisParticles.map((particle, i) => (
                                          <motion.div
                                              key={`debris-${i}`}
-                                             className="absolute rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,1)]"
+                                             className={`absolute rounded-sm ${particle.color} shadow-lg shadow-black/50`}
                                              style={{ 
                                                  width: particle.size, 
                                                  height: particle.size,
                                                  left: particle.left,
                                                  top: particle.top,
                                              }}
-                                             initial={{ translateZ: 100, opacity: 0, scale: 0 }}
-                                             animate={{ translateZ: 0, opacity: [0, 1, 0], scale: [0, 1, 3] }}
+                                             initial={{ translateZ: 180, opacity: 0, scale: 0, x: 0, y: 0, rotate: 0 }}
+                                             animate={{ 
+                                                 translateZ: [180, 0, 100], 
+                                                 opacity: [0, 1, 0], 
+                                                 scale: [0.5, 1.2, 0.4],
+                                                 x: [0, 0, particle.repelX],
+                                                 y: [0, 0, particle.repelY],
+                                                 rotate: [0, 45, 360]
+                                             }}
                                              exit={{ opacity: 0 }}
-                                             transition={{ duration: 0.5, delay: particle.delay, ease: "easeIn" }}
+                                             transition={{ 
+                                                 duration: 0.6, 
+                                                 delay: particle.delay, 
+                                                 times: [0, 0.4, 1], // Impact happens at 40%
+                                                 ease: ["easeIn", "easeOut"] 
+                                             }}
                                          />
                                      ))}
                                      
-                                     {/* Impact Shockwave */}
+                                     {/* Impact Shield Ripple Effect */}
                                      <motion.div
-                                         className="absolute inset-0 bg-cyan-400/40 rounded-2xl"
+                                         className="absolute inset-0 border-2 border-cyan-400/0 rounded-2xl bg-cyan-400/0"
                                          initial={{ opacity: 0, scale: 1 }}
-                                         animate={{ opacity: [0, 0.5, 0], scale: [1, 1.05, 1] }}
-                                         transition={{ duration: 0.4, delay: 0.3 }}
+                                         animate={{ 
+                                             opacity: [0, 0.8, 0], 
+                                             scale: [1, 1.02, 1.05],
+                                             backgroundColor: ["rgba(6,182,212,0)", "rgba(6,182,212,0.15)", "rgba(6,182,212,0)"],
+                                             borderColor: ["rgba(6,182,212,0)", "rgba(6,182,212,0.8)", "rgba(6,182,212,0)"]
+                                         }}
+                                         transition={{ duration: 0.5, delay: 0.2 }}
                                      />
                                  </>
                              )}
