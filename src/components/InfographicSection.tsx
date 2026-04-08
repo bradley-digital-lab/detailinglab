@@ -144,25 +144,25 @@ export function InfographicSection() {
                                              key={`debris-${i}`}
                                              className={`absolute rounded-sm ${particle.color} shadow-lg shadow-black/50`}
                                              style={{ 
-                                                 width: particle.size, 
-                                                 height: particle.size,
+                                                 width: particle.size * 2, // Doubled the size for high visibility
+                                                 height: particle.size * 2,
                                                  left: particle.left,
                                                  top: particle.top,
                                              }}
-                                             initial={{ translateZ: 180, opacity: 0, scale: 0, x: 0, y: 0, rotate: 0 }}
+                                             initial={{ translateZ: 300, opacity: 1, scale: 0.8, x: 0, y: 0, rotate: 0 }}
                                              animate={{ 
-                                                 translateZ: [180, 0, 100], 
-                                                 opacity: [0, 1, 0], 
-                                                 scale: [0.5, 1.2, 0.4],
-                                                 x: [0, 0, particle.repelX],
-                                                 y: [0, 0, particle.repelY],
+                                                 translateZ: [300, 0, 150], // Higher drop, higher bounce
+                                                 opacity: [1, 1, 0], // Fully visible during drop, fades out ONLY during the bounce
+                                                 scale: [0.8, 1.2, 0.5],
+                                                 x: [0, 0, particle.repelX * 1.5], // Farther horizontal scatter
+                                                 y: [0, 0, particle.repelY * 1.5],
                                                  rotate: [0, 45, 360]
                                              }}
                                              exit={{ opacity: 0 }}
                                              transition={{ 
-                                                 duration: 0.6, 
+                                                 duration: 0.7, 
                                                  delay: particle.delay, 
-                                                 times: [0, 0.4, 1], // Impact happens at 40%
+                                                 times: [0, 0.4, 1], // Impact hits precisely at 40%
                                                  ease: ["easeIn", "easeOut"] 
                                              }}
                                          />
