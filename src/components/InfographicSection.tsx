@@ -81,12 +81,12 @@ export function InfographicSection() {
 
   // Generate deterministic but scattered positions for debris to avoid hydration mismatch
   const debrisParticles = [
-      { left: '20%', top: '30%', size: 4, delay: 0.1, repelX: -40, repelY: -30, color: 'bg-neutral-400' },
-      { left: '70%', top: '20%', size: 3, delay: 0.2, repelX: 50, repelY: -20, color: 'bg-neutral-500' },
-      { left: '40%', top: '60%', size: 5, delay: 0.05, repelX: -20, repelY: 60, color: 'bg-cyan-100' },
-      { left: '80%', top: '70%', size: 2, delay: 0.15, repelX: 60, repelY: 40, color: 'bg-neutral-400' },
-      { left: '30%', top: '80%', size: 6, delay: 0.25, repelX: -50, repelY: 50, color: 'bg-neutral-300' },
-      { left: '60%', top: '40%', size: 4, delay: 0, repelX: 30, repelY: 40, color: 'bg-cyan-200' }
+      { left: '20%', top: '30%', size: 4, delay: 0.1, startX: -800, startY: -600, endX: -600, endY: -800, endZ: 800, color: 'bg-neutral-400' },
+      { left: '70%', top: '20%', size: 3, delay: 0.2, startX: 800, startY: -800, endX: 900, endY: -500, endZ: 700, color: 'bg-neutral-500' },
+      { left: '40%', top: '60%', size: 5, delay: 0.05, startX: 0, startY: -1000, endX: 0, endY: 1000, endZ: 900, color: 'bg-cyan-100' },
+      { left: '80%', top: '70%', size: 2, delay: 0.15, startX: 800, startY: 800, endX: 1000, endY: 800, endZ: 850, color: 'bg-neutral-400' },
+      { left: '30%', top: '80%', size: 6, delay: 0.25, startX: -800, startY: 800, endX: -1000, endY: 1000, endZ: 1000, color: 'bg-neutral-300' },
+      { left: '60%', top: '40%', size: 4, delay: 0, startX: 500, startY: -1000, endX: 800, endY: 800, endZ: 800, color: 'bg-cyan-200' }
   ];
 
   return (
@@ -149,18 +149,18 @@ export function InfographicSection() {
                                                  left: particle.left,
                                                  top: particle.top,
                                              }}
-                                             initial={{ translateZ: 300, opacity: 1, scale: 0.8, x: 0, y: 0, rotate: 0 }}
+                                             initial={{ translateZ: 1500, opacity: 1, scale: 2, x: particle.startX, y: particle.startY, rotate: 0 }}
                                              animate={{ 
-                                                 translateZ: [300, 0, 150], // Higher drop, higher bounce
-                                                 opacity: [1, 1, 0], // Fully visible during drop, fades out ONLY during the bounce
-                                                 scale: [0.8, 1.2, 0.5],
-                                                 x: [0, 0, particle.repelX * 1.5], // Farther horizontal scatter
-                                                 y: [0, 0, particle.repelY * 1.5],
-                                                 rotate: [0, 45, 360]
+                                                 translateZ: [1500, 0, particle.endZ], // Comes from behind camera, hits layer, blasts back
+                                                 opacity: [1, 1, 0], // Fully visible drop and impact, fades out off-screen
+                                                 scale: [2, 1, 1.5],
+                                                 x: [particle.startX, 0, particle.endX], // Wide angled strikes
+                                                 y: [particle.startY, 0, particle.endY],
+                                                 rotate: [0, 90, 720]
                                              }}
                                              exit={{ opacity: 0 }}
                                              transition={{ 
-                                                 duration: 0.7, 
+                                                 duration: 0.8, // Slightly longer so it travels the massive distance
                                                  delay: particle.delay, 
                                                  times: [0, 0.4, 1], // Impact hits precisely at 40%
                                                  ease: ["easeIn", "easeOut"] 
