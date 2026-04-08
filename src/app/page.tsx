@@ -607,8 +607,8 @@ export default function DetailingLabLandingPage() {
           transition={{ duration: 2.5, ease: [0.23, 1, 0.32, 1] }}
         >
           <Image 
-            src="/hero_supercar.png" 
-            alt="Premium Ceramic Coated Supercar, Yorkshire" 
+            src="/hero_outdoor.png" 
+            alt="Mobile Ceramic Coated Supercar outdoors, Yorkshire" 
             fill
             sizes="100vw"
             className="object-cover object-center"
@@ -639,7 +639,7 @@ export default function DetailingLabLandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
             </span>
-            Yorkshire&apos;s Elite Detailing Studio
+            Yorkshire&apos;s Elite Mobile Detailing Unit
           </motion.div>
           
           {/* Main headline */}
@@ -662,7 +662,7 @@ export default function DetailingLabLandingPage() {
           >
             Paint correction. Ceramic armoring. Interior restoration.
             <br className="hidden sm:block" />
-            <span className="text-neutral-300">Zero compromises. Factory-spec results.</span>
+            <span className="text-neutral-300">Zero compromises. Fully equipped mobile delivery to your door.</span>
           </motion.p>
 
           {/* CTA Buttons */}
@@ -784,6 +784,26 @@ export default function DetailingLabLandingPage() {
                  </ScrollReveal>
                ))}
              </div>
+
+             {/* Mobile Service Banner */}
+             <ScrollReveal delay={0.2}>
+                 <div className="mt-12 relative w-full h-[300px] md:h-[400px] rounded-3xl overflow-hidden group border border-white/10 shadow-2xl">
+                     <Image src="/outdoor_water.png" alt="Detailing Lab Mobile Fleet working outdoors" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="100vw" />
+                     <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+                     <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 w-full md:w-2/3 md:max-w-xl">
+                         <div className="inline-flex w-max items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
+                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                             Deploying Across Yorkshire
+                         </div>
+                         <h3 className="text-3xl md:text-5xl font-black uppercase text-white tracking-tighter leading-none mb-5 drop-shadow-md">
+                             Elite <span className="text-cyan-500">Mobile</span> Operations
+                         </h3>
+                         <p className="text-neutral-300 text-sm md:text-base font-medium leading-relaxed drop-shadow-md">
+                             We don&apos;t just wash cars on the street. Our fully self-contained units arrive at your location equipped with DI pure-water systems, heavy-correction compounds, and portable climate controls. <strong>The studio comes to your driveway.</strong>
+                         </p>
+                     </div>
+                 </div>
+             </ScrollReveal>
          </ScrollReveal>
       </section>
 
