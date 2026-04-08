@@ -3,25 +3,25 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CarFront, Car, Truck, Plus, Check } from 'lucide-react';
 
-const SIZES = [
+export const SIZES = [
   { id: 'coupe', label: 'Coupe / Hatch', icon: CarFront, multiplier: 1.0 },
   { id: 'saloon', label: 'Saloon / Estate', icon: Car, multiplier: 1.15 },
   { id: 'suv', label: 'SUV / 4x4', icon: Truck, multiplier: 1.3225 },
 ];
 
 // Paint correction tiers — mutually exclusive (they're stages)
-const PAINT_TIERS = [
+export const PAINT_TIERS = [
   { id: 'enhance', label: 'Gloss Enhancement', price: 250, desc: 'Single-stage machine polish to remove light swirling and restore gloss. Includes 6-month sealant protection.' },
   { id: 'correct', label: 'Paint Correction', price: 300, desc: 'Two-stage compound and polish removing 85%+ of swirls, scratches, and holograms. Finished with 1-year ceramic sealant.' },
   { id: 'ceramic', label: 'Correction + Ceramic', price: 500, desc: 'Full multi-stage paint correction locked in with professional 9H ceramic coating. 3–5 year protection with hydrophobic finish.' },
 ];
 
 // Interior reset — optional add-on
-const INTERIOR = { id: 'interior', label: 'Interior Reset', price: 95, desc: 'Full interior extraction with thermal steam sterilisation. Leather conditioning, Alcantara restoration, and plastics revived to delivery-day spec.' };
+export const INTERIOR = { id: 'interior', label: 'Interior Reset', price: 95, desc: 'Full interior extraction with thermal steam sterilisation. Leather conditioning, Alcantara restoration, and plastics revived to delivery-day spec.' };
 
-const BUNDLE_DISCOUNT = 0.10; // 10% off interior when bundled
+export const BUNDLE_DISCOUNT = 0.10; // 10% off interior when bundled
 
-export function PricingEstimator({ onBook }: { onBook?: () => void }) {
+export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
   const [size, setSize] = useState(SIZES[0]);
   const [paintTier, setPaintTier] = useState(PAINT_TIERS[1]);
   const [includeInterior, setIncludeInterior] = useState(false);
@@ -169,7 +169,7 @@ export function PricingEstimator({ onBook }: { onBook?: () => void }) {
            </p>
            
            <button 
-             onClick={onBook}
+             onClick={() => onBook?.({ size, paintTier, includeInterior })}
              className="mt-6 px-10 py-5 bg-cyan-500 text-black font-black uppercase tracking-widest text-sm rounded-xl hover:bg-cyan-400 transition-colors w-full relative z-10 shadow-[0_0_30px_rgba(6,182,212,0.2)]"
            >
              Get Booked In!

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { findAvailableDetailer, type Detailer } from "../lib/mockRoutingEngine";
 import { EnterpriseCalendar } from "../components/EnterpriseCalendar";
 import { BeforeAfterSlider } from "../components/BeforeAfterSlider";
-import { PricingEstimator } from "../components/PricingEstimator";
+import { PricingEstimator, SIZES, PAINT_TIERS, INTERIOR, BUNDLE_DISCOUNT } from "../components/PricingEstimator";
 import { AnimatedShieldReveal } from "../components/AnimatedShieldReveal";
 import { InfographicSection } from "../components/InfographicSection";
 
@@ -227,9 +227,14 @@ function InspectionTorchMode() {
 // ==========================================
 // CORE FEATURE: MULTI-TENANT BOOKING ENGINE
 // ==========================================
-function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+function BookingModal({ isOpen, onClose, initialPackage }: { isOpen: boolean, onClose: () => void, initialPackage?: any }) {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Package Selection State
+  const [size, setSize] = useState(SIZES[0]);
+  const [paintTier, setPaintTier] = useState(PAINT_TIERS[1]);
+  const [includeInterior, setIncludeInterior] = useState(false);
   
   // Routing State
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -242,14 +247,24 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
   // Reset state when opened
   useEffect(() => {
     if (isOpen) {
-      setStep(1);
+      if (initialPackage) {
+        setSize(initialPackage.size);
+        setPaintTier(initialPackage.paintTier);
+        setIncludeInterior(initialPackage.includeInterior);
+        setStep(2); // Skip straight to calendar
+      } else {
+        setSize(SIZES[0]);
+        setPaintTier(PAINT_TIERS[1]);
+        setIncludeInterior(false);
+        setStep(1); // Show Selection Package
+      }
       setIsLoading(false);
       setAssignedDetailer(null);
       setRoutingError(null);
       setSelectedDate("");
       setPostcode("");
     }
-  }, [isOpen]);
+  }, [isOpen, initialPackage]);
 
   const handleRoutingSearch = async () => {
     if (!selectedDate || postcode.length < 2) return;
@@ -261,7 +276,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
     setIsLoading(false);
     if (detailer) {
         setAssignedDetailer(detailer);
-        setTimeout(() => setStep(2), 1500); // Wait 1.5s to show the "Match Found" UI before moving
+        setTimeout(() => setStep(3), 1500); // Wait 1.5s to show the "Match Found" UI before moving
     } else {
         setRoutingError("No elite detailers have capacity in this radius on this date. Please select another.");
     }
@@ -271,7 +286,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setStep(4);
+      setStep(5);
     }, 2000);
   };
 
@@ -304,8 +319,85 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
             {/* Body */}
             <div className="p-8 relative overflow-y-auto custom-scrollbar">
               
-              {/* STEP 1: CALENDAR & GEO-ROUTING */}
+                            {/* STEP 1: SELECT PACKAGE */}
               {step === 1 && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                  <h3 className="text-3xl font-black uppercase mb-2">The Package.</h3>
+                  <p className="text-neutral-400 mb-8">Configure your vehicle requirements before checking detailer availability.</p>
+                  
+                  <div className="space-y-6">
+                    {/* Size Select */}
+                    <div>
+                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">1. Vehicle Size</label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {SIZES.map(s => (
+                            <button
+                              key={s.id}
+                              onClick={() => setSize(s)}
+                              className={`p-3 rounded-xl border flex flex-col items-center gap-2 transition-colors ${size.id === s.id ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400 shadow-[inset_0_0_20px_rgba(6,182,212,0.15)]' : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10'}`}
+                            >
+                              <span className="text-[10px] font-bold text-center uppercase tracking-wide">{s.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                    </div>
+
+                    {/* Paint Tier */}
+                    <div>
+                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">2. Exterior Service</label>
+                        <div className="flex flex-col gap-2">
+                          {PAINT_TIERS.map(t => (
+                            <button
+                              key={t.id}
+                              onClick={() => setPaintTier(t)}
+                              className={`p-4 rounded-xl border flex flex-col text-left transition-all ${paintTier.id === t.id ? 'bg-cyan-500/10 border-cyan-500 shadow-[inset_0_0_20px_rgba(6,182,212,0.15)]' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
+                            >
+                              <div className="flex items-center justify-between w-full mb-1">
+                                <span className={`font-black uppercase text-sm ${paintTier.id === t.id ? 'text-cyan-400' : 'text-white'}`}>{t.label}</span>
+                                <span className={`text-xs font-bold ${paintTier.id === t.id ? 'text-cyan-400' : 'text-neutral-500'}`}>£{Math.round(t.price * size.multiplier)}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                    </div>
+
+                    {/* Interior Toggle */}
+                    <div>
+                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">3. Add Interior?</label>
+                        <button
+                          onClick={() => setIncludeInterior(!includeInterior)}
+                          className={`w-full p-4 rounded-xl border flex text-left transition-all ${
+                            includeInterior
+                              ? 'bg-emerald-500/10 border-emerald-500/50 shadow-[inset_0_0_20px_rgba(52,211,153,0.1)]'
+                              : 'bg-white/5 border-white/5 hover:bg-white/10'
+                          }`}
+                        >
+                            <div className="flex items-center justify-between w-full">
+                              <span className={`font-black uppercase text-sm ${includeInterior ? 'text-emerald-400' : 'text-white'}`}>{INTERIOR.label}</span>
+                              <div className="text-right text-xs">
+                                {includeInterior ? (
+                                    <span className="text-emerald-400 font-bold">£{Math.round(INTERIOR.price * size.multiplier * (1 - BUNDLE_DISCOUNT))} (-10%)</span>
+                                ) : (
+                                    <span className="text-neutral-500 font-bold">+ £{Math.round(INTERIOR.price * size.multiplier)}</span>
+                                )}
+                              </div>
+                            </div>
+                        </button>
+                    </div>
+
+                  </div>
+
+                  <button 
+                    onClick={() => setStep(2)}
+                    className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none"
+                  >
+                    Check Availability <ChevronRight size={18} />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* STEP 2: CALENDAR & GEO-ROUTING */}
+              {step === 5 && (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                   <h3 className="text-3xl font-black uppercase mb-2">The Target.</h3>
                   <p className="text-neutral-400 mb-8">Select your desired date and location. Our SaaS engine will verify network capacity.</p>
@@ -374,7 +466,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                 </motion.div>
               )}
 
-              {/* STEP 2: THE ASSET */}
+              {/* STEP 3: THE ASSET */}
               {step === 2 && (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                   <h3 className="text-3xl font-black uppercase mb-2">The Asset.</h3>
@@ -390,13 +482,13 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                       <input type="text" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="e.g. 911 GT3 (2024)" />
                     </div>
                   </div>
-                  <button onClick={() => setStep(3)} className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none">
+                  <button onClick={() => setStep(4)} className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none">
                     Next Step <ChevronRight size={18} />
                   </button>
                 </motion.div>
               )}
 
-              {/* STEP 3: FINAL DISPATCH */}
+              {/* STEP 4: FINAL DISPATCH */}
               {step === 3 && (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                   <h3 className="text-3xl font-black uppercase mb-2">Dispatch Order.</h3>
@@ -428,7 +520,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                 </motion.div>
               )}
 
-              {/* STEP 4: SUCCESS */}
+              {/* STEP 5: SUCCESS */}
               {step === 4 && (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center h-full pt-10">
                   <div className="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center mb-6">
@@ -459,12 +551,21 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
 // ==========================================
 export default function DetailingLabLandingPage() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingInitialPackage, setBookingInitialPackage] = useState<any>(null);
 
+  const openBookingModalWithPackage = (pkg?: any) => {
+    setBookingInitialPackage(pkg || null);
+    setIsBookingModalOpen(true);
+  };
 
   return (
-    <div className="bg-[#050505] min-h-screen text-white font-sans selection:bg-cyan-500/30 overflow-clip">
+    <div className="bg-black min-h-screen text-white selection:bg-cyan-500/30 font-sans custom-scrollbar overflow-clip">
       <CustomCursor />
-      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+      <BookingModal 
+        isOpen={isBookingModalOpen} 
+        onClose={() => setIsBookingModalOpen(false)} 
+        initialPackage={bookingInitialPackage}
+      />
       
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/5 bg-[#050505]/80 backdrop-blur-lg">
@@ -488,7 +589,7 @@ export default function DetailingLabLandingPage() {
             <a href="#protection" className="hover:text-white transition-colors cursor-none">Ceramic Armor</a>
             <a href="#reviews" className="hover:text-white transition-colors cursor-none">Results</a>
           </div>
-          <MagneticButton onClick={() => setIsBookingModalOpen(true)} className="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-black tracking-tight rounded-lg transition-colors shadow-[0_0_20px_rgba(6,182,212,0.3)] cursor-none">
+          <MagneticButton onClick={() => openBookingModalWithPackage()} className="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-black tracking-tight rounded-lg transition-colors shadow-[0_0_20px_rgba(6,182,212,0.3)] cursor-none">
             Get Booked In
           </MagneticButton>
         </div>
@@ -571,7 +672,7 @@ export default function DetailingLabLandingPage() {
             transition={{ duration: 1, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
             className="flex flex-col sm:flex-row items-center gap-4 mb-14"
           >
-            <MagneticButton onClick={() => setIsBookingModalOpen(true)} className="relative group px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl flex items-center gap-2.5 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.35)] cursor-none text-sm">
+            <MagneticButton onClick={() => openBookingModalWithPackage()} className="relative group px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl flex items-center gap-2.5 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.35)] cursor-none text-sm">
               <span className="relative z-10 flex items-center gap-2">
                 Get Booked In!
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -633,7 +734,7 @@ export default function DetailingLabLandingPage() {
       <section className="relative z-10 py-12 px-6 max-w-6xl mx-auto border-t border-white/5">
          <ScrollReveal>
              <h2 className="text-4xl md:text-5xl font-black uppercase mb-12 text-center tracking-tighter">Structure Your <span className="text-cyan-500">Protection</span></h2>
-             <PricingEstimator onBook={() => setIsBookingModalOpen(true)} />
+             <PricingEstimator onBook={(pkg) => openBookingModalWithPackage(pkg)} />
          </ScrollReveal>
       </section>
 
@@ -764,7 +865,7 @@ export default function DetailingLabLandingPage() {
           </p>
           
           <div className="flex flex-col items-center">
-            <MagneticButton onClick={() => setIsBookingModalOpen(true)} className="px-12 py-6 bg-cyan-500 text-black text-xl font-black tracking-tight uppercase rounded-xl transition-colors shadow-[0_0_40px_rgba(6,182,212,0.4)] flex items-center gap-3 cursor-none">
+            <MagneticButton onClick={() => openBookingModalWithPackage()} className="px-12 py-6 bg-cyan-500 text-black text-xl font-black tracking-tight uppercase rounded-xl transition-colors shadow-[0_0_40px_rgba(6,182,212,0.4)] flex items-center gap-3 cursor-none">
               Request Your Free Quote <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
             </MagneticButton>
             
