@@ -135,7 +135,9 @@ export function InfographicSection() {
                     transition={{ 
                        duration: (isDebrisFiring && layer.id === 4) ? 0.3 : 0.8, 
                        delay: (isDebrisFiring && layer.id === 4) ? 0.32 : 0, // Triggers at exact impact millisecond
-                       type: 'spring', bounce: 0.3 
+                       type: (isDebrisFiring && layer.id === 4) ? 'tween' : 'spring',
+                       ease: (isDebrisFiring && layer.id === 4) ? 'easeInOut' : undefined,
+                       bounce: 0.3 
                     }}
                   >
                      {/* Debris Impact Animation against Ceramic Top Layer (id: 4) */}
