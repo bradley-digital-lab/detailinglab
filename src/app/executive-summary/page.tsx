@@ -369,8 +369,8 @@ export default function ExecutiveSummaryPage() {
                 ].map((item, i) => (
                   <motion.div 
                      key={i}
-                     initial={isMobile ? false : { opacity: 0, y: 20 }}
-                     whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                     whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true, amount: 0.1 }}
                      whileTap={{ scale: 0.95, border: "1px solid rgba(34,211,238,0.5)" }}
                      whileHover={{ scale: 1.02 }}
@@ -394,8 +394,8 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 3: THE HIGH-TICKET REALITY (PRICE ANCHORING) */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-              initial={isMobile ? false : { opacity: 0, y: 30 }}
-              whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               style={{ willChange: "transform, opacity" }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center transform-gpu"
@@ -484,8 +484,8 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 4: DOMINATING THE AUTO DETAILING SECTOR */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-              initial={isMobile ? false : { opacity: 0, y: 30 }}
-              whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center"
              >
@@ -596,8 +596,8 @@ export default function ExecutiveSummaryPage() {
                 ].map((secret, i) => (
                   <motion.div
                     key={i}
-                    initial={isMobile ? false : { opacity: 0, y: 30 }}
-                    whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+                    initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.1 }}
                     transition={{ delay: i * 0.055 }}
                     className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl relative overflow-hidden group hover:border-green-500/30 transition-colors flex flex-col"
@@ -653,8 +653,8 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 5.5: CLASSIFIED INTERCEPTION PROTOCOL */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-               initial={isMobile ? false : { opacity: 0, y: 30 }}
-               whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+               initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+               whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true, amount: 0.1 }}
                className="bg-[#050000] border border-red-500/20 p-6 md:p-12 md:pt-16 rounded-[30px] shadow-[0_0_50px_rgba(239,68,68,0.05)] relative overflow-hidden"
              >
@@ -821,8 +821,8 @@ export default function ExecutiveSummaryPage() {
                 <div className="space-y-12 md:space-y-24">
                    {/* Phase 1 */}
                    <motion.div 
-                     initial={isMobile ? false : { opacity: 0, y: 20 }}
-                     whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                     whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
@@ -840,8 +840,8 @@ export default function ExecutiveSummaryPage() {
 
                    {/* Phase 2 */}
                    <motion.div 
-                     initial={isMobile ? false : { opacity: 0, y: 20 }}
-                     whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                     whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
@@ -859,8 +859,8 @@ export default function ExecutiveSummaryPage() {
 
                    {/* Phase 3 */}
                    <motion.div 
-                     initial={isMobile ? false : { opacity: 0, y: 20 }}
-                     whileInView={isMobile ? false : { opacity: 1, y: 0 }}
+                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                     whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
