@@ -158,15 +158,7 @@ const ArchitectureTopologyMap = () => {
 export default function ExecutiveSummaryPage() {
   const [bootPhase, setBootPhase] = useState<'terminal' | 'greeting' | 'ready'>('terminal');
   const [scrollUnlocked, setScrollUnlocked] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-
+  
   const { scrollYProgress } = useScroll();
   const yBackground = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   
@@ -296,7 +288,7 @@ export default function ExecutiveSummaryPage() {
                     </p>
 
                     <motion.div 
-                      whileHover={{ scale: 1.02 }}
+                      
                       whileTap={{ scale: 0.95 }}
                       className="p-1 cursor-pointer rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 max-w-4xl shadow-[0_0_40px_rgba(34,211,238,0.1)] relative group w-full mx-auto"
                     >
@@ -317,7 +309,7 @@ export default function ExecutiveSummaryPage() {
              <motion.div 
               initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.1 }}
+              
               transition={{ duration: 0.8 }}
               className="bg-black border border-white/10 p-6 sm:p-10 md:p-20 rounded-[30px] md:rounded-[40px] relative overflow-hidden shadow-[0_20px_50px_-20px_rgba(0,0,0,1)] active:border-red-500/30 transition-colors"
              >
@@ -369,13 +361,13 @@ export default function ExecutiveSummaryPage() {
                 ].map((item, i) => (
                   <motion.div 
                      key={i}
-                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     viewport={{ once: true, amount: 0.1 }}
-                     whileTap={{ scale: 0.95, border: "1px solid rgba(34,211,238,0.5)" }}
-                     whileHover={{ scale: 1.02 }}
-                     transition={{ duration: 0.4, delay: isMobile ? 0 : i * 0.05 }}
-                     style={{ willChange: "transform, opacity" }}
+                     
+                     
+                     
+                     
+                     
+                     
+                     
                      className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-2xl hover:border-cyan-500/30 transition-all group cursor-pointer relative overflow-hidden flex flex-col transform-gpu"
                   >
                      <div className="absolute -right-10 -top-10 w-32 h-32 md:w-40 md:h-40 bg-cyan-500/5 rounded-full hidden md:block blur-3xl group-active:bg-cyan-500/20 transition-colors"></div>
@@ -394,10 +386,10 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 3: THE HIGH-TICKET REALITY (PRICE ANCHORING) */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              style={{ willChange: "transform, opacity" }}
+              
+              
+              
+              
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center transform-gpu"
              >
                 <div className="order-2 lg:order-1 relative h-[300px] md:h-[400px] bg-neutral-900 rounded-[30px] border border-white/10 overflow-hidden flex flex-col justify-center p-6 md:p-8 group hover:border-green-500/50 active:border-green-500/50 transition-colors duration-500 shadow-xl">
@@ -473,9 +465,9 @@ export default function ExecutiveSummaryPage() {
              </div>
              
              <motion.div
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
+               
+               
+               
              >
                 <ArchitectureTopologyMap />
              </motion.div>
@@ -484,9 +476,9 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 4: DOMINATING THE AUTO DETAILING SECTOR */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
+              
+              
+              
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center"
              >
                 <div className="relative h-[350px] md:h-[500px] bg-gradient-to-br from-neutral-900 to-black rounded-[30px] border border-white/10 overflow-hidden flex items-center justify-center p-6 group shadow-lg">
@@ -596,10 +588,10 @@ export default function ExecutiveSummaryPage() {
                 ].map((secret, i) => (
                   <motion.div
                     key={i}
-                    initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ delay: i * 0.055 }}
+                    
+                    
+                    
+                    
                     className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl relative overflow-hidden group hover:border-green-500/30 transition-colors flex flex-col"
                   >
                      <div className="absolute -right-6 -top-6 text-[150px] font-black text-white/[0.02] group-hover:text-green-500/[0.05] transition-colors duration-500 pointer-events-none leading-none">
@@ -618,9 +610,9 @@ export default function ExecutiveSummaryPage() {
              </div>
 
              <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              
+              
+              
               className="bg-black rounded-[30px] border border-cyan-500/20 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between shadow-[0_0_50px_rgba(6,182,212,0.1)] relative overflow-hidden"
              >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[100px] pointer-events-none"></div>
@@ -653,9 +645,9 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 5.5: CLASSIFIED INTERCEPTION PROTOCOL */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-               initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true, amount: 0.1 }}
+               
+               
+               
                className="bg-[#050000] border border-red-500/20 p-6 md:p-12 md:pt-16 rounded-[30px] shadow-[0_0_50px_rgba(239,68,68,0.05)] relative overflow-hidden"
              >
                 {/* Warning tape style header */}
@@ -821,8 +813,8 @@ export default function ExecutiveSummaryPage() {
                 <div className="space-y-12 md:space-y-24">
                    {/* Phase 1 */}
                    <motion.div 
-                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
+                     
+                     
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
@@ -840,8 +832,8 @@ export default function ExecutiveSummaryPage() {
 
                    {/* Phase 2 */}
                    <motion.div 
-                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
+                     
+                     
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
@@ -859,8 +851,8 @@ export default function ExecutiveSummaryPage() {
 
                    {/* Phase 3 */}
                    <motion.div 
-                     initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
+                     
+                     
                      viewport={{ once: true, margin: "-100px" }}
                      className="relative flex flex-col md:flex-row items-start md:items-center justify-between w-full group"
                    >
@@ -911,7 +903,7 @@ export default function ExecutiveSummaryPage() {
                  <motion.path
                    initial={{ pathLength: 0 }}
                    whileInView={{ pathLength: 1 }}
-                   viewport={{ once: true, amount: 0.1 }}
+                   
                    transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
                    d="M 30,90 C 35,50 40,20 50,20 C 70,20 80,40 60,60 C 90,60 100,90 70,110 C 40,130 10,100 30,80 C 50,60 80,80 100,60 C 110,50 120,50 130,60 C 125,70 125,100 135,100 C 150,100 160,70 170,70 C 140,70 140,100 160,100 C 165,100 165,70 170,70 C 170,90 170,100 180,100 C 195,100 205,70 215,70 C 185,70 185,100 205,100 C 215,100 215,10 220,10 C 220,50 215,100 230,100 C 270,100 350,90 440,50"
                  />
@@ -919,7 +911,7 @@ export default function ExecutiveSummaryPage() {
                  <motion.path
                    initial={{ pathLength: 0 }}
                    whileInView={{ pathLength: 1 }}
-                   viewport={{ once: true, amount: 0.1 }}
+                   
                    transition={{ duration: 0.8, ease: "easeOut", delay: 2.7 }}
                    d="M 10 120 Q 200 130 430 115"
                  />
