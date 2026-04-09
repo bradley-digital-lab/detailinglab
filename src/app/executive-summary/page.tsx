@@ -171,15 +171,25 @@ export default function ExecutiveSummaryPage() {
     }
   }, [bootPhase]);
 
-  // Lock scroll until hero text has loaded
+  // Lock scroll until hero text has loaded (Mobile/Desktop airtight lock)
   useEffect(() => {
     if (!scrollUnlocked) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      // iOS Safari specific lock
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     };
   }, [scrollUnlocked]);
 
