@@ -157,6 +157,7 @@ const ArchitectureTopologyMap = () => {
 
 export default function ExecutiveSummaryPage() {
   const [bootPhase, setBootPhase] = useState<'terminal' | 'greeting' | 'ready'>('terminal');
+  const [scrollUnlocked, setScrollUnlocked] = useState(false);
   const { scrollYProgress } = useScroll();
   const yBackground = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   
@@ -169,6 +170,18 @@ export default function ExecutiveSummaryPage() {
       return () => clearTimeout(timer);
     }
   }, [bootPhase]);
+
+  // Lock scroll until hero text has loaded
+  useEffect(() => {
+    if (!scrollUnlocked) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [scrollUnlocked]);
 
   if (typeof window === 'undefined') return null;
 
@@ -227,6 +240,7 @@ export default function ExecutiveSummaryPage() {
                    initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                    transition={{ duration: 1.2, staggerChildren: 0.2 }}
+                   onAnimationComplete={() => setScrollUnlocked(true)}
                    className="w-full flex flex-col items-center relative z-40"
                  >
                     <motion.div 
