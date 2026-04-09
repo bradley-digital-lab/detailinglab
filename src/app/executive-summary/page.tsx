@@ -369,7 +369,7 @@ export default function ExecutiveSummaryPage() {
                      style={{ willChange: "transform, opacity" }}
                      className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-2xl hover:border-cyan-500/30 transition-all group cursor-pointer relative overflow-hidden flex flex-col transform-gpu"
                   >
-                     <div className="absolute -right-10 -top-10 w-32 h-32 md:w-40 md:h-40 bg-cyan-500/5 rounded-full blur-3xl group-active:bg-cyan-500/20 transition-colors"></div>
+                     <div className="absolute -right-10 -top-10 w-32 h-32 md:w-40 md:h-40 bg-cyan-500/5 rounded-full hidden md:block blur-3xl group-active:bg-cyan-500/20 transition-colors"></div>
                      <item.icon className="text-cyan-400 w-8 h-8 md:w-10 md:h-10 mb-4 md:mb-6 relative z-10" />
                      <h3 className="text-lg md:text-xl font-bold uppercase tracking-wider mb-2 relative z-10 leading-tight">{item.title}</h3>
                      <p className="text-neutral-400 text-xs md:text-sm leading-relaxed relative z-10 mb-6 flex-grow">{item.desc}</p>
