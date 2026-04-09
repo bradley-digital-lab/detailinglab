@@ -178,17 +178,23 @@ export default function ExecutiveSummaryPage() {
       document.documentElement.style.overflow = 'hidden';
       // iOS Safari specific lock
       document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.left = '0';
       document.body.style.width = '100%';
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
       document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
       document.body.style.width = '';
     }
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
       document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
       document.body.style.width = '';
     };
   }, [scrollUnlocked]);
@@ -205,7 +211,7 @@ export default function ExecutiveSummaryPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: bootPhase === 'terminal' ? 0 : 1 }}
         transition={{ duration: 1.5, delay: 0.5 }}
-        className="min-h-screen bg-[#050505] text-white overflow-hidden font-sans selection:bg-cyan-500/30 touch-pan-y"
+        className="min-h-[100dvh] bg-[#050505] text-white overflow-hidden font-sans selection:bg-cyan-500/30 touch-pan-y"
       >
         
         <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
@@ -219,7 +225,7 @@ export default function ExecutiveSummaryPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-40">
           
           {/* HERO SECTION */}
-          <section className="min-h-[90vh] md:min-h-[80vh] flex flex-col justify-center items-center text-center mt-12 md:mt-0 mb-20 md:mb-32 relative">
+          <section className="min-h-[90dvh] md:min-h-[80vh] flex flex-col justify-center items-center text-center mt-12 md:mt-0 mb-20 md:mb-32 relative">
             
             <AnimatePresence mode="wait">
               {bootPhase === 'greeting' && (
