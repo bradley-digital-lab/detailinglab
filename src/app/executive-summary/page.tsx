@@ -366,7 +366,8 @@ export default function ExecutiveSummaryPage() {
                      whileTap={{ scale: 0.95, border: "1px solid rgba(34,211,238,0.5)" }}
                      whileHover={{ scale: 1.02 }}
                      transition={{ duration: 0.4, delay: i * 0.1 }}
-                     className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-2xl hover:border-cyan-500/30 transition-all group cursor-pointer relative overflow-hidden flex flex-col"
+                     style={{ willChange: "transform, opacity" }}
+                     className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-2xl hover:border-cyan-500/30 transition-all group cursor-pointer relative overflow-hidden flex flex-col transform-gpu"
                   >
                      <div className="absolute -right-10 -top-10 w-32 h-32 md:w-40 md:h-40 bg-cyan-500/5 rounded-full blur-3xl group-active:bg-cyan-500/20 transition-colors"></div>
                      <item.icon className="text-cyan-400 w-8 h-8 md:w-10 md:h-10 mb-4 md:mb-6 relative z-10" />
@@ -387,7 +388,8 @@ export default function ExecutiveSummaryPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center"
+              style={{ willChange: "transform, opacity" }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center transform-gpu"
              >
                 <div className="order-2 lg:order-1 relative h-[300px] md:h-[400px] bg-neutral-900 rounded-[30px] border border-white/10 overflow-hidden flex flex-col justify-center p-6 md:p-8 group hover:border-green-500/50 active:border-green-500/50 transition-colors duration-500 shadow-xl">
                    <div className="absolute inset-0 opacity-20 pointer-events-none">
