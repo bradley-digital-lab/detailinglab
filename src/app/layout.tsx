@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 
 import { Footer } from "@/components/Footer";
 import { CookieBanner } from "@/components/CookieBanner";
+import { ThemeProvider } from "@/components/theme-provider";
+import GeofenceSchema from "@/components/seo/GeofenceSchema";
 
 export default function RootLayout({
   children,
@@ -29,13 +31,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-black selection:bg-cyan-500/30">
-        <div className="flex-1">
-           {children}
-        </div>
-        <Footer />
-        <CookieBanner />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <div className="flex-1 relative z-0">
+             {children}
+          </div>
+          {/* UNDER CONSTRUCTION LOCK:
+          <Footer /> 
+          */}
+          <CookieBanner />
+          <GeofenceSchema />
+        </ThemeProvider>
       </body>
     </html>
   );

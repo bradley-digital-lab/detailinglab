@@ -23,16 +23,8 @@ export interface DetailingEvent extends Event {
   isAvailable?: boolean;
 }
 
-export function EnterpriseCalendar({ onSelectSlot }: { onSelectSlot: (start: Date, end: Date) => void }) {
+export function EnterpriseCalendar({ onSelectSlot, events = [] }: { onSelectSlot: (start: Date, end: Date) => void, events?: DetailingEvent[] }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [events] = useState<DetailingEvent[]>([
-    {
-      title: "Detailing Bay Blocked",
-      start: new Date(new Date().setHours(9, 0, 0, 0)),
-      end: new Date(new Date().setHours(17, 0, 0, 0)),
-      isAvailable: false
-    }
-  ]);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {

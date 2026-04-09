@@ -13,7 +13,7 @@ const LAYERS = [
     borderColor: "rgba(6, 182, 212, 1)",
     glow: "0 0 30px rgba(6, 182, 212, 0.5)",
     icon: Shield,
-    z: 200, // Highest float
+    z: 280, // Highest float
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const LAYERS = [
     borderColor: "rgba(255, 255, 255, 0.3)",
     glow: "none",
     icon: Sparkles,
-    z: 100,
+    z: 200,
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const LAYERS = [
     borderColor: "rgba(59, 130, 246, 0.8)",
     glow: "none",
     icon: Droplets,
-    z: 50,
+    z: 130,
   },
   {
     id: 1,
@@ -46,7 +46,7 @@ const LAYERS = [
     borderColor: "rgba(82, 82, 91, 1)",
     glow: "none",
     icon: null,
-    z: 25,
+    z: 60,
   },
   {
     id: 0,
@@ -143,6 +143,22 @@ export function InfographicSection() {
                      {/* Debris Impact Animation against Ceramic Top Layer (id: 4) */}
                      {layer.id === 4 && (
                          <AnimatePresence>
+                             <motion.div 
+                                 className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none mix-blend-overlay opacity-30"
+                                 initial={{ opacity: 0 }}
+                                 animate={{ opacity: 0.3 }}
+                             >
+                                 <motion.div 
+                                     className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
+                                     style={{
+                                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 17.32l-20 11.547L0 17.32V-5.774l20-11.547L40-5.774V17.32zm0 46.188l-20 11.548-20-11.548V40.414L20 28.867l20 11.547v23.094z' fill='%2306b6d4' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                                         backgroundSize: '40px 69.282px'
+                                     }}
+                                     animate={{ x: [0, -40], y: [0, -69.282] }}
+                                     transition={{ duration: 4, ease: "linear", repeat: Infinity }}
+                                 />
+                             </motion.div>
+                             
                              {isDebrisFiring && (
                                  <>
                                      {/* Intense Physical Surface Flash */}
@@ -214,7 +230,7 @@ export function InfographicSection() {
 
            {/* The Text Label Matrix (Isolated rendering context to guarantee they render over all 3D geometry without intersection) */}
            <motion.div 
-             className="absolute w-[300px] h-[300px] pointer-events-none z-[100]"
+             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] pointer-events-none z-[100]"
              initial={{ rotateX: 60, rotateZ: -45, scale: 0.8 }}
              animate={{ rotateX: 60, rotateZ: isExploded ? -45 : 0, scale: isExploded ? 0.9 : 1.1 }}
              transition={{ duration: 1.5, type: 'spring', bounce: 0.2 }}
@@ -238,8 +254,13 @@ export function InfographicSection() {
                              <motion.div 
                                initial={{ opacity: 0, x: -20 }}
                                animate={{ opacity: isActive ? 1 : 0.4, x: 0 }}
-                               className="absolute -left-32 sm:-left-40 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4 pointer-events-none"
-                               style={{ transform: 'rotateX(-60deg) rotateZ(45deg)' }}
+                               className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4 pointer-events-none"
+                               style={{ 
+                                  // Parametrically fan out the labels to prevent visual clustering
+                                  left: `calc(0px - 140px - (${layer.id} * 35px))`, 
+                                  marginTop: `-${layer.id * 12}px`, // Sweep upwards
+                                  transform: 'rotateX(-60deg) rotateZ(45deg)' 
+                               }}
                              >
                                 <div className="text-right">
                                     <h4 className={`font-black uppercase tracking-widest text-xs sm:text-sm whitespace-nowrap ${isActive ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'text-white'}`}>
@@ -247,7 +268,10 @@ export function InfographicSection() {
                                     </h4>
                                     <span className="text-[10px] sm:text-xs font-bold text-neutral-500">{layer.thickness}</span>
                                 </div>
-                                <div className={`hidden sm:block h-[1px] w-8 sm:w-12 ${isActive ? 'bg-cyan-500' : 'bg-white/20'}`}></div>
+                                <div 
+                                    className={`hidden sm:block h-[1px] ${isActive ? 'bg-cyan-500' : 'bg-white/20'}`}
+                                    style={{ width: `${32 + (layer.id * 35)}px` }} // Dynamically extend the line to match the fanning offset
+                                ></div>
                              </motion.div>
                          )}
                      </AnimatePresence>

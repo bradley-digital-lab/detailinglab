@@ -21,13 +21,17 @@ export const INTERIOR = { id: 'interior', label: 'Interior Reset', price: 95, de
 
 export const BUNDLE_DISCOUNT = 0.10; // 10% off interior when bundled
 
-export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
+export function PricingEstimator({ onBook, serverPackages, serverInterior }: { onBook?: (pkg: any) => void, serverPackages?: any, serverInterior?: any }) {
   const [size, setSize] = useState(SIZES[0]);
-  const [paintTier, setPaintTier] = useState(PAINT_TIERS[1]);
+  
+  const LIVE_PAINT_TIERS = serverPackages || PAINT_TIERS;
+  const LIVE_INTERIOR = serverInterior || INTERIOR;
+  
+  const [paintTier, setPaintTier] = useState(LIVE_PAINT_TIERS[1] || LIVE_PAINT_TIERS[0]);
   const [includeInterior, setIncludeInterior] = useState(false);
 
   const paintPrice = Math.round(paintTier.price * size.multiplier);
-  const interiorFull = Math.round(INTERIOR.price * size.multiplier);
+  const interiorFull = Math.round(LIVE_INTERIOR.price * size.multiplier);
   const interiorDiscounted = Math.round(interiorFull * (1 - BUNDLE_DISCOUNT));
   const totalPrice = includeInterior ? paintPrice + interiorDiscounted : paintPrice;
 
@@ -58,7 +62,7 @@ export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
           <div>
             <h3 className="text-white font-black uppercase tracking-widest text-sm mb-4">2. Exterior Service</h3>
             <div className="flex flex-col gap-3">
-              {PAINT_TIERS.map(t => (
+              {LIVE_PAINT_TIERS.map((t: any) => (
                 <button
                   key={t.id}
                   onClick={() => setPaintTier(t)}
@@ -98,7 +102,7 @@ export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
 
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`font-black uppercase tracking-tight text-lg ${includeInterior ? 'text-emerald-400' : 'text-white'}`}>{INTERIOR.label}</span>
+                  <span className={`font-black uppercase tracking-tight text-lg ${includeInterior ? 'text-emerald-400' : 'text-white'}`}>{LIVE_INTERIOR.label}</span>
                   <div className="text-right">
                     {includeInterior ? (
                       <div className="flex items-center gap-2">
@@ -112,7 +116,7 @@ export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
                     )}
                   </div>
                 </div>
-                <span className="text-sm text-neutral-400 leading-relaxed">{INTERIOR.desc}</span>
+                <span className="text-sm text-neutral-400 leading-relaxed">{LIVE_INTERIOR.desc}</span>
                 {includeInterior && (
                   <motion.p
                     initial={{ opacity: 0, height: 0 }}
@@ -157,7 +161,7 @@ export function PricingEstimator({ onBook }: { onBook?: (pkg: any) => void }) {
                  animate={{ opacity: 1, y: 0 }}
                  className="flex items-center justify-between text-xs"
                >
-                 <span className="text-neutral-500">{INTERIOR.label} <span className="text-emerald-500/60">(-10%)</span></span>
+                 <span className="text-neutral-500">{LIVE_INTERIOR.label} <span className="text-emerald-500/60">(-10%)</span></span>
                  <span className="text-emerald-400 font-bold">£{interiorDiscounted}</span>
                </motion.div>
              )}
