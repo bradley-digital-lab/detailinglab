@@ -308,7 +308,7 @@ export default function ExecutiveSummaryPage() {
              <motion.div 
               initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.8 }}
               className="bg-black border border-white/10 p-6 sm:p-10 md:p-20 rounded-[30px] md:rounded-[40px] relative overflow-hidden shadow-[0_20px_50px_-20px_rgba(0,0,0,1)] active:border-red-500/30 transition-colors"
              >
@@ -362,10 +362,10 @@ export default function ExecutiveSummaryPage() {
                      key={i}
                      initial={{ opacity: 0, y: 20 }}
                      whileInView={{ opacity: 1, y: 0 }}
-                     viewport={{ once: true, margin: "-50px" }}
+                     viewport={{ once: true, amount: 0.1 }}
                      whileTap={{ scale: 0.95, border: "1px solid rgba(34,211,238,0.5)" }}
                      whileHover={{ scale: 1.02 }}
-                     transition={{ duration: 0.4, delay: i * 0.1 }}
+                     transition={{ duration: 0.4, delay: i * 0.05 }}
                      style={{ willChange: "transform, opacity" }}
                      className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-2xl hover:border-cyan-500/30 transition-all group cursor-pointer relative overflow-hidden flex flex-col transform-gpu"
                   >
@@ -387,7 +387,7 @@ export default function ExecutiveSummaryPage() {
              <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, amount: 0.1 }}
               style={{ willChange: "transform, opacity" }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center transform-gpu"
              >
@@ -477,7 +477,7 @@ export default function ExecutiveSummaryPage() {
              <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, amount: 0.1 }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center"
              >
                 <div className="relative h-[350px] md:h-[500px] bg-gradient-to-br from-neutral-900 to-black rounded-[30px] border border-white/10 overflow-hidden flex items-center justify-center p-6 group shadow-lg">
@@ -589,8 +589,8 @@ export default function ExecutiveSummaryPage() {
                     key={i}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ delay: i * 0.15 }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    transition={{ delay: i * 0.055 }}
                     className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl relative overflow-hidden group hover:border-green-500/30 transition-colors flex flex-col"
                   >
                      <div className="absolute -right-6 -top-6 text-[150px] font-black text-white/[0.02] group-hover:text-green-500/[0.05] transition-colors duration-500 pointer-events-none leading-none">
@@ -646,7 +646,7 @@ export default function ExecutiveSummaryPage() {
              <motion.div 
                initial={{ opacity: 0, y: 30 }}
                whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true, margin: "-50px" }}
+               viewport={{ once: true, amount: 0.1 }}
                className="bg-[#050000] border border-red-500/20 p-6 md:p-12 md:pt-16 rounded-[30px] shadow-[0_0_50px_rgba(239,68,68,0.05)] relative overflow-hidden"
              >
                 {/* Warning tape style header */}
@@ -902,7 +902,7 @@ export default function ExecutiveSummaryPage() {
                  <motion.path
                    initial={{ pathLength: 0 }}
                    whileInView={{ pathLength: 1 }}
-                   viewport={{ once: true, margin: "-50px" }}
+                   viewport={{ once: true, amount: 0.1 }}
                    transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
                    d="M 30,90 C 35,50 40,20 50,20 C 70,20 80,40 60,60 C 90,60 100,90 70,110 C 40,130 10,100 30,80 C 50,60 80,80 100,60 C 110,50 120,50 130,60 C 125,70 125,100 135,100 C 150,100 160,70 170,70 C 140,70 140,100 160,100 C 165,100 165,70 170,70 C 170,90 170,100 180,100 C 195,100 205,70 215,70 C 185,70 185,100 205,100 C 215,100 215,10 220,10 C 220,50 215,100 230,100 C 270,100 350,90 440,50"
                  />
@@ -910,7 +910,7 @@ export default function ExecutiveSummaryPage() {
                  <motion.path
                    initial={{ pathLength: 0 }}
                    whileInView={{ pathLength: 1 }}
-                   viewport={{ once: true, margin: "-50px" }}
+                   viewport={{ once: true, amount: 0.1 }}
                    transition={{ duration: 0.8, ease: "easeOut", delay: 2.7 }}
                    d="M 10 120 Q 200 130 430 115"
                  />
