@@ -4,7 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Shield, Zap, Database, TrendingUp, Cpu, Server, Lock, Activity, Eye, LayoutDashboard, Calendar, SplitSquareHorizontal, Search, Globe, Code, Target, Award, Car, Sparkles, AlertTriangle, Crosshair, Wallet, Scissors, Smartphone, ArrowRight, Layers } from 'lucide-react';
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  return isMobile;
+}
+
 const TerminalBootSequence = ({ onComplete }: { onComplete: () => void }) => {
+  const isMobile = useIsMobile();
   const [textIndex, setTextIndex] = useState(0);
   const bootLogs = [
     "INITIALIZING SECURE HANDSHAKE...",
@@ -28,7 +40,7 @@ const TerminalBootSequence = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <motion.div 
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+      exit={{ opacity: 0, scale: isMobile ? 1 : 0.95, filter: isMobile ? "blur(2px)" : "blur(10px)" }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
       className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-black font-mono px-4"
     >
@@ -42,7 +54,7 @@ const TerminalBootSequence = ({ onComplete }: { onComplete: () => void }) => {
               animate={index <= textIndex ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-xs md:text-sm border-l-2 border-cyan-500/30 pl-3 md:pl-4"
             >
-              <span className="text-neutral-600 hidden sm:inline">[{Date.now().toString().slice(-6)}]</span>
+              <span className="text-neutral-600 hidden sm:inline">[{String(849200 + index * 17)}]</span>
               <span className={index === textIndex ? "text-cyan-400 font-bold" : "text-neutral-500"}>
                 {log}
               </span>
@@ -64,6 +76,7 @@ const TerminalBootSequence = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 const ArchitectureTopologyMap = () => {
+  const isMobile = useIsMobile();
   return (
     <div className="w-full bg-[#030303] rounded-3xl border border-white/5 p-8 md:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden group">
       {/* Background glow lines */}
@@ -81,12 +94,14 @@ const ArchitectureTopologyMap = () => {
            <p className="mt-6 font-bold text-xs md:text-sm uppercase tracking-widest text-white">High-Ticket Lead</p>
            <p className="mt-2 text-[10px] md:text-xs text-neutral-500 font-mono text-center leading-relaxed">Mobile Context<br/>0ms Request</p>
            
-           <motion.div 
-             animate={{ x: [0, 100], opacity: [0, 1, 0] }}
-             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-             className="hidden md:block absolute top-[40px] md:top-[48px] -right-[70px] w-20 h-[2px] bg-cyan-400"
-             style={{ boxShadow: "0 0 10px rgba(34, 211, 238, 0.8)" }}
-           />
+           {!isMobile && (
+             <motion.div 
+               animate={{ x: [0, 100], opacity: [0, 1, 0] }}
+               transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+               className="hidden md:block absolute top-[40px] md:top-[48px] -right-[70px] w-20 h-[2px] bg-cyan-400"
+               style={{ boxShadow: "0 0 10px rgba(34, 211, 238, 0.8)" }}
+             />
+           )}
         </div>
 
         {/* Node 2: Edge Network */}
@@ -98,12 +113,14 @@ const ArchitectureTopologyMap = () => {
            <p className="mt-6 font-bold text-xs md:text-sm uppercase tracking-widest text-cyan-400">Vercel Edge Node</p>
            <p className="mt-2 text-[10px] md:text-xs text-neutral-400 font-mono text-center leading-relaxed">Sub-50ms Render<br/>Next.js Core</p>
 
-           <motion.div 
-             animate={{ x: [0, 100], opacity: [0, 1, 0] }}
-             transition={{ duration: 1.5, delay: 0.5, repeat: Infinity, ease: "linear" }}
-             className="hidden md:block absolute top-[48px] md:top-[56px] -right-[70px] w-20 h-[2px] bg-green-400"
-             style={{ boxShadow: "0 0 10px rgba(34, 197, 94, 0.8)" }}
-           />
+           {!isMobile && (
+             <motion.div 
+               animate={{ x: [0, 100], opacity: [0, 1, 0] }}
+               transition={{ duration: 1.5, delay: 0.5, repeat: Infinity, ease: "linear" }}
+               className="hidden md:block absolute top-[48px] md:top-[56px] -right-[70px] w-20 h-[2px] bg-green-400"
+               style={{ boxShadow: "0 0 10px rgba(34, 197, 94, 0.8)" }}
+             />
+           )}
         </div>
 
         {/* Node 3: Database */}
@@ -114,12 +131,14 @@ const ArchitectureTopologyMap = () => {
            <p className="mt-6 font-bold text-xs md:text-sm uppercase tracking-widest text-green-400">PostgreSQL Cloud</p>
            <p className="mt-2 text-[10px] md:text-xs text-neutral-500 font-mono text-center leading-relaxed">Row-Level Security<br/>Supabase Vault</p>
 
-           <motion.div 
-             animate={{ x: [0, 100], opacity: [0, 1, 0] }}
-             transition={{ duration: 1.5, delay: 1.0, repeat: Infinity, ease: "linear" }}
-             className="hidden md:block absolute top-[40px] md:top-[48px] -right-[70px] w-20 h-[2px] bg-red-500"
-             style={{ boxShadow: "0 0 10px rgba(239, 68, 68, 0.8)" }}
-           />
+           {!isMobile && (
+             <motion.div 
+               animate={{ x: [0, 100], opacity: [0, 1, 0] }}
+               transition={{ duration: 1.5, delay: 1.0, repeat: Infinity, ease: "linear" }}
+               className="hidden md:block absolute top-[40px] md:top-[48px] -right-[70px] w-20 h-[2px] bg-red-500"
+               style={{ boxShadow: "0 0 10px rgba(239, 68, 68, 0.8)" }}
+             />
+           )}
         </div>
 
         {/* Node 4: Dashboard */}
@@ -156,6 +175,7 @@ const ArchitectureTopologyMap = () => {
 }
 
 export default function ExecutiveSummaryPage() {
+  const isMobile = useIsMobile();
   const [bootPhase, setBootPhase] = useState<'terminal' | 'greeting' | 'ready'>('terminal');
   const [scrollUnlocked, setScrollUnlocked] = useState(false);
   
@@ -172,35 +192,21 @@ export default function ExecutiveSummaryPage() {
     }
   }, [bootPhase]);
 
-  // Lock scroll until hero text has loaded (Mobile/Desktop airtight lock)
+  // Lock scroll until hero text has loaded
   useEffect(() => {
     if (!scrollUnlocked) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
-      // iOS Safari specific lock
-      document.body.style.position = 'fixed';
-      document.body.style.top = '0';
-      document.body.style.left = '0';
-      document.body.style.width = '100%';
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.width = '';
     }
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.width = '';
     };
   }, [scrollUnlocked]);
 
-  if (typeof window === 'undefined') return null;
 
   return (
     <>
@@ -218,7 +224,7 @@ export default function ExecutiveSummaryPage() {
         <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
            <motion.div 
-             style={{ y: yBackground }}
+             style={{ y: isMobile ? 0 : yBackground }}
              className="absolute top-[-20%] left-[-10%] w-[80vw] md:w-[50vw] h-[80vw] md:h-[50vw] bg-cyan-900/20 rounded-full blur-[100px] md:blur-[120px]" 
            />
         </div>
@@ -232,9 +238,9 @@ export default function ExecutiveSummaryPage() {
               {bootPhase === 'greeting' && (
                  <motion.div
                    key="greeting"
-                   initial={{ opacity: 0, scale: 0.9, filter: "blur(20px)" }}
+                   initial={{ opacity: 0, scale: 0.9, filter: isMobile ? "blur(2px)" : "blur(20px)" }}
                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                   exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)", transition: { duration: 0.8 } }}
+                   exit={{ opacity: 0, scale: 1.1, filter: isMobile ? "blur(2px)" : "blur(20px)", transition: { duration: 0.8 } }}
                    transition={{ duration: 1.5, ease: "easeOut" }}
                    className="absolute inset-0 flex flex-col items-center justify-center z-50 mt-[-10vh]"
                  >
@@ -254,7 +260,7 @@ export default function ExecutiveSummaryPage() {
               {bootPhase === 'ready' && (
                  <motion.div
                    key="hero"
-                   initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+                   initial={{ opacity: 0, y: isMobile ? 20 : 50, filter: isMobile ? "blur(2px)" : "blur(10px)" }}
                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                    transition={{ duration: 1.2, staggerChildren: 0.2 }}
                    onAnimationComplete={() => setScrollUnlocked(true)}
@@ -307,7 +313,7 @@ export default function ExecutiveSummaryPage() {
           {/* SECTION 1: THE ILLUSION OF CHOICE (MOBILE FIRST) */}
           <section className="mb-24 md:mb-40">
              <motion.div 
-              initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+              initial={{ opacity: 0, y: isMobile ? 15 : 30, filter: isMobile ? "blur(2px)" : "blur(10px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               
               transition={{ duration: 0.8 }}

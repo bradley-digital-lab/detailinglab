@@ -1,4 +1,5 @@
 import React from 'react';
+import Script from 'next/script';
 
 export default function GeofenceSchema() {
   const schema = {
@@ -63,7 +64,8 @@ export default function GeofenceSchema() {
   };
 
   return (
-    <script
+    <Script
+      id="geofence-schema"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
