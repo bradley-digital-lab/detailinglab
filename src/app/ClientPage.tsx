@@ -9,6 +9,8 @@ import { BeforeAfterSlider } from "../components/BeforeAfterSlider";
 import { PricingEstimator, SIZES, PAINT_TIERS, INTERIOR, BUNDLE_DISCOUNT } from "../components/PricingEstimator";
 import { AnimatedShieldReveal } from "../components/AnimatedShieldReveal";
 import { InfographicSection } from "../components/InfographicSection";
+import { BookingModal } from '../components/BookingModal';
+
 
 // ==========================================
 // CUSTOM CURSOR (Global)
@@ -19,8 +21,13 @@ function CustomCursor() {
   const springX = useSpring(cursorX, { stiffness: 800, damping: 40 });
   const springY = useSpring(cursorY, { stiffness: 800, damping: 40 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const mobileCheck = window.matchMedia("(max-width: 768px)").matches;
+    setIsMobile(mobileCheck);
+    if (mobileCheck) return;
+
     const moveCursor = (e: globalThis.MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -35,6 +42,8 @@ function CustomCursor() {
     window.addEventListener("mousemove", moveCursor);
     return () => window.removeEventListener("mousemove", moveCursor);
   }, [cursorX, cursorY]);
+
+  if (isMobile) return null;
 
   return (
     <>
@@ -145,6 +154,11 @@ function InspectionTorchMode() {
   const springY = useSpring(mouseY, { stiffness: 600, damping: 40 });
 
   const [isActive, setIsActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!containerRef.current) return;
@@ -164,7 +178,7 @@ function InspectionTorchMode() {
       
       {/* BASE LAYER: Dark, Scratched, Neglected Paint */}
       <div className="absolute inset-0 z-0">
-         <Image src="/before_paint.png" fill className="object-cover opacity-60 grayscale-[30%] blur-[2px] transition-all duration-700 group-hover:blur-none group-hover:opacity-100" alt="Scratched Paint" />
+         <Image src="/before_paint.png" fill className={`object-cover opacity-60 grayscale-[30%] ${isMobile ? '' : 'blur-[2px]'} transition-all duration-700 group-hover:blur-none group-hover:opacity-100`} alt="Scratched Paint" />
          <div className="absolute inset-0 bg-black/80 mix-blend-multiply pointer-events-none transition-colors duration-700 group-hover:bg-black/95" />
       </div>
 
@@ -223,414 +237,8 @@ function InspectionTorchMode() {
   );
 }
 
-// ==========================================
-// CORE FEATURE: MULTI-TENANT BOOKING ENGINE
-// ==========================================
-function BookingModal({ isOpen, onClose, initialPackage, serverPackages, serverInterior, serverBookingsPaused, operationStartTime = '09:00', operationEndTime = '18:00', slotIntervalMinutes = 120 }: { isOpen: boolean, onClose: () => void, initialPackage?: any, serverPackages?: any, serverInterior?: any, serverBookingsPaused?: boolean, operationStartTime?: string, operationEndTime?: string, slotIntervalMinutes?: number }) {
-  const [step, setStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const LIVE_PAINT_TIERS = serverPackages || PAINT_TIERS;
-  const LIVE_INTERIOR = serverInterior || INTERIOR;
-  
-  // Package Selection State
-  const [size, setSize] = useState(SIZES[0]);
-  const [paintTier, setPaintTier] = useState(LIVE_PAINT_TIERS[1] || LIVE_PAINT_TIERS[0]);
-  const [includeInterior, setIncludeInterior] = useState(false);
-  
-  // Routing State
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [postcode, setPostcode] = useState("");
-  const [assignedDetailer, setAssignedDetailer] = useState<Detailer | null>(null);
-  const [routingError, setRoutingError] = useState<string | null>(null);
 
-  // Removed next14Days static array in favor of react-big-calendar
-  // Reset state when opened
-  useEffect(() => {
-    if (isOpen) {
-      if (initialPackage) {
-        setSize(initialPackage.size || SIZES[0]);
-        setPaintTier(initialPackage.paintTier || LIVE_PAINT_TIERS[1]);
-        setIncludeInterior(initialPackage.includeInterior || false);
-        setStep(2); // Skip straight to calendar
-      } else {
-        setSize(SIZES[0]);
-        setPaintTier(LIVE_PAINT_TIERS[1] || LIVE_PAINT_TIERS[0]);
-        setIncludeInterior(false);
-        setStep(1); // Show Selection Package
-      }
-      setIsLoading(false);
-      setAssignedDetailer(null);
-      setRoutingError(null);
-      setSelectedDate("");
-      setSelectedTime("");
-      setPostcode("");
-    }
-  }, [isOpen, initialPackage]);
-
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [vehicleMake, setVehicleMake] = useState("");
-  const [vehicleModel, setVehicleModel] = useState("");
-
-  const generateSlots = () => {
-    if (!operationStartTime || !operationEndTime || !slotIntervalMinutes) return [];
-    const [startH, startM] = operationStartTime.split(':').map(Number);
-    const [endH, endM] = operationEndTime.split(':').map(Number);
-    
-    let currentMins = startH * 60 + startM;
-    const endBoundary = endH * 60 + endM;
-    const slots = [];
-    
-    while (currentMins + slotIntervalMinutes <= endBoundary) {
-       const h = Math.floor(currentMins / 60).toString().padStart(2, '0');
-       const m = (currentMins % 60).toString().padStart(2, '0');
-       slots.push(`${h}:${m}`);
-       currentMins += slotIntervalMinutes;
-    }
-    return slots;
-  };
-
-  const availableSlots = generateSlots();
-
-  const handleRoutingSearch = async () => {
-    if (!selectedDate || postcode.length < 2) return;
-    setIsLoading(true);
-    setRoutingError(null);
-
-    try {
-      const res = await fetch('/api/jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'check',
-          date: selectedDate,
-          time_slot: selectedTime,
-          customer_postcode: postcode
-        })
-      });
-      const data = await res.json();
-      
-      setIsLoading(false);
-      if (data.success && data.detailer) {
-          setAssignedDetailer(data.detailer);
-          setTimeout(() => setStep(4), 1500); // Wait 1.5s then go to Final Dispatch
-      } else {
-          setRoutingError("No elite detailers have capacity in this radius on this date. Please select another.");
-      }
-    } catch(err) {
-      setIsLoading(false);
-      setRoutingError("Network error checking routing availability.");
-    }
-  };
-
-  const handleFinalSubmit = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'dispatch',
-          date: selectedDate,
-          time_slot: selectedTime,
-          customer_postcode: postcode,
-          package_id: paintTier.id,
-          customer_name: customerName,
-          customer_email: customerEmail,
-          vehicle_make: vehicleMake,
-          vehicle_model: vehicleModel
-        })
-      });
-      await res.json();
-      
-      setIsLoading(false);
-      setStep(5);
-    } catch(err) {
-       setIsLoading(false);
-       // Just crash to step 5 for demo purposes if it fails locally during dev
-       setStep(5);
-    }
-  };
-
-  return (
-    <AnimatePresence>
-      {serverBookingsPaused && isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#050505] p-8 md:p-12 rounded-3xl max-w-lg w-full text-center border border-white/10 shadow-2xl relative">
-             <button onClick={onClose} className="absolute top-6 right-6 text-neutral-500 hover:text-white transition-colors"><X size={24} /></button>
-             <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                 <ShieldCheck size={32} />
-             </div>
-             <h2 className="text-3xl font-black text-white tracking-tighter uppercase mb-4">Bookings Paused</h2>
-             <p className="text-neutral-400 mb-8">
-                 We are currently at absolute maximum capacity and are not accepting new clients at this time. Please check back later.
-             </p>
-          </div>
-        </div>
-      )}
-      {!serverBookingsPaused && isOpen && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl cursor-auto"
-        >
-          <motion.div 
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20 }}
-            className="w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)] flex flex-col max-h-[90vh]"
-          >
-            {/* Header */}
-            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5 shrink-0">
-              <div className="font-bold text-lg tracking-tighter uppercase flex items-center gap-2">
-                <ShieldCheck size={20} className="text-cyan-400" />
-                Network Dispatch Engine
-              </div>
-              <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                <X size={20} className="text-neutral-400" />
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="p-8 relative overflow-y-auto custom-scrollbar">
-              
-                            {/* STEP 1: SELECT PACKAGE */}
-              {step === 1 && (
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                  <h3 className="text-3xl font-black uppercase mb-2">The Package.</h3>
-                  <p className="text-neutral-400 mb-8">Configure your vehicle requirements before checking detailer availability.</p>
-                  
-                  <div className="space-y-6">
-                    {/* Size Select */}
-                    <div>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">1. Vehicle Size</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {SIZES.map(s => (
-                            <button
-                              key={s.id}
-                              onClick={() => setSize(s)}
-                              className={`p-3 rounded-xl border flex flex-col items-center gap-2 transition-colors ${size.id === s.id ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400 shadow-[inset_0_0_20px_rgba(6,182,212,0.15)]' : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10'}`}
-                            >
-                              <span className="text-[10px] font-bold text-center uppercase tracking-wide">{s.label}</span>
-                            </button>
-                          ))}
-                        </div>
-                    </div>
-
-                    {/* Paint Tier */}
-                    <div>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">2. Exterior Service</label>
-                        <div className="flex flex-col gap-2">
-                          {LIVE_PAINT_TIERS.map((t: any) => (
-                            <button
-                              key={t.id}
-                              onClick={() => setPaintTier(t)}
-                              className={`p-4 rounded-xl border flex flex-col text-left transition-all ${paintTier.id === t.id ? 'bg-cyan-500/10 border-cyan-500 shadow-[inset_0_0_20px_rgba(6,182,212,0.15)]' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
-                            >
-                              <div className="flex items-center justify-between w-full mb-1">
-                                <span className={`font-black uppercase text-sm ${paintTier.id === t.id ? 'text-cyan-400' : 'text-white'}`}>{t.label}</span>
-                                <span className={`text-xs font-bold ${paintTier.id === t.id ? 'text-cyan-400' : 'text-neutral-500'}`}>£{Math.round(t.price * size.multiplier)}</span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                    </div>
-
-                    {/* Interior Toggle */}
-                    <div>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">3. Add Interior?</label>
-                        <button
-                          onClick={() => setIncludeInterior(!includeInterior)}
-                          className={`w-full p-4 rounded-xl border flex text-left transition-all ${
-                            includeInterior
-                              ? 'bg-emerald-500/10 border-emerald-500/50 shadow-[inset_0_0_20px_rgba(52,211,153,0.1)]'
-                              : 'bg-white/5 border-white/5 hover:bg-white/10'
-                          }`}
-                        >
-                            <div className="flex items-center justify-between w-full">
-                              <span className={`font-black uppercase text-sm ${includeInterior ? 'text-emerald-400' : 'text-white'}`}>{INTERIOR.label}</span>
-                              <div className="text-right text-xs">
-                                {includeInterior ? (
-                                    <span className="text-emerald-400 font-bold">£{Math.round(INTERIOR.price * size.multiplier * (1 - BUNDLE_DISCOUNT))} (-10%)</span>
-                                ) : (
-                                    <span className="text-neutral-500 font-bold">+ £{Math.round(INTERIOR.price * size.multiplier)}</span>
-                                )}
-                              </div>
-                            </div>
-                        </button>
-                    </div>
-
-                  </div>
-
-                  <button 
-                    onClick={() => setStep(2)}
-                    className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none"
-                  >
-                    Check Availability <ChevronRight size={18} />
-                  </button>
-                </motion.div>
-              )}
-
-              {/* STEP 2: CALENDAR & GEO-ROUTING */}
-              {step === 2 && (
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                  <h3 className="text-3xl font-black uppercase mb-2">The Target.</h3>
-                  <p className="text-neutral-400 mb-8">Select your desired date and time, and routing location.</p>
-                  
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-1 block">Date</label>
-                        <input 
-                           type="date"
-                           min={new Date().toISOString().split("T")[0]}
-                           value={selectedDate}
-                           onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(""); }}
-                           className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors uppercase tracking-widest style-color-scheme-dark" 
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-1 block">Geo-Location (Postcode)</label>
-                        <input 
-                           type="text" 
-                           value={postcode}
-                           onChange={(e) => setPostcode(e.target.value.toUpperCase())}
-                           className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors uppercase tracking-widest" 
-                           placeholder="e.g. LS1, HG1" 
-                           maxLength={4}
-                        />
-                      </div>
-                    </div>
-
-                    {selectedDate && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                        <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-3 block">Deterministic Payload Time slots</label>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                            {availableSlots.map((slot) => (
-                               <button 
-                                  key={slot}
-                                  onClick={() => setSelectedTime(slot)}
-                                  className={`py-3 rounded-xl border font-bold tracking-widest text-sm transition-all focus:outline-none ${selectedTime === slot ? 'bg-cyan-500 text-black border-cyan-500' : 'bg-white/5 text-neutral-400 border-white/10 hover:border-cyan-500/50 hover:text-white'}`}
-                               >
-                                  {slot}
-                               </button>
-                            ))}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {routingError && (
-                        <div className="p-4 border border-red-500/50 bg-red-500/10 rounded-xl text-red-500 text-sm font-bold">
-                            {routingError}
-                        </div>
-                    )}
-                  </div>
-
-                  <button 
-                    onClick={() => setStep(3)}
-                    disabled={!selectedDate || !selectedTime || postcode.length < 2}
-                    className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none disabled:opacity-50"
-                  >
-                    Next Step <ChevronRight size={18} />
-                  </button>
-                </motion.div>
-              )}
-
-              {/* STEP 3: THE ASSET */}
-              {step === 3 && (
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                  <h3 className="text-3xl font-black uppercase mb-2">The Asset.</h3>
-                  <p className="text-neutral-400 mb-8">What vehicle are we preparing to transform?</p>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-1 block">Make (e.g. Porsche, BMW)</label>
-                      <input type="text" value={vehicleMake} onChange={e => setVehicleMake(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="Enter Vehicle Make" />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-1 block">Model & Year</label>
-                      <input type="text" value={vehicleModel} onChange={e => setVehicleModel(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="e.g. 911 GT3 (2024)" />
-                    </div>
-                  </div>
-
-                  {!assignedDetailer ? (
-                      <button 
-                        onClick={handleRoutingSearch}
-                        disabled={isLoading || !vehicleMake || !vehicleModel}
-                        className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 cursor-none disabled:opacity-50"
-                      >
-                        {isLoading ? (
-                            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
-                                <Sparkles size={18} />
-                            </motion.div>
-                        ) : (
-                            <>Analyze Network Capacity <Search size={18} /></>
-                        )}
-                      </button>
-                  ) : null}
-                </motion.div>
-              )}
-
-              {/* STEP 4: FINAL DISPATCH */}
-              {step === 4 && (
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                  <h3 className="text-3xl font-black uppercase mb-2">Dispatch Order.</h3>
-                  <p className="text-neutral-400 mb-8">Confirm details to dispatch this job to <span className="text-white font-bold">{assignedDetailer?.name}</span>.</p>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="Full Name" />
-                    </div>
-                    <div>
-                      <input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="Email Address" />
-                    </div>
-                  </div>
-                  
-                  <button 
-                    onClick={handleFinalSubmit} 
-                    disabled={isLoading}
-                    className="mt-8 w-full py-4 bg-cyan-500 text-black font-black uppercase rounded-xl hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-none"
-                  >
-                    {isLoading ? (
-                      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
-                        <Sparkles size={18} />
-                      </motion.div>
-                    ) : (
-                      <>Initialize Dispatch <Check size={18} /></>
-                    )}
-                  </button>
-                  <p className="text-center text-xs text-neutral-600 mt-4 font-bold uppercase tracking-widest">Zero Commitment Required. SSL Secured.</p>
-                </motion.div>
-              )}
-
-              {/* STEP 5: SUCCESS */}
-              {step === 5 && (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center h-full pt-10">
-                  <div className="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center mb-6">
-                    <CheckCircle2 size={40} className="text-cyan-400" />
-                  </div>
-                  <h3 className="text-3xl font-black uppercase mb-2 text-cyan-400">Order Dispatched.</h3>
-                  <p className="text-neutral-400 mb-8">
-                    Your request has been securely matched and sent to <span className="text-white font-bold">{assignedDetailer?.name}</span>. 
-                    They will contact you shortly to confirm the bay slot.
-                  </p>
-                  <button onClick={onClose} className="py-3 px-8 border border-white/20 text-white rounded-xl font-bold uppercase text-sm hover:bg-white/5 transition-colors cursor-none">
-                    Close Window
-                  </button>
-                </motion.div>
-              )}
-            </div>
-
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
+// Extracted BookingModal to src/components/BookingModal.tsx
 
 // ==========================================
 // MAIN PAGE LAYER
@@ -992,6 +600,38 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                 </div>
               </ScrollReveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CORE FEATURE: PPC KEYWORD BLEEDING (Local SEO Architecture) */}
+      <section className="relative z-10 py-16 bg-[#020202] border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+               <h2 className="text-xl font-black uppercase tracking-widest text-cyan-500 mb-4">Elite Coverage Areas</h2>
+               <p className="text-neutral-400 text-sm leading-relaxed max-w-sm">
+                 Our specialized mobile detailing units are deployed exclusively to the highest yield postcodes across Yorkshire. We bring studio-grade paint correction directly to your driveway.
+               </p>
+            </div>
+            <div className="col-span-1">
+               <h3 className="text-xs font-bold text-white uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-2">North Yorkshire</h3>
+               <ul className="space-y-3">
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Mobile Detailing in Harrogate</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Ceramic Coating Wetherby</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Paint Correction York</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Luxury Valeting Ripon</a></li>
+               </ul>
+            </div>
+            <div className="col-span-1">
+               <h3 className="text-xs font-bold text-white uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-2">West Yorkshire</h3>
+               <ul className="space-y-3">
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Mobile Detailer Leeds (LS1)</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Car Detailing Ilkley</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Ceramic Coating Otley</a></li>
+                 <li><a href="#" className="text-neutral-500 text-sm hover:text-cyan-400 transition-colors cursor-none">Paint Protection Bradford</a></li>
+               </ul>
+            </div>
           </div>
         </div>
       </section>

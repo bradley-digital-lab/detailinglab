@@ -10,6 +10,13 @@ export default function GeofenceSchema() {
     "telephone": "+447000000000",
     "priceRange": "£££",
     "description": "Elite Automotive Detailing and Ceramic Coating servicing Yorkshire.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "ratingCount": "128",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Yorkshire",
