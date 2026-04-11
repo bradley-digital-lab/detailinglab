@@ -503,7 +503,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                      <div className="relative w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden group border border-white/10 shadow-2xl">
                          <Image src="/mobile_service_car.png" alt="Detailing Lab mobile unit detailing a luxury car at a residential home" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                         <div className="absolute bottom-0 left-0 p-8 w-full">
+                         <div className="absolute bottom-0 left-0 p-5 md:p-8 w-full">
                              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
                                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                                  Fully Mobile Operations
@@ -523,7 +523,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                      <div className="relative w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden group border border-white/10 shadow-2xl">
                          <Image src="/snow_foam_uk_house.png" alt="Luxury car covered in thick snow foam during a decontamination wash" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                         <div className="absolute bottom-0 left-0 p-8 w-full">
+                         <div className="absolute bottom-0 left-0 p-5 md:p-8 w-full">
                              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                                  Advanced Chemistry
@@ -637,13 +637,13 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       </section>
 
       {/* Direct-Response CTA Footer */}
-      <footer className="relative z-10 py-40 px-6 overflow-hidden bg-[#030303]">
+      <footer className="relative z-10 py-20 md:py-40 px-4 md:px-6 overflow-hidden bg-[#030303]">
         <div className="absolute inset-0 bg-cyan-900/10 pointer-events-none" />
         
         <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[50%] bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none" />
 
         <ScrollReveal className="max-w-3xl mx-auto text-center relative z-10">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6">
             Demand <span className="text-cyan-500">Perfection.</span>
           </h2>
           <p className="text-neutral-400 text-xl mb-12 leading-relaxed">
@@ -651,8 +651,8 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
           </p>
           
           <div className="flex flex-col items-center">
-            <MagneticButton onClick={() => openBookingModalWithPackage()} className="px-12 py-6 bg-cyan-500 text-black text-xl font-black tracking-tight uppercase rounded-xl transition-colors shadow-[0_0_40px_rgba(6,182,212,0.4)] flex items-center gap-3 cursor-none">
-              Request Your Free Quote <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
+            <MagneticButton onClick={() => openBookingModalWithPackage()} className="px-8 py-5 md:px-12 md:py-6 w-full sm:w-auto justify-center bg-cyan-500 text-black text-lg md:text-xl font-black tracking-tight uppercase rounded-xl transition-colors shadow-[0_0_40px_rgba(6,182,212,0.4)] flex items-center gap-3 cursor-none">
+              Request Free Quote <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform hidden sm:block" />
             </MagneticButton>
             
             <motion.div 

@@ -95,12 +95,12 @@ export function InfographicSection() {
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         
         {/* LEFT COLUMN: 3D EXPLODED VIEW */}
-        <div className="relative h-[600px] flex items-center justify-center perspective-[2000px]">
+        <div className="relative h-[400px] md:h-[600px] flex items-center justify-center perspective-[2000px] overflow-visible">
            <motion.div 
-             className="relative w-[300px] h-[300px]"
+             className="relative w-[220px] h-[220px] md:w-[300px] md:h-[300px]"
              initial={{ rotateX: 60, rotateZ: -45, scale: 0.8 }}
              animate={{ rotateX: 60, rotateZ: isExploded ? -45 : 0, scale: isExploded ? 0.9 : 1.1 }}
              transition={{ duration: 1.5, type: 'spring', bounce: 0.2 }}
@@ -230,7 +230,7 @@ export function InfographicSection() {
 
            {/* The Text Label Matrix (Isolated rendering context to guarantee they render over all 3D geometry without intersection) */}
            <motion.div 
-             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] pointer-events-none z-[100]"
+             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] md:w-[300px] md:h-[300px] pointer-events-none z-[100]"
              initial={{ rotateX: 60, rotateZ: -45, scale: 0.8 }}
              animate={{ rotateX: 60, rotateZ: isExploded ? -45 : 0, scale: isExploded ? 0.9 : 1.1 }}
              transition={{ duration: 1.5, type: 'spring', bounce: 0.2 }}
@@ -257,7 +257,7 @@ export function InfographicSection() {
                                className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4 pointer-events-none"
                                style={{ 
                                   // Parametrically fan out the labels to prevent visual clustering
-                                  left: `calc(0px - 140px - (${layer.id} * 35px))`, 
+                                  left: `calc(0px - clamp(60px, 15vw, 140px) - (${layer.id} * clamp(15px, 5vw, 35px)))`, 
                                   marginTop: `-${layer.id * 12}px`, // Sweep upwards
                                   transform: 'rotateX(-60deg) rotateZ(45deg)' 
                                }}
@@ -270,7 +270,7 @@ export function InfographicSection() {
                                 </div>
                                 <div 
                                     className={`hidden sm:block h-[1px] ${isActive ? 'bg-cyan-500' : 'bg-white/20'}`}
-                                    style={{ width: `${32 + (layer.id * 35)}px` }} // Dynamically extend the line to match the fanning offset
+                                    style={{ width: `clamp(16px, 5vw, 32px) + (${layer.id} * clamp(15px, 5vw, 35px))` }} // Dynamically extend the line to match the fanning offset
                                 ></div>
                              </motion.div>
                          )}
@@ -312,7 +312,7 @@ export function InfographicSection() {
                    animate={{ opacity: 1, y: 0 }}
                    exit={{ opacity: 0, y: -20 }}
                    transition={{ duration: 0.4 }}
-                   className="bg-black/40 backdrop-blur-xl border border-white/10 p-8 rounded-2xl relative overflow-hidden group shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
+                   className="bg-black/40 backdrop-blur-xl border border-white/10 p-5 md:p-8 rounded-2xl relative overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
                 >
                     <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.8)]"></div>
                     <div className="flex justify-between items-start mb-6">
