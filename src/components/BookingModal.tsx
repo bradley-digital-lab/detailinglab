@@ -222,11 +222,11 @@ export function BookingModal({
                 </div>
             ) : (
                 /* Body Grid - Two Columns */
-                <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+                <div className="flex flex-col xl:flex-row flex-1 overflow-y-auto xl:overflow-hidden custom-scrollbar">
                    
                    {/* LEFT COLUMN: THE ASSET */}
-                   <div className="w-full lg:w-[45%] h-full overflow-y-auto custom-scrollbar p-8 border-r border-white/5 pb-24">
-                      <h3 className="text-2xl font-black uppercase mb-8 tracking-tighter border-b border-white/5 pb-4"><span className="text-cyan-500">1.</span> Asset Intel</h3>
+                   <div className="w-full xl:w-[45%] h-auto xl:h-full xl:overflow-y-auto custom-scrollbar p-6 md:p-8 xl:border-r border-b xl:border-b-0 border-white/5 xl:pb-24">
+                      <h3 className="text-xl md:text-2xl font-black uppercase mb-6 md:mb-8 tracking-tighter border-b border-white/5 pb-4"><span className="text-cyan-500">1.</span> Asset Intel</h3>
                       
                       {/* Vehicle Inputs */}
                       <div className="grid grid-cols-2 gap-4 mb-8">
@@ -333,8 +333,8 @@ export function BookingModal({
                    </div>
 
                    {/* RIGHT COLUMN: CALENDAR SCHEDULER */}
-                   <div className="w-full lg:w-[55%] h-full bg-[#050505] p-8 flex flex-col overflow-y-auto custom-scrollbar relative">
-                      <h3 className="text-2xl font-black uppercase mb-6 tracking-tighter"><span className="text-cyan-500">3.</span> Schedule & Deploy</h3>
+                   <div className="w-full xl:w-[55%] h-auto xl:h-full bg-[#050505] p-6 md:p-8 flex flex-col xl:overflow-y-auto custom-scrollbar relative">
+                      <h3 className="text-xl md:text-2xl font-black uppercase mb-6 tracking-tighter"><span className="text-cyan-500">3.</span> Schedule & Deploy</h3>
                       
                       <div className="mb-6 flex-shrink-0">
                          <div className="flex items-center gap-4 text-xs font-bold text-neutral-400 mb-2 uppercase tracking-widest">
