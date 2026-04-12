@@ -96,9 +96,9 @@ export default async function CompareCompetitor({ params }: { params: { competit
               <li className="flex items-start gap-5">
                 <span className="text-cyan-500 font-black text-2xl mt-1 opacity-50">01</span>
                 <div>
-                  <h3 className="font-bold text-xl text-white tracking-wide uppercase">Scientific Curing</h3>
+                  <h3 className="font-bold text-xl text-white tracking-wide uppercase">Mobile Scientific Curing</h3>
                   <p className="text-zinc-400 mt-2 leading-relaxed">
-                    Dedicated temperature-controlled curing zones. We do not release the vehicle until the nano-ceramic bond is chemically locked.
+                    Our self-sufficient mobile laboratory physically comes to your property. We maintain controlled conditions even in the driveway, ensuring the nano-ceramic bond is chemically locked without you lifting a finger.
                   </p>
                 </div>
               </li>
@@ -131,11 +131,11 @@ export default async function CompareCompetitor({ params }: { params: { competit
             Stop Subsidizing Inferior Washes
           </h3>
           <p className="text-zinc-400 mb-10 max-w-2xl mx-auto">
-            If you are tired of swirl marks, stripped clear coats, and volume-based detailing, it's time to upgrade to a controlled laboratory environment.
+            If you are tired of swirl marks, stripped clear coats, and volume-based detailing, it's time to upgrade to our fully-equipped mobile laboratory.
           </p>
-          <a href="/booking" className="inline-flex items-center gap-3 px-10 py-5 bg-cyan-500 text-black font-black text-sm uppercase tracking-widest hover:bg-cyan-400 transition-colors rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+          <a href="/" className="inline-flex items-center gap-3 px-10 py-5 bg-cyan-500 text-black font-black text-sm uppercase tracking-widest hover:bg-cyan-400 transition-colors rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)]">
             <Car className="w-5 h-5" />
-            Switch to The Lab
+            Get Booked In!
           </a>
         </div>
 

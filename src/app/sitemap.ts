@@ -13,6 +13,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // Competitor Intercept Matrix
+  const competitors = [
+    'valiant-detailing-huddersfield',
+    'marshalls-detailing-leeds',
+    'fine-finish-leeds',
+    'jwr-detailing-harrogate',
+    'definition-detailing',
+    'outkast-detailing',
+    'dab-auto-care'
+  ];
+
+  const competitorRoutes = competitors.map((competitor) => ({
+    url: `${rootUrl}/compare/${competitor}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
   return [
     {
       url: rootUrl,
@@ -39,5 +57,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
     },
     ...dynamicRoutes,
+    ...competitorRoutes,
   ];
 }

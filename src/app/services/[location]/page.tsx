@@ -30,7 +30,7 @@ export default async function LocationServiceLanding({ params }: { params: { loc
                 
                 <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-white leading-[1.1]">
                     The Premier <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{serviceName}</span> <br/>
-                    Facility For <span className="underline decoration-cyan-500/50 underline-offset-8">{locationName}</span>
+                    Mobile Laboratory For <span className="underline decoration-cyan-500/50 underline-offset-8">{locationName}</span>
                 </h1>
                 
                 <p className="text-xl text-zinc-400 max-w-2xl mx-auto uppercase tracking-wider font-bold">
@@ -42,8 +42,8 @@ export default async function LocationServiceLanding({ params }: { params: { loc
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
                 <div className="p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800 text-center">
                     <Shield className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-                    <h3 className="font-bold text-white text-lg uppercase tracking-wide mb-2">Climate Controlled</h3>
-                    <p className="text-sm text-zinc-500">Perfect chemical bonding environment</p>
+                    <h3 className="font-bold text-white text-lg uppercase tracking-wide mb-2">Independent Matrix</h3>
+                    <p className="text-sm text-zinc-500">On-board pure water & power</p>
                 </div>
                 <div className="p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800 text-center">
                     <CheckCircle2 className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
@@ -66,8 +66,8 @@ export default async function LocationServiceLanding({ params }: { params: { loc
                 <p className="text-zinc-400 mb-8 max-w-xl mx-auto relative z-10">
                     Due to the scientific perfectionism of our process, we strictly cap intake. Check immediate availability for {locationName} residents below.
                 </p>
-                <a href="/booking" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-black font-black text-sm uppercase tracking-widest hover:bg-cyan-50 transition-colors rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.1)] relative z-10">
-                    Check Availability
+                <a href="/" className="inline-flex items-center gap-2 px-10 py-5 bg-cyan-500 text-black font-black text-sm uppercase tracking-widest hover:bg-cyan-400 transition-colors rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] relative z-10 transition-transform hover:scale-105">
+                    Get Booked In!
                 </a>
             </div>
             
