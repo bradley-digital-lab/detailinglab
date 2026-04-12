@@ -307,7 +307,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       <AnimatedShieldReveal />
 
       {/* CORE FEATURE: DYNAMIC PRICING ESTIMATOR */}
-      <section className="py-24 px-4 bg-[#020202] relative" id="pricing">
+      <section className="py-12 md:py-24 px-4 bg-[#020202] relative" id="pricing">
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">Precision Quotes</h2>
@@ -327,7 +327,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       </section>
 
       {/* CORE FEATURE: VISUAL EVIDENCE GALLERY */}
-      <section id="evidence" className="relative z-10 py-16 lg:py-24 px-6 max-w-7xl mx-auto">
+      <section id="evidence" className="relative z-10 py-12 lg:py-24 px-6 max-w-7xl mx-auto">
          <ScrollReveal>
              <div className="text-center mb-14">
                <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">Real Results</p>
@@ -340,13 +340,13 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
              </div>
              
              {/* Car gallery grid */}
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+             <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
                {[
                  { before: "/bmw_before.png", after: "/bmw_after.png", car: "BMW 3 Series", service: "Stage 2 Correction + Ceramic" },
                  { before: "/audi_before.png", after: "/audi_after.png", car: "Audi A5", service: "Paint Correction + Sealant" },
                  { before: "/rangerover_before.png", after: "/rangerover_after.png", car: "Range Rover Sport", service: "Full Correction + 9H Ceramic" },
                ].map((item, i) => (
-                 <ScrollReveal key={i} delay={i * 0.1}>
+                 <ScrollReveal key={i} delay={i * 0.1} className="w-[85vw] md:w-auto shrink-0 snap-center md:snap-align-none">
                    <div className="group relative rounded-2xl overflow-hidden border border-white/5 bg-[#0a0a0a] hover:border-cyan-500/30 transition-all duration-500">
                      <div className="relative h-48 sm:h-56 overflow-hidden">
                        {/* After image (visible by default) */}
@@ -414,7 +414,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       </section>
 
       {/* Trust & Review Section — 3 Column Grid */}
-      <section id="reviews" className="relative z-10 py-16 lg:py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a] border-y border-white/5 overflow-hidden">
+      <section id="reviews" className="relative z-10 py-12 lg:py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a] border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -423,7 +423,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
             </div>
           </ScrollReveal>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
             {[
               {
                 name: "James T.",
@@ -447,7 +447,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                 initials: "SJ"
               }
             ].map((testimonial, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
+              <ScrollReveal key={i} delay={i * 0.1} className="w-[85vw] md:w-auto shrink-0 snap-center md:snap-align-none">
                 <div className="h-full p-5 lg:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col group">
                   {/* Stars */}
                   <div className="flex items-center gap-0.5 text-cyan-400 mb-4">
@@ -477,7 +477,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       </section>
 
       {/* CORE FEATURE: PPC KEYWORD BLEEDING (Local SEO Architecture) */}
-      <section className="relative z-10 py-16 bg-[#020202] border-t border-white/5">
+      <section className="relative z-10 py-12 lg:py-16 bg-[#020202] border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
             <div className="col-span-2 md:col-span-2">
