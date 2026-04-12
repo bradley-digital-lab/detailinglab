@@ -114,7 +114,7 @@ export function InfographicSection() {
       <div ref={containerRef} className="max-w-7xl mx-auto px-4 md:px-6 w-full relative z-10 flex flex-col items-center lg:items-start lg:block">
         
         {/* TOP TITLE SECTION */}
-        <div className="mb-10 md:mb-16 text-center lg:text-left w-full">
+        <div className="mb-24 md:mb-32 lg:mb-16 text-center lg:text-left w-full relative z-50">
            <h2 className="text-sm font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Structural Analysis</h2>
            <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight drop-shadow-xl">
                Substrate <span className="text-white/40 flex-wrap">Fusion Matrix.</span>
@@ -321,7 +321,7 @@ export function InfographicSection() {
               <button 
                   onClick={handleToggle}
                   disabled={isDebrisFiring}
-                  className={`px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-50 pointer-events-auto ${isDebrisFiring ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/5'}`}
+                  className={`px-6 py-2 border border-cyan-500/30 rounded-full text-xs font-bold uppercase tracking-widest transition-all text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:bg-cyan-500/10 hover:border-cyan-400/50 backdrop-blur-md relative z-50 pointer-events-auto ${isDebrisFiring ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                   {isExploded ? 'Compress Stack' : isDebrisFiring ? 'Analyzing...' : 'Explode View'} 
                   <ArrowDown size={14} className={`transform transition-transform ${isExploded ? 'rotate-180' : ''}`} />

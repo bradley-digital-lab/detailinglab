@@ -243,7 +243,7 @@ export function AnimatedShieldReveal() {
             >
               <a
                 href="#evidence"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/20 bg-cyan-500/[0.06] text-cyan-400 text-[11px] font-bold uppercase tracking-wider hover:bg-cyan-500/[0.12] hover:border-cyan-500/40 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[11px] font-bold uppercase tracking-wider hover:bg-cyan-500/20 hover:border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] backdrop-blur-md transition-all duration-300"
               >
                 See Our Work <ChevronRight size={14} />
               </a>
