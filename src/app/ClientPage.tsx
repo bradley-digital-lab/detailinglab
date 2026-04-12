@@ -343,33 +343,35 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
              </div>
              
              {/* Car gallery grid */}
-             <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
-               {[
-                 { before: "/bmw_before.png", after: "/bmw_after.png", car: "BMW 3 Series", service: "Stage 2 Correction + Ceramic" },
-                 { before: "/audi_before.png", after: "/audi_after.png", car: "Audi A5", service: "Paint Correction + Sealant" },
-                 { before: "/rangerover_before.png", after: "/rangerover_after.png", car: "Range Rover Sport", service: "Full Correction + 9H Ceramic" },
-               ].map((item, i) => (
-                 <ScrollReveal key={i} delay={i * 0.1} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
-                   <div className="group relative rounded-2xl overflow-hidden border border-white/5 bg-[#0a0a0a] hover:border-cyan-500/30 transition-all duration-500">
-                     <div className="relative h-48 sm:h-56 overflow-hidden">
-                       {/* After image (visible by default) */}
-                       <Image src={item.after} alt={`${item.car} after detailing`} fill className="object-cover transition-opacity duration-700 group-hover:opacity-0" sizes="(max-width: 768px) 100vw, 33vw" />
-                       {/* Before image (visible on hover) */}
-                       <Image src={item.before} alt={`${item.car} before detailing`} fill className="object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 33vw" />
-                       
-                       {/* Labels */}
-                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-cyan-500/90 text-[10px] font-bold text-black uppercase tracking-wider opacity-100 group-hover:opacity-0 transition-opacity duration-300">After</div>
-                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-red-500/90 text-[10px] font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">Before</div>
-                       <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-sm text-[10px] font-bold text-neutral-300 uppercase tracking-wider">Hover to Compare</div>
-                     </div>
-                     <div className="p-4">
-                       <p className="text-white font-bold text-sm">{item.car}</p>
-                       <p className="text-neutral-500 text-xs mt-0.5">{item.service}</p>
+             <ScrollReveal>
+               <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+                 {[
+                   { before: "/bmw_before.png", after: "/bmw_after.png", car: "BMW 3 Series", service: "Stage 2 Correction + Ceramic" },
+                   { before: "/audi_before.png", after: "/audi_after.png", car: "Audi A5", service: "Paint Correction + Sealant" },
+                   { before: "/rangerover_before.png", after: "/rangerover_after.png", car: "Range Rover Sport", service: "Full Correction + 9H Ceramic" },
+                 ].map((item, i) => (
+                   <div key={i} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
+                     <div className="group relative rounded-2xl overflow-hidden border border-white/5 bg-[#0a0a0a] hover:border-cyan-500/30 transition-all duration-500 h-full flex flex-col">
+                       <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
+                         {/* After image (visible by default) */}
+                         <Image src={item.after} alt={`${item.car} after detailing`} fill className="object-cover transition-opacity duration-700 group-hover:opacity-0" sizes="(max-width: 768px) 100vw, 33vw" />
+                         {/* Before image (visible on hover) */}
+                         <Image src={item.before} alt={`${item.car} before detailing`} fill className="object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 33vw" />
+                         
+                         {/* Labels */}
+                         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-cyan-500/90 text-[10px] font-bold text-black uppercase tracking-wider opacity-100 group-hover:opacity-0 transition-opacity duration-300">After</div>
+                         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-red-500/90 text-[10px] font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">Before</div>
+                         <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-sm text-[10px] font-bold text-neutral-300 uppercase tracking-wider hidden sm:block">Hover to Compare</div>
+                       </div>
+                       <div className="p-4 flex-1">
+                         <p className="text-white font-bold text-sm">{item.car}</p>
+                         <p className="text-neutral-500 text-xs mt-0.5">{item.service}</p>
+                       </div>
                      </div>
                    </div>
-                 </ScrollReveal>
-               ))}
-             </div>
+                 ))}
+               </div>
+             </ScrollReveal>
 
              {/* Operational Showcase Banners */}
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 w-full">
@@ -429,56 +431,58 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
             </div>
           </ScrollReveal>
           
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
-            {[
-              {
-                name: "James T.",
-                car: "BMW M4 Competition",
-                service: "Stage 2 Correction + Ceramic",
-                review: "Took out every single swirl mark. The depth of gloss in the paint is unreal — looks better than when I collected it from the dealer. Can't recommend enough.",
-                initials: "JT"
-              },
-              {
-                name: "Dr. Alistair M.",
-                car: "Range Rover Autobiography",
-                service: "Full Exterior + Interior Reset",
-                review: "After 40k miles of motorway abuse, the paint was heavily swirled. They reversed the damage completely. Leather restoration is factory-spec. Worth every penny.",
-                initials: "AM"
-              },
-              {
-                name: "Sarah J.",
-                car: "Audi RS6 Avant",
-                service: "Paint Correction + 9H Ceramic",
-                review: "The hydrophobic coating is incredible — dirt just sheets off in rain. After three months, the car still looks like it was polished yesterday. Proper craftsmanship.",
-                initials: "SJ"
-              }
-            ].map((testimonial, i) => (
-              <ScrollReveal key={i} delay={i * 0.1} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
-                <div className="h-full p-5 lg:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col group">
-                  {/* Stars */}
-                  <div className="flex items-center gap-0.5 text-cyan-400 mb-4">
-                    {[...Array(5)].map((_, s) => (
-                      <Star key={s} fill="currentColor" size={14} />
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <p className="text-neutral-300 text-sm leading-relaxed mb-5 flex-1">&ldquo;{testimonial.review}&rdquo;</p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                    <div className="w-9 h-9 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs font-bold">
-                      {testimonial.initials}
+          <ScrollReveal delay={0.2}>
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 pb-6 md:pb-0 md:grid md:grid-cols-3 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+              {[
+                {
+                  name: "James T.",
+                  car: "BMW M4 Competition",
+                  service: "Stage 2 Correction + Ceramic",
+                  review: "Took out every single swirl mark. The depth of gloss in the paint is unreal — looks better than when I collected it from the dealer. Can't recommend enough.",
+                  initials: "JT"
+                },
+                {
+                  name: "Dr. Alistair M.",
+                  car: "Range Rover Autobiography",
+                  service: "Full Exterior + Interior Reset",
+                  review: "After 40k miles of motorway abuse, the paint was heavily swirled. They reversed the damage completely. Leather restoration is factory-spec. Worth every penny.",
+                  initials: "AM"
+                },
+                {
+                  name: "Sarah J.",
+                  car: "Audi RS6 Avant",
+                  service: "Paint Correction + 9H Ceramic",
+                  review: "The hydrophobic coating is incredible — dirt just sheets off in rain. After three months, the car still looks like it was polished yesterday. Proper craftsmanship.",
+                  initials: "SJ"
+                }
+              ].map((testimonial, i) => (
+                <div key={i} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
+                  <div className="h-full p-5 lg:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col group">
+                    {/* Stars */}
+                    <div className="flex items-center gap-0.5 text-cyan-400 mb-4">
+                      {[...Array(5)].map((_, s) => (
+                        <Star key={s} fill="currentColor" size={14} />
+                      ))}
                     </div>
-                    <div>
-                      <p className="text-white text-xs font-bold">{testimonial.name}</p>
-                      <p className="text-neutral-500 text-[10px] uppercase tracking-wider">{testimonial.car}</p>
+
+                    {/* Quote */}
+                    <p className="text-neutral-300 text-sm leading-relaxed mb-5 flex-1">&ldquo;{testimonial.review}&rdquo;</p>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                      <div className="w-9 h-9 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs font-bold">
+                        {testimonial.initials}
+                      </div>
+                      <div>
+                        <p className="text-white text-xs font-bold">{testimonial.name}</p>
+                        <p className="text-neutral-500 text-[10px] uppercase tracking-wider">{testimonial.car}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </ScrollReveal>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
