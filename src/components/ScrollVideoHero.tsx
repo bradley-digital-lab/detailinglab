@@ -155,11 +155,11 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
               onClick={onBook} 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative w-full sm:w-auto justify-center group px-6 md:px-8 py-3.5 md:py-4 bg-gradient-to-tr from-cyan-600 to-cyan-400 hover:from-cyan-500 hover:to-cyan-300 text-white font-black rounded-xl flex items-center gap-2.5 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:shadow-[0_0_60px_rgba(6,182,212,0.6)] border border-cyan-400/50 hover:border-cyan-300 cursor-none text-[13px] md:text-sm"
+              className="relative w-full sm:w-auto justify-center group px-5 md:px-6 py-2.5 md:py-3 bg-gradient-to-tr from-cyan-600 to-cyan-400 hover:from-cyan-500 hover:to-cyan-300 text-white font-black rounded-xl flex items-center gap-2 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:shadow-[0_0_60px_rgba(6,182,212,0.6)] border border-cyan-400/50 hover:border-cyan-300 cursor-none text-xs"
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="relative z-10 flex items-center gap-1.5">
                 Get Booked In!
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </motion.button>
             
@@ -170,9 +170,9 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto justify-center px-6 md:px-8 py-3.5 md:py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-bold tracking-wide uppercase rounded-xl hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2.5 cursor-none text-[13px] md:text-sm shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="w-full sm:w-auto justify-center px-5 md:px-6 py-2.5 md:py-3 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-bold tracking-wide uppercase rounded-xl hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2 cursor-none text-xs shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
-              <Sparkles size={16} className="text-cyan-400" /> View Packages
+              <Sparkles size={14} className="text-cyan-400" /> View Packages
             </motion.button>
           </motion.div>
 

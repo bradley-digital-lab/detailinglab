@@ -378,7 +378,7 @@ export function BookingModal({
                            <button 
                                onClick={handleFinalSubmit} 
                                disabled={!isFormValid || isLoading}
-                               className="w-full sm:w-auto px-10 py-4 bg-gradient-to-tr from-cyan-600 to-cyan-400 hover:from-cyan-500 hover:to-cyan-300 border border-cyan-400/50 hover:border-cyan-300 text-white font-black uppercase rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-20 cursor-pointer shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:shadow-[0_0_60px_rgba(6,182,212,0.6)] disabled:shadow-none"
+                               className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-tr from-cyan-600 to-cyan-400 hover:from-cyan-500 hover:to-cyan-300 border border-cyan-400/50 hover:border-cyan-300 text-white font-black uppercase rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-20 cursor-pointer shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:shadow-[0_0_60px_rgba(6,182,212,0.6)] disabled:shadow-none text-xs"
                              >
                               {isLoading ? (
                                 <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>

@@ -321,7 +321,7 @@ export function InfographicSection() {
               <button 
                   onClick={handleToggle}
                   disabled={isDebrisFiring}
-                  className={`px-6 py-2 border border-cyan-500/30 rounded-full text-xs font-bold uppercase tracking-widest transition-all text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:bg-cyan-500/10 hover:border-cyan-400/50 backdrop-blur-md relative z-50 pointer-events-auto ${isDebrisFiring ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`px-4 py-1.5 border border-cyan-500/30 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all text-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:bg-cyan-500/10 hover:border-cyan-400/50 backdrop-blur-md relative z-50 pointer-events-auto ${isDebrisFiring ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                   {isExploded ? 'Compress Stack' : isDebrisFiring ? 'Analyzing...' : 'Explode View'} 
                   <ArrowDown size={14} className={`transform transition-transform ${isExploded ? 'rotate-180' : ''}`} />
