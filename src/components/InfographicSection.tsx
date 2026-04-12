@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Shield, Sparkles, Droplets, ArrowDown, ChevronRight } from 'lucide-react';
 
 const LAYERS = [
@@ -65,6 +65,22 @@ export function InfographicSection() {
   const [activeLayer, setActiveLayer] = useState(LAYERS[0]); // Default to Ceramic
   const [isExploded, setIsExploded] = useState(false); // Default to compressed
   const [isDebrisFiring, setIsDebrisFiring] = useState(false);
+  const [autoTriggered, setAutoTriggered] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "0px 0px -50% 0px", once: true });
+
+  useEffect(() => {
+     if (isInView && !isExploded && !autoTriggered) {
+         setAutoTriggered(true);
+         // Fire debris before exploding
+         setIsDebrisFiring(true);
+         setTimeout(() => {
+             setIsDebrisFiring(false);
+             setIsExploded(true);
+         }, 800);
+     }
+  }, [isInView, isExploded, autoTriggered]);
 
   const handleToggle = () => {
       if (isExploded) {
@@ -95,7 +111,20 @@ export function InfographicSection() {
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div ref={containerRef} className="max-w-7xl mx-auto px-4 md:px-6 w-full relative z-10 flex flex-col items-center lg:items-start lg:block">
+        
+        {/* TOP TITLE SECTION */}
+        <div className="mb-10 md:mb-16 text-center lg:text-left w-full">
+           <h2 className="text-sm font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Structural Analysis</h2>
+           <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight drop-shadow-xl">
+               Substrate <span className="text-white/40 flex-wrap">Fusion Matrix.</span>
+           </h3>
+           <p className="mt-4 text-neutral-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              We don't just apply wax. We permanently molecularly fuse a 9H ceramic shield onto your factory clear coat, locking in a flawless correction.
+           </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
         
         {/* LEFT COLUMN: 3D EXPLODED VIEW */}
         <div className="relative h-[400px] md:h-[600px] flex items-center justify-center perspective-[2000px] overflow-visible">
@@ -302,15 +331,6 @@ export function InfographicSection() {
 
         {/* RIGHT COLUMN: DETAIL PANEL */}
         <div className="flex flex-col justify-center">
-             <div className="mb-12">
-                 <h2 className="text-sm font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Structural Analysis</h2>
-                 <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight drop-shadow-xl">
-                     Substrate <br/><span className="text-white/40">Fusion Matrix.</span>
-                 </h3>
-                 <p className="mt-6 text-neutral-400 text-lg leading-relaxed">
-                    We don't just apply wax. We permanently molecularly fuse a 9H ceramic shield onto your factory clear coat, locking in a flawless correction.
-                 </p>
-             </div>
 
              <AnimatePresence mode="popLayout">
                 <motion.div 
@@ -348,6 +368,7 @@ export function InfographicSection() {
                     )}
                 </motion.div>
              </AnimatePresence>
+        </div>
         </div>
       </div>
     </section>
