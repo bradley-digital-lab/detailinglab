@@ -349,7 +349,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                  { before: "/audi_before.png", after: "/audi_after.png", car: "Audi A5", service: "Paint Correction + Sealant" },
                  { before: "/rangerover_before.png", after: "/rangerover_after.png", car: "Range Rover Sport", service: "Full Correction + 9H Ceramic" },
                ].map((item, i) => (
-                 <ScrollReveal key={i} delay={i * 0.1} className="w-[85vw] md:w-auto shrink-0 snap-center md:snap-align-none">
+                 <ScrollReveal key={i} delay={i * 0.1} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
                    <div className="group relative rounded-2xl overflow-hidden border border-white/5 bg-[#0a0a0a] hover:border-cyan-500/30 transition-all duration-500">
                      <div className="relative h-48 sm:h-56 overflow-hidden">
                        {/* After image (visible by default) */}
@@ -453,7 +453,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                 initials: "SJ"
               }
             ].map((testimonial, i) => (
-              <ScrollReveal key={i} delay={i * 0.1} className="w-[85vw] md:w-auto shrink-0 snap-center md:snap-align-none">
+              <ScrollReveal key={i} delay={i * 0.1} className="w-[75vw] md:w-auto shrink-0 snap-center md:snap-align-none">
                 <div className="h-full p-5 lg:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col group">
                   {/* Stars */}
                   <div className="flex items-center gap-0.5 text-cyan-400 mb-4">
