@@ -329,9 +329,12 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       {/* CORE FEATURE: VISUAL EVIDENCE GALLERY */}
       <section id="evidence" className="relative z-10 py-12 lg:py-24 px-6 max-w-7xl mx-auto">
          <ScrollReveal>
-             <div className="text-center mb-14">
+             <div className="text-center mb-14 cursor-none">
                <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">Real Results</p>
                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Visual <span className="text-cyan-500">Evidence</span></h2>
+               <div className="md:hidden flex items-center justify-center gap-2 mt-5 text-neutral-500 text-[10px] font-bold uppercase tracking-widest">
+                 <ArrowRight size={12} className="animate-pulse" /> Swipe to explore gallery
+               </div>
              </div>
              
              {/* Primary large slider */}
@@ -417,9 +420,12 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       <section id="reviews" className="relative z-10 py-12 lg:py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a] border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal>
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 cursor-none">
               <p className="text-cyan-500 text-xs font-bold uppercase tracking-[0.25em] mb-4">What Our Clients Say</p>
               <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Trusted by <span className="text-cyan-500">Yorkshire</span></h2>
+              <div className="md:hidden flex items-center justify-center gap-2 mt-5 text-neutral-500 text-[10px] font-bold uppercase tracking-widest">
+                 <ArrowRight size={12} className="animate-pulse" /> Swipe for more reviews
+              </div>
             </div>
           </ScrollReveal>
           
