@@ -76,7 +76,7 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
   }, [scrollYProgress, duration]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[300vh] bg-black">
+    <div ref={containerRef} className="relative w-full h-[100svh] md:h-[300vh] bg-black">
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden flex flex-col items-center justify-center">
         {/* Video Background Layer */}
         <div className="absolute inset-0 z-0">
