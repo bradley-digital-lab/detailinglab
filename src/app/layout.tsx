@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://detailinglab.co.uk'),
+  metadataBase: new URL('https://detailinglab.vercel.app'),
   title: "Detailing Lab | Elite Mobile Detailing & Ceramic Coating Yorkshire",
   description: "Yorkshire's premier mobile detailing unit. High-end paint correction, 9H ceramic coating, and interior restoration delivered perfectly to your door.",
   openGraph: {
     title: 'Detailing Lab | Elite Mobile Detailing',
     description: "Yorkshire's premier mobile detailing unit. Expert paint correction and true ceramic coating.",
-    url: 'https://detailinglab.co.uk',
+    url: 'https://detailinglab.vercel.app',
     siteName: 'Detailing Lab',
     images: [
       {

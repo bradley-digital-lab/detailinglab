@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/api/'], // Protect crawler budget by blocking internal gateways
     },
-    sitemap: 'https://detailinglab.co.uk/sitemap.xml',
+    sitemap: 'https://detailinglab.vercel.app/sitemap.xml',
   };
 }

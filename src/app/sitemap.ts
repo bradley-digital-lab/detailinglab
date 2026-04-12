@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const rootUrl = 'https://detailinglab.co.uk';
+  const rootUrl = 'https://detailinglab.vercel.app';
 
   // Geofence target vectors for local dominating search presence
   const serviceAreas = ['harrogate', 'leeds', 'york', 'wetherby', 'ripon'];

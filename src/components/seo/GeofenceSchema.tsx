@@ -6,7 +6,7 @@ export default function GeofenceSchema() {
     "@context": "https://schema.org",
     "@type": "ServiceAreaBusiness",
     "name": "Detailing Lab",
-    "url": "https://detailinglab.co.uk",
+    "url": "https://detailinglab.vercel.app",
     "telephone": "+447000000000",
     "priceRange": "£££",
     "description": "Elite Automotive Detailing and Ceramic Coating servicing Yorkshire.",
