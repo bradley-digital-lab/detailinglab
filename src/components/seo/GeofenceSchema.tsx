@@ -4,7 +4,7 @@ import Script from 'next/script';
 export default function GeofenceSchema() {
   const schema = {
     "@context": "https://schema.org",
-    "@type": "AutoBodyShop",
+    "@type": "ServiceAreaBusiness",
     "name": "Detailing Lab",
     "url": "https://detailinglab.co.uk",
     "telephone": "+447000000000",
@@ -17,12 +17,7 @@ export default function GeofenceSchema() {
       "bestRating": "5",
       "worstRating": "1"
     },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Yorkshire",
-      "addressRegion": "YKS",
-      "addressCountry": "UK"
-    },
+    // Removed physical address block to strictly enforce mobile operations model
     // The "Geofenced Extraction" - Explicitly targeting high-net-worth postcodes
     "areaServed": [
       {
@@ -54,12 +49,7 @@ export default function GeofenceSchema() {
       }
     ],
     // Lat/Long precise anchoring
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 53.9921, // Harrogate rough center
-      "longitude": -1.5418
-    },
-    "hasMap": "https://maps.google.com/?cid=YOUR_CID_HERE", // To be filled in production
+    // Removed strict mapping pin coordinate logic due to Mobile-Only structural changes
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",

@@ -10,6 +10,7 @@ import { PricingEstimator, SIZES, PAINT_TIERS, INTERIOR, BUNDLE_DISCOUNT } from 
 import { AnimatedShieldReveal } from "../components/AnimatedShieldReveal";
 import { InfographicSection } from "../components/InfographicSection";
 import { BookingModal } from '../components/BookingModal';
+import { ScrollVideoHero } from "../components/ScrollVideoHero";
 
 
 // ==========================================
@@ -178,7 +179,7 @@ function InspectionTorchMode() {
       
       {/* BASE LAYER: Dark, Scratched, Neglected Paint */}
       <div className="absolute inset-0 z-0">
-         <Image src="/before_paint.png" fill className={`object-cover opacity-60 grayscale-[30%] ${isMobile ? '' : 'blur-[2px]'} transition-all duration-700 group-hover:blur-none group-hover:opacity-100`} alt="Scratched Paint" />
+         <Image src="/before_paint.png" fill className={`object-cover opacity-60 grayscale-[30%] ${isMobile ? '' : 'blur-[2px]'} transition-all duration-700 group-hover:blur-none group-hover:opacity-100`} alt="Scratched automotive clear coat requiring professional machine polishing" />
          <div className="absolute inset-0 bg-black/80 mix-blend-multiply pointer-events-none transition-colors duration-700 group-hover:bg-black/95" />
       </div>
 
@@ -189,7 +190,7 @@ function InspectionTorchMode() {
           clipPath: useMotionTemplate`circle(${isActive ? '250px' : '0px'} at ${springX}px ${springY}px)`
         }}
       >
-        <Image src="/after_paint.png" fill className="object-cover" alt="Flawless Paint" />
+        <Image src="/after_paint.png" fill className="object-cover" alt="Flawlessly corrected automotive paint protected by 9H ceramic coating" />
       </motion.div>
 
       {/* OPTICAL TORCH LAYER: Physical Lens Ring & Crosshair */}
@@ -299,137 +300,8 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main 
-        className="relative w-full min-h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-black"
-      >
-        {/* Background image with cinematic grade */}
-        <motion.div 
-          className="absolute inset-0 z-0"
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2.5, ease: [0.23, 1, 0.32, 1] }}
-        >
-          <Image 
-            src="/hero_outdoor.png" 
-            alt="Mobile Ceramic Coated Supercar outdoors, Yorkshire" 
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
-          />
-          {/* Multi-layer cinematic darkening */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
-        </motion.div>
-
-        {/* Animated scan line */}
-        <motion.div
-          className="absolute inset-0 z-[1] pointer-events-none"
-          style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6,182,212,0.015) 2px, rgba(6,182,212,0.015) 4px)' }}
-        />
-
-        {/* Hero Content */}
-        <div className="relative z-20 px-6 max-w-7xl mx-auto w-full flex flex-col items-center pt-28 pb-16">
-          
-          {/* Top badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/[0.04] backdrop-blur-2xl border border-white/10 text-cyan-400 text-[11px] font-bold tracking-[0.2em] uppercase mb-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
-            </span>
-            Yorkshire&apos;s Elite Mobile Detailing Unit
-          </motion.div>
-          
-          {/* Main headline */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.04em] leading-[0.88] uppercase text-center mb-8"
-          >
-            <span className="block text-white">Surgical</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400">Precision.</span>
-          </motion.h1>
-
-          {/* Sub-headline */}
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl text-neutral-400 max-w-2xl leading-relaxed font-medium text-center mb-10"
-          >
-            Paint correction. Ceramic armoring. Interior restoration.
-            <br className="hidden sm:block" />
-            <span className="text-neutral-300">Zero compromises. Fully equipped mobile delivery to your door.</span>
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="flex flex-col sm:flex-row items-center gap-4 mb-14"
-          >
-            <MagneticButton onClick={() => openBookingModalWithPackage()} className="relative group px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl flex items-center gap-2.5 transition-all uppercase tracking-wide shadow-[0_0_40px_rgba(6,182,212,0.35)] cursor-none text-sm">
-              <span className="relative z-10 flex items-center gap-2">
-                Get Booked In!
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </span>
-            </MagneticButton>
-            
-            <MagneticButton className="px-8 py-4 bg-white/[0.04] backdrop-blur-xl border border-white/10 text-white font-bold tracking-wide uppercase rounded-xl hover:bg-white/[0.08] hover:border-white/20 transition-all flex items-center gap-2.5 cursor-none text-sm">
-              <Sparkles size={18} className="text-cyan-400" /> View Packages
-            </MagneticButton>
-          </motion.div>
-
-          {/* Integrated stats strip — NO gap */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.65, ease: [0.23, 1, 0.32, 1] }}
-            className="flex flex-wrap justify-center gap-x-8 gap-y-3 items-center"
-          >
-            {[
-              { val: "9H", label: "Ceramic Hardness", highlight: true },
-              { val: "5+", label: "Years Protection", highlight: false },
-              { val: "0%", label: "Swirl Marks", highlight: false },
-              { val: "100%", label: "Flawless Finish", highlight: true }
-            ].map((stat, i) => (
-              <motion.div 
-                key={i}
-                className="flex items-center gap-2.5 group"
-                whileHover={{ y: -2 }}
-              >
-                <span className={`text-xl font-black ${stat.highlight ? 'text-cyan-400' : 'text-white'}`}>{stat.val}</span>
-                <span className="text-neutral-500 text-[10px] font-bold uppercase tracking-wider group-hover:text-neutral-400 transition-colors">{stat.label}</span>
-                {i < 3 && <span className="text-neutral-800 ml-4 hidden sm:inline">|</span>}
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="mt-14"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-              className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1.5"
-            >
-              <motion.div className="w-1 h-1.5 bg-cyan-400 rounded-full" />
-            </motion.div>
-          </motion.div>
-        </div>
-      </main>
+      {/* Scroll Video Hero Section */}
+      <ScrollVideoHero onBook={() => openBookingModalWithPackage()} />
 
       {/* CORE FEATURE: ANIMATED SHIELD REVEAL (Scroll Stopper Engine) */}
       <AnimatedShieldReveal />
@@ -501,7 +373,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                  {/* Mobile Operations Banner */}
                  <ScrollReveal delay={0.2}>
                      <div className="relative w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden group border border-white/10 shadow-2xl">
-                         <Image src="/mobile_service_car.png" alt="Detailing Lab mobile unit detailing a luxury car at a residential home" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                         <Image src="/mobile_buffing.png" alt="Detailing Lab mobile unit detailing a luxury car at a residential home" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                          <div className="absolute bottom-0 left-0 p-5 md:p-8 w-full">
                              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
@@ -521,7 +393,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
                  {/* Snow Foam Decontamination Banner */}
                  <ScrollReveal delay={0.3}>
                      <div className="relative w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden group border border-white/10 shadow-2xl">
-                         <Image src="/snow_foam_uk_house.png" alt="Luxury car covered in thick snow foam during a decontamination wash" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                         <Image src="/snow_foam_decon.png" alt="Luxury car covered in thick snow foam during a decontamination wash" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                          <div className="absolute bottom-0 left-0 p-5 md:p-8 w-full">
                              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
@@ -652,7 +524,7 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
           
           <div className="flex flex-col items-center">
             <MagneticButton onClick={() => openBookingModalWithPackage()} className="px-8 py-5 md:px-12 md:py-6 w-full sm:w-auto justify-center bg-cyan-500 text-black text-lg md:text-xl font-black tracking-tight uppercase rounded-xl transition-colors shadow-[0_0_40px_rgba(6,182,212,0.4)] flex items-center gap-3 cursor-none">
-              Request Free Quote <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform hidden sm:block" />
+              Get Booked In! <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform hidden sm:block" />
             </MagneticButton>
             
             <motion.div 

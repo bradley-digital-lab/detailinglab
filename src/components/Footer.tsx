@@ -21,7 +21,7 @@ export function Footer() {
                         <div className="flex flex-col">
                             <span className="font-black text-xl tracking-tighter leading-none text-white whitespace-nowrap">DETAILING LAB</span>
                             <div className="flex items-center justify-between mt-1 opacity-80">
-                                <span className="text-[9px] font-bold tracking-[0.2em] text-cyan-500 leading-none">YORKSHIRE HQ</span>
+                                <span className="text-[9px] font-bold tracking-[0.2em] text-cyan-500 leading-none">MOBILE DIVISION</span>
                             </div>
                         </div>
                     </Link>
@@ -52,11 +52,11 @@ export function Footer() {
 
                 {/* Contact Column */}
                 <div>
-                    <h4 className="text-white font-black uppercase tracking-widest text-sm mb-6">HQ Operations</h4>
+                    <h4 className="text-white font-black uppercase tracking-widest text-sm mb-6">Mobile Operations</h4>
                     <ul className="space-y-4">
                         <li className="flex items-start gap-3 text-neutral-400 text-sm">
                             <MapPin size={18} className="text-cyan-500 shrink-0 mt-0.5" />
-                            <span>[HQ ADDRESS LINE 1]<br/>[CITY], [POSTCODE]<br/>United Kingdom</span>
+                            <span>Fully Equipped Mobile Unit<br/>Covering Yorkshire &<br/>Surrounding Areas</span>
                         </li>
                         <li className="flex items-center gap-3 text-neutral-400 text-sm">
                             <Phone size={18} className="text-cyan-500 shrink-0" />
@@ -75,8 +75,12 @@ export function Footer() {
                 <p className="text-neutral-600 text-xs font-bold uppercase tracking-widest">
                     &copy; {currentYear} Detailing Lab. All Rights Reserved.
                 </p>
-                <div className="text-neutral-600 text-[10px] uppercase font-bold tracking-widest">
-                    Company No. [COMPANY NAME / CRN]
+                <div className="flex flex-col md:flex-row items-center md:gap-4 text-neutral-600 text-[10px] uppercase font-bold tracking-widest text-center md:text-right space-y-2 md:space-y-0">
+                    <span>Company No. [COMPANY NAME / CRN]</span>
+                    <span className="hidden md:block text-neutral-800">|</span>
+                    <span>
+                        Made by <a href="https://bradleydigital.co.uk" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-cyan-400 transition-colors cursor-none">bradley.digital</a>
+                    </span>
                 </div>
             </div>
         </div>

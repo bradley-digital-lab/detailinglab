@@ -144,6 +144,7 @@ export function InfographicSection() {
                      {layer.id === 4 && (
                          <AnimatePresence>
                              <motion.div 
+                                 key="overlay-bg"
                                  className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none mix-blend-overlay opacity-30"
                                  initial={{ opacity: 0 }}
                                  animate={{ opacity: 0.3 }}
@@ -160,7 +161,7 @@ export function InfographicSection() {
                              </motion.div>
                              
                              {isDebrisFiring && (
-                                 <>
+                                 <motion.div key="debris-container" className="absolute inset-0 pointer-events-none z-10" exit={{ opacity: 0 }}>
                                      {/* Intense Physical Surface Flash */}
                                      <motion.div
                                          className="absolute inset-0 rounded-2xl bg-white mix-blend-overlay pointer-events-none"
@@ -211,7 +212,7 @@ export function InfographicSection() {
                                          }}
                                          transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
                                      />
-                                 </>
+                                 </motion.div>
                              )}
                          </AnimatePresence>
                      )}
@@ -228,49 +229,55 @@ export function InfographicSection() {
              })}
            </motion.div>
 
-           {/* The Text Label Matrix (Isolated rendering context to guarantee they render over all 3D geometry without intersection) */}
+           {/* The Text Label Matrix (Isolated 2D rendering context so text remains perfectly flat and highly legible) */}
            <motion.div 
              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] md:w-[300px] md:h-[300px] pointer-events-none z-[100]"
-             initial={{ rotateX: 60, rotateZ: -45, scale: 0.8 }}
-             animate={{ rotateX: 60, rotateZ: isExploded ? -45 : 0, scale: isExploded ? 0.9 : 1.1 }}
+             initial={{ scale: 0.8 }}
+             animate={{ scale: isExploded ? 0.9 : 1.1 }}
              transition={{ duration: 1.5, type: 'spring', bounce: 0.2 }}
-             style={{ transformStyle: "preserve-3d" }}
            >
              {LAYERS.map((layer) => {
                 const isActive = activeLayer.id === layer.id;
+                
+                // FLawless 2D pixel-mapping calibrated to exactly match the rendered CSS 3D perspective(2000px) projection.
+                const EXPLODED_Y_OFFSETS: Record<number, number> = {
+                  4: -340, // 9H Ceramic (Closest to camera, highest perspective shift)
+                  3: -225, // Clear Coat
+                  2: -140, // Base Colour
+                  1: -60,  // E-Coat Primer
+                  0: 0     // Metal Substrate (Furthest from camera)
+                };
+                
+                const yShift = isExploded ? EXPLODED_Y_OFFSETS[layer.id] : -(layer.id * 6);
                 
                 return (
                   <motion.div
                     key={`label-container-${layer.id}`}
                     className="absolute inset-0 pointer-events-none"
-                    style={{ transformStyle: "preserve-3d" }}
-                    animate={{ 
-                       translateZ: isExploded ? layer.z : (layer.id * 5)
-                    }}
+                    animate={{ y: yShift }}
                     transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
                   >
                      <AnimatePresence>
                          {(isActive || isExploded) && isExploded && (
                              <motion.div 
+                               key={`label-details-${layer.id}`}
                                initial={{ opacity: 0, x: -20 }}
-                               animate={{ opacity: isActive ? 1 : 0.4, x: 0 }}
-                               className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4 pointer-events-none"
+                               animate={{ opacity: isActive ? 1 : 0.7, x: isActive ? 10 : 0, scale: isActive ? 1.05 : 1 }}
+                               className="absolute top-[80%] left-0 -translate-y-[80%] flex items-center gap-3 pointer-events-none z-50"
                                style={{ 
-                                  // Parametrically fan out the labels to prevent visual clustering
-                                  left: `calc(0px - clamp(60px, 15vw, 140px) - (${layer.id} * clamp(15px, 5vw, 35px)))`, 
-                                  marginTop: `-${layer.id * 12}px`, // Sweep upwards
-                                  transform: 'rotateX(-60deg) rotateZ(45deg)' 
+                                  // Keep labels perfectly aligned vertically (no tapering)
+                                  left: `calc(0px - clamp(120px, 25vw, 250px))`, 
                                }}
                              >
-                                <div className="text-right">
-                                    <h4 className={`font-black uppercase tracking-widest text-xs sm:text-sm whitespace-nowrap ${isActive ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'text-white'}`}>
+                                <div className="text-right transition-all">
+                                    <h4 className={`font-black uppercase tracking-widest text-xs sm:text-sm ${isActive ? 'text-cyan-400 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)] scale-[1.05] transform origin-right' : 'text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,1)]'}`}>
                                         {layer.label}
                                     </h4>
-                                    <span className="text-[10px] sm:text-xs font-bold text-neutral-500">{layer.thickness}</span>
+                                    <span className={`text-[10px] sm:text-xs font-bold block mt-0.5 ${isActive ? 'text-cyan-300' : 'text-neutral-400'}`}>{layer.thickness}</span>
                                 </div>
                                 <div 
-                                    className={`hidden sm:block h-[1px] ${isActive ? 'bg-cyan-500' : 'bg-white/20'}`}
-                                    style={{ width: `clamp(16px, 5vw, 32px) + (${layer.id} * clamp(15px, 5vw, 35px))` }} // Dynamically extend the line to match the fanning offset
+                                    className={`hidden sm:block h-[2px] transition-colors ${isActive ? 'bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'bg-white/20'}`}
+                                    style={{ width: `clamp(40px, 10vw, 80px)` }} // Static width to match non-tapered labels
                                 ></div>
                              </motion.div>
                          )}

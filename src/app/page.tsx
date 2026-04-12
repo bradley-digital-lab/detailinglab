@@ -23,7 +23,7 @@ export default async function Page() {
   const dbPackages = packagesData || [];
   const serverPaintTiers = dbPackages
     .filter(p => p.type === 'exterior')
-    .map(p => ({ id: p.id, label: p.label, price: Number(p.price), desc: p.description }));
+    .map((p, i) => ({ id: p.id || `pkg-${i}`, label: p.label, price: Number(p.price), desc: p.description }));
     
   let serverInterior = dbPackages.find(p => p.id === 'interior');
   if (serverInterior) {

@@ -28,7 +28,7 @@ export default function PrivacyPolicy() {
         <strong>Contact Details:</strong><br />
         Full name of legal entity: [COMPANY NAME]<br />
         Email address: bookings@detailinglab.co.uk<br />
-        Postal address: [HQ ADDRESS LINE 1, CITY, POSTCODE]<br />
+        Service Fleet: Fully Mobile (Yorkshire & Surrounding Areas)<br />
       </p>
 
       <h2>3. The Data We Collect About You</h2>
