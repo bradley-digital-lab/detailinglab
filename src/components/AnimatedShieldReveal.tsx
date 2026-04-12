@@ -81,15 +81,15 @@ export function AnimatedShieldReveal() {
         </motion.div>
 
         {/* Main content */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-16">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-16 perspective-[2000px]">
 
           {/* ── SHIELD ── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.6, y: 50 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ ...spring, duration: 1 }}
-            className="relative shrink-0 w-[240px] sm:w-[280px] lg:w-[340px] xl:w-[380px] lg:sticky lg:top-28"
+            initial={{ opacity: 0, scale: 0.6, y: 120, rotateX: 45, rotateZ: -15, filter: "blur(15px)" }}
+            whileInView={{ opacity: 1, scale: 1, y: 0, rotateX: 0, rotateZ: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ type: "spring", stiffness: 60, damping: 20, mass: 1.5, duration: 1.2 }}
+            className="relative shrink-0 w-[240px] sm:w-[280px] lg:w-[340px] xl:w-[380px] lg:sticky lg:top-28 origin-bottom"
           >
             {/* Ambient glow */}
             <motion.div
@@ -137,9 +137,9 @@ export function AnimatedShieldReveal() {
 
             {/* Floating badges */}
             <motion.div
-              initial={{ opacity: 0, x: -15 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: -15, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: 0.6, ...gentleSpring }}
               className="absolute top-[10%] right-[-8%] sm:right-[-12%]"
             >
@@ -153,9 +153,9 @@ export function AnimatedShieldReveal() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 15 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: 15, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: 0.8, ...gentleSpring }}
               className="absolute bottom-[12%] left-[-8%] sm:left-[-12%]"
             >
