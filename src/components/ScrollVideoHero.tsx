@@ -19,7 +19,8 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
 
   // Trigger text reveal near end of scroll, lock it forever
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-      if (latest >= 0.85 && !isTextRevealed) {
+      // With extended container height, trigger at 0.70 to ensure text is fully rendered before section begins to unstick
+      if (latest >= 0.70 && !isTextRevealed) {
           setIsTextRevealed(true);
       }
   });
@@ -95,7 +96,7 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
   }, [scrollYProgress]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[250svh] md:h-[300vh] bg-black">
+    <div ref={containerRef} className="relative w-full h-[350svh] md:h-[400vh] bg-black">
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden flex flex-col items-center justify-center">
         {/* Hardware-Accelerated Canvas Layer */}
         <div className="absolute inset-0 z-0">

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Shield, Sparkles, Droplets, ArrowDown, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 const LAYERS = [
   {
@@ -169,6 +170,19 @@ export function InfographicSection() {
                        bounce: 0.3 
                     }}
                   >
+                     {/* Detailing Lab Etched Logo */}
+                     {layer.id === 4 && (
+                         <div className="absolute inset-0 flex items-center justify-center opacity-[0.15] pointer-events-none z-0 mix-blend-overlay">
+                             <Image 
+                                src="/shield_emblem.png" 
+                                alt="Detailing Lab Crest" 
+                                width={180} 
+                                height={180} 
+                                className="object-contain drop-shadow-2xl" 
+                             />
+                         </div>
+                     )}
+
                      {/* Debris Impact Animation against Ceramic Top Layer (id: 4) */}
                      {layer.id === 4 && (
                          <AnimatePresence>
