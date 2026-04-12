@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { FooterWrapper } from "@/components/FooterWrapper";
+import { CookieBanner } from "@/components/CookieBanner";
+import { ThemeProvider } from "@/components/theme-provider";
+import GeofenceSchema from "@/components/seo/GeofenceSchema";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,10 +62,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { FooterWrapper } from "@/components/FooterWrapper";
-import { CookieBanner } from "@/components/CookieBanner";
-import { ThemeProvider } from "@/components/theme-provider";
-import GeofenceSchema from "@/components/seo/GeofenceSchema";
+
 
 export default function RootLayout({
   children,
