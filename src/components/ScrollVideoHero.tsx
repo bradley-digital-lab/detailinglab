@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
@@ -13,6 +13,15 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
+  });
+
+  const [isTextRevealed, setIsTextRevealed] = useState(false);
+
+  // Trigger text reveal near end of scroll, lock it forever
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+      if (latest >= 0.85 && !isTextRevealed) {
+          setIsTextRevealed(true);
+      }
   });
 
   useEffect(() => {
@@ -109,9 +118,9 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
         <div className="relative z-20 px-6 max-w-7xl mx-auto w-full flex flex-col items-center pt-20 md:pt-28 pb-16">
           {/* Top badge */}
           <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+            animate={isTextRevealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: -20, filter: "blur(10px)" }}
+            transition={{ duration: 0.8 }}
             className="inline-flex items-center gap-2.5 px-4 md:px-5 py-2 rounded-full bg-white/[0.04] backdrop-blur-2xl border border-white/10 text-cyan-400 text-[9px] md:text-[11px] font-bold tracking-[0.2em] uppercase mb-8 md:mb-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] cursor-none"
           >
             <span className="relative flex h-2 w-2">
@@ -123,8 +132,8 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
           
           {/* Main headline - DYNAMIC SCALING FOR MOBILE */}
           <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 40, filter: "blur(20px)" }}
+            animate={isTextRevealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 40, filter: "blur(20px)" }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
             className="text-[12vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.04em] leading-[0.88] uppercase text-center mb-6 md:mb-8 cursor-none selection:bg-cyan-500/30"
           >
@@ -135,7 +144,7 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
           {/* Sub-headline */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isTextRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
             className="text-sm sm:text-lg md:text-xl text-neutral-400 max-w-2xl px-4 leading-relaxed font-medium text-center mb-8 md:mb-10 cursor-none"
           >
@@ -147,7 +156,7 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
           {/* CTA Buttons - SCALED FOR MOBILE */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isTextRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 1, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
             className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 mb-10 md:mb-14 w-full sm:w-auto"
           >
@@ -178,8 +187,8 @@ export function ScrollVideoHero({ onBook }: { onBook: () => void }) {
 
           {/* Integrated stats strip */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
+            animate={isTextRevealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(5px)" }}
             transition={{ duration: 1, delay: 0.65, ease: [0.23, 1, 0.32, 1] }}
             className="flex flex-wrap justify-center gap-x-6 gap-y-2.5 md:gap-y-3 items-center"
           >
