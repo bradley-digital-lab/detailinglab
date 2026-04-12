@@ -218,7 +218,7 @@ export function AnimatedShieldReveal() {
                       <p className="text-neutral-400 text-xs sm:text-[13px] leading-relaxed mb-3.5">{service.desc}</p>
 
                       {/* Bullets — 3 column on sm+ */}
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-3 mb-3.5">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-3 mb-3.5">
                         {service.bullets.map((b, j) => (
                           <div key={j} className="flex items-start gap-1.5">
                             <CheckCircle2 size={11} className="shrink-0 mt-[3px] opacity-40" style={{ color: service.color }} />

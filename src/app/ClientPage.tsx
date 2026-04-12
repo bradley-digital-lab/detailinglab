@@ -479,8 +479,8 @@ export default function ClientPage({ serverPackages, serverInterior, serverBooki
       {/* CORE FEATURE: PPC KEYWORD BLEEDING (Local SEO Architecture) */}
       <section className="relative z-10 py-16 bg-[#020202] border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+            <div className="col-span-2 md:col-span-2">
                <h2 className="text-xl font-black uppercase tracking-widest text-cyan-500 mb-4">Elite Coverage Areas</h2>
                <p className="text-neutral-400 text-sm leading-relaxed max-w-sm">
                  Our specialized mobile detailing units are deployed exclusively to the highest yield postcodes across Yorkshire. We bring studio-grade paint correction directly to your driveway.
